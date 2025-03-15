@@ -77,4 +77,26 @@ class LoginServiceTest extends TestCase {
         $response = $this->loginService->getName('test@example.com');
         $this->assertEquals('leon',$response);
     }
+
+    public function testStartSessionSuccess() {
+        $email = 'test@example.com';
+        $this->userMock->method('findUserByEmail')->willReturn(['id' => 123, 'name' => 'leon']);
+        
+        $response = $this->loginService->startSession($email);
+        
+        $this->assertTrue($response['success']);
+        $this->assertContains('登入成功', $response['data']);
+    }
+
+    public function testStartSessionError() {
+        $email = 'test@example.com';
+        $this->userMock->method('findUserByEmail')->willReturn(['name' => 'leon']);
+        $this->userMock->method('findUserByEmail')->willReturn(['id' => 123]);
+        Session::shouldReceive('put')->once()->andThrow(new \Exception('Session 失敗'));
+
+        $response = $this->loginService->startSession($email);
+
+        $this->assertFalse($response['success']);
+        $this->assertStringContainsString('加入會話資料時發生錯誤: Session 失敗', $response['error']);
+    }
 }

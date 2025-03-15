@@ -165,15 +165,14 @@ class SendEmailServiceTest extends TestCase {
 
         $email = 'test@example.com';
         $type = 0;
-        
-        $reflectionClass = new \ReflectionClass(SendEmailService::class);
-        $tempProperty = $reflectionClass->getProperty('temp');
-        $tempProperty->setAccessible(true);
-        $tempProperty->setValue($this->sendEmailService, ['hash123', 1, 'Test User', 1]);
+        $hash = 'test';
+        $requestId = 1;
+        $toName = 'testUser';
+        $userId = 2;
 
         Mail::shouldReceive('to')->andThrow(new \Exception('SMTP 連線失敗'));
 
-        $result = $this->sendEmailService->sendEmail($email, $type);
+        $result = $this->sendEmailService->sendEmail($email, $type, $hash, $requestId, $toName, $userId);
 
         $this->assertFalse($result['success']);
         $this->assertEquals('寄送驗證信失敗', $result['error']);
@@ -184,13 +183,12 @@ class SendEmailServiceTest extends TestCase {
 
         $email = 'test@example.com';
         $type = 0;
+        $hash = 'test';
+        $requestId = 1;
+        $toName = 'testUser';
+        $userId = 2;
 
-        $reflectionClass = new \ReflectionClass(SendEmailService::class);
-        $tempProperty = $reflectionClass->getProperty('temp');
-        $tempProperty->setAccessible(true);
-        $tempProperty->setValue($this->sendEmailService, ['hash123', 1, 'Test User', 1]);
-
-        $result = $this->sendEmailService->sendEmail($email, $type);
+        $result = $this->sendEmailService->sendEmail($email, $type, $hash, $requestId, $toName, $userId);
 
         Mail::assertSent(\App\Mail\VerificationMail::class, function ($mail) use ($email) {
             return $mail->hasTo($email);

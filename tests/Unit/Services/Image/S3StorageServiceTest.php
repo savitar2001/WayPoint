@@ -118,4 +118,54 @@ class S3StorageServiceTest extends TestCase
         $this->assertFalse($result['success']);
         $this->assertEquals('獲取url失敗', $result['message']);
     }
+
+
+    public function testUploadBase64ImageWithInvalidImage(){
+        $invalidBase64Image = 'invalid-data';
+        $folder = 'uploads';
+        $result = $this->s3StorageService->uploadBase64Image($invalidBase64Image, $folder);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testGeneratePresignedUrlWithNonExistentFile(){
+        Storage::shouldReceive('disk->temporaryUrl')->andReturn(false);
+        
+        $folder = 'uploads';
+        $filename = 'non-existent.png';
+        $result = $this->s3StorageService->generatePresignedUrl($folder, $filename);
+        $this->assertFalse($result['success']);
+    }
+
+    public function testUploadBase64ImageWithStorageException() {
+        Storage::shouldReceive('disk->put')->andThrow(new \Exception('S3 連接失敗'));
+            
+        $base64Image = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/VMHEdIAAAAASUVORK5CYII=';
+        $folder = 'uploads';
+        $result = $this->s3StorageService->uploadBase64Image($base64Image, $folder);
+        $this->assertFalse($result['success']);
+        $this->assertEquals('S3 連接失敗', $result['message']);
+    }
+
+    public function testS3ExistsFailure(){
+        Storage::shouldReceive('disk->put')->andReturn(true);
+        Storage::shouldReceive('disk->exists')->andReturn(false);
+    
+        $base64Image = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/VMHEdIAAAAASUVORK5CYII=';
+        $folder = 'uploads';
+        $result = $this->s3StorageService->uploadBase64Image($base64Image, $folder);
+        $this->assertFalse($result['success']);
+        $this->assertEquals('圖片上傳失敗', $result['message']);
+    }
+
+    public function testSuccessfulS3UrlGeneration() {
+        Storage::shouldReceive('disk->put')->andReturn(true);
+        Storage::shouldReceive('disk->exists')->andReturn(true);
+        Storage::shouldReceive('disk->url')->andReturn('https://example-bucket.s3.amazonaws.com/uploads/file.png');
+        
+        $base64Image = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/VMHEdIAAAAASUVORK5CYII=';
+        $folder = 'uploads';
+        $result = $this->s3StorageService->uploadBase64Image($base64Image, $folder);
+        $this->assertTrue($result['success']);
+        $this->assertEquals('https://example-bucket.s3.amazonaws.com/uploads/file.png', $result['data']['url']);
+    }
 }

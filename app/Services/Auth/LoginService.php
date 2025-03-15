@@ -4,6 +4,7 @@ namespace App\Services\Auth;
 
 use App\Models\User;
 use App\Models\LoginAttempt;
+use Illuminate\Support\Facades\Session;
 
 class LoginService {
     private $user;
@@ -19,6 +20,22 @@ class LoginService {
             'error' => '',
             'data' => []
         ];
+    }
+
+    //檢查資料格式
+    public function validateRequest($email, $password) {
+        if (empty($email) || empty($password)) {
+            $this->response['error'] = '缺少必要的登入資料';
+            return $this->response;
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $this->response['error'] = '無效的郵箱格式';
+            return $this->response;
+        }
+
+        $this->response['success'] = true;
+        return $this->response;
     }
 
     //此帳號是否經過驗證
@@ -43,7 +60,8 @@ class LoginService {
 
     //驗證密碼，回傳布林
     public function verifyPassword($email,$password) {
-        if (password_verify($password,$this->user->findUserByEmail($email)['password']) === false) {
+        $data = $this->user->findUserByEmail($email);
+        if (password_verify($password,$data['password']) === false) {
             $this->loginAttempt->recordFailedAttempt($this->getId($email), $_SERVER['REMOTE_ADDR']);
             $this->response['error'] = '密碼錯誤';
         } else {
@@ -55,7 +73,8 @@ class LoginService {
 
     //登入剩餘次數
     public function getRemainAttempt($email) {
-        $remain_attempt = config('auth.max_login_attempt') - $this->user->findUserByEmail($email)['attempts'];
+        $useAttempt = $this->user->findUserByEmail($email);
+        $remain_attempt = config('auth.max_login_attempt') - $useAttempt['attempts'];
         return $remain_attempt;
     }
 
@@ -69,5 +88,21 @@ class LoginService {
     public function getName($email) {
         $name = $this->user->findUserByEmail($email)['name'];
         return $name;
+    }
+
+    //啟動會話
+    public function startSession($email) {
+        try {
+            Session::put('loggedin', true);
+            Session::put('userId', $this->getId($email));
+            Session::put('userName', $this->getName($email));
+            $this->response['success'] = true;
+            $this->response['data'][] = '登入成功';
+        } catch (\Exception $e) {
+            $this->response['error'] = '加入會話資料時發生錯誤: ' . $e->getMessage();
+            return $this->response;
+        }
+        return $this->response;
+    
     }
 }

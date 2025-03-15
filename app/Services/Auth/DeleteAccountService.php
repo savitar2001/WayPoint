@@ -4,6 +4,8 @@ namespace App\Services\Auth;
 use App\Models\User;
 use App\Models\Post;
 use App\Models\LoginAttempt;
+use Illuminate\Support\Facades\Session;
+use Exception;
 
 
 class DeleteAccountService {
@@ -53,5 +55,20 @@ class DeleteAccountService {
             $this->response['error'] = '刪除用戶資料失敗';
         }
         return $this->response;
+    }
+
+    //清除會話資料
+    public function clearSession() {
+        try {
+            Session::invalidate();
+            Session::regenerateToken();
+            $this->response['success'] = true;
+            $this->response['data'][] = '成功刪除帳戶';
+        } catch (\Exception $e) {
+            $this->response['error'] = '清除會話資料時發生錯誤: ' . $e->getMessage();
+            return $this->response;
+        }
+        return $this->response;
+       
     }
 }

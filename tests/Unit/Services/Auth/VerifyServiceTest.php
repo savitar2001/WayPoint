@@ -55,7 +55,7 @@ class VerifyServiceTest extends TestCase
         $result = $this->verifyService->inspectVerification($userId, $hash, $type);
 
         $this->assertFalse($result['success']);
-        $this->assertEquals('無效請求', $result['error']);
+        $this->assertEquals('無效哈希碼', $result['error']);
     }
 
     public function testCheckVerificationSuccess() {

@@ -30,7 +30,7 @@ class VerifyService {
         }
 
         if ($findSendEmailInformationResult['hash'] !== $hash) {
-            $this->response['error'] = '無效請求';
+            $this->response['error'] = '無效哈希碼';
             return $this->response;
         }
 

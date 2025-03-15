@@ -2,14 +2,20 @@
 namespace App\Services\Auth;
 
 use App\Models\User;
+use App\Services\Auth\SendEmailService;
+use App\Services\Auth\VerifyService;
 
 class PasswordResetService {
     private $user;
+    private $sendEmailService;
+    private $verifyService;
     private $response;
 
-    //創立user對象
-    public function  __construct(User $user) {
+    //創立user, sendEmailService, verifyService對象
+    public function  __construct(User $user, SendEmailService $sendEmailService, VerifyService $verifyService) {
         $this->user= $user;
+        $this->sendEmailService = $sendEmailService;
+        $this->verifyService = $verifyService;
         $this->response = [
             'success' => false,
             'error' => '',
@@ -28,7 +34,7 @@ class PasswordResetService {
         return $this->response;
     }
 
-    //檢查名字、郵件帳號、密碼是否符合規範，密碼與確認密碼是否一致
+    //檢查郵件密碼是否符合規範，密碼與確認密碼是否一致
     public function validateUserPasswordReset($password,$confirmPassword) {
         if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\~?!@#\$%\^&\*])(?=.{8,})/', $password)) {
             $this->response['error'] = '密碼格式不符合規範';
@@ -44,6 +50,36 @@ class PasswordResetService {
         return $this->response;
     }
 
+    //檢查用戶註冊信寄發次數是否超過上限
+    public function checkVerificationRequest($email) {
+        $checkVerificationRequest = $this->sendEmailService->checkVerificationRequest($email, 1);
+        return $checkVerificationRequest;
+    }
+
+    //插入用戶寄信紀錄
+    public function insertSendRecord($email) {
+        $insertSendRecord = $this->sendEmailService->insertSendRecord($email, 1);
+        return $insertSendRecord;
+    }
+
+    //寄發信件
+    public function sendEmail($email, $hash, $requestId, $toName, $userId) {
+        $sendEmail = $this->sendEmailService->sendEmail($email, 1, $hash, $requestId, $toName, $userId);
+        return $sendEmail;
+    }
+
+    //驗證信件內容
+    public function inspectVerification($requestId, $hash) {
+        $inspectVerification = $this->verifyService->inspectVerification($requestId, $hash, 1);
+        return $inspectVerification; 
+    }
+
+    //清除寄信請求紀錄
+    public function clearUserRequest($userId) {
+        $clearUserRequest = $this->verifyService->clearUserRequest($userId, 1);
+        return $clearUserRequest;
+    }
+
     //在資料庫更新該用戶之密碼
     public function passwordReset($userId, $password) {
         $hash = password_hash($password, PASSWORD_DEFAULT);
@@ -54,6 +90,7 @@ class PasswordResetService {
         }
 
         $this->response['success'] = true;
+        $this->response['data'][] = '更新密碼完成';
         return $this->response;
     }
 }

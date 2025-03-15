@@ -24,7 +24,6 @@ class SendEmailService {
             'error' => '',
             'data' => []
         ];
-        $this->temp = array();
     }
 
     //檢查該用戶信件發送次數是否超過上限
@@ -65,25 +64,18 @@ class SendEmailService {
         if ($requestId === -1){
             $this->response['error'] = '紀錄插入失敗';
         } else {
-            $this->temp[] = $hash;
-            $this->temp[] = $requestId;
-            $this->temp[] = $userName;
-            $this->temp[] = $userId;
+            $this->response['data'] = [
+                'hash' => $hash,
+                'requestId' => $requestId,
+                'userName' => $userName,
+                'userId' => $userId];
             $this->response['success'] = true;
         }
         return $this->response;
     }
 
     //寄驗證信
-    public function sendEmail($email, $type){
-        if (count($this->temp) !== 4) {
-            $this->response['error'] = '未初始化發送紀錄';
-            return $this->response;
-        }
-        $hash = $this->temp[0];
-        $requestId = $this->temp[1];
-        $toName = $this->temp[2];
-        $userId = $this->temp[3];
+    public function sendEmail($email, $type, $hash, $requestId, $toName, $userId){
         if ($type === 0) {
             $url = config('mail.verify_endpoint') . '?' .http_build_query(['id' => $requestId, 'hash' => $hash, 'user' => $userId]);
         } else {
