@@ -107,4 +107,28 @@ class S3StorageService {
             ];
         }      
     }
+
+    //刪除s3上的圖片
+    public function deleteImage($folder, $filename) {
+        $path = "{$folder}/{$filename}";
+        try {
+            $deleteSuccess = Storage::disk('s3')->delete($path);
+            
+            if (!$deleteSuccess || Storage::disk('s3')->exists($path)) {
+                throw new \Exception('刪除圖片失敗');
+            }
+    
+            return [
+                'success' => true,
+                'message' => '刪除圖片成功',
+                'data' => []
+            ];
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage(),
+                'data' => []
+            ];
+        }      
+    }
 }

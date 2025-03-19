@@ -3,14 +3,31 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Post\CreatePostController;
+use App\Http\Controllers\Post\DeletePostController;
+use App\Http\Controllers\Post\CommentOnPostController;
+use App\Http\Controllers\Post\DeletePostCommentController;
+use App\Http\Controllers\Post\ReplyToCommentController;
+use App\Http\Controllers\Post\DeleteReplyCommentController;
+use App\Http\Controllers\Post\GetPostController;
+use App\Http\Controllers\Post\LikePostController;
+use App\Http\Controllers\Post\GetPostLikeController;
+use App\Http\Controllers\Post\GetPostCommentController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/test', function () {
-    return response()->json(['message' => 'API is working']);
-});
-
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/verify', [RegisterController::class, 'verify']);
+Route::post('/createPost', [CreatePostController::class, 'createPost']);
+Route::delete("/deletePost/{userId}/{postId}", [DeletePostController::class, 'deletePost']);
+Route::post('/commentOnPost', [CommentOnPostController::class, 'commentOnPost']);
+Route::delete("/deletePostComment/{userId}/{postId}/{commentId}", [DeletePostCommentController::class, 'deletePostComment']);
+Route::post('/replyToComment', [ReplyToCommentController::class, 'replyToComment']);
+Route::delete('/deleteReplyComment/{userId}/{commentId}/{replyId}', [DeleteReplyCommentController::class, 'deleteReplyComment']);
+Route::get('getPost', [GetPostController::class, 'getPost']);
+Route::post('likePost', [LikePostController::class, 'likePost']);
+Route::get('getPostLike', [GetPostLikeController::class, 'getPostLike']);
+Route::get('getPostComment', [GetPostCommentController::class, 'getPostComment']);
+Route::get('getCommentReply', [GetPostCommentController::class, 'getCommentReply']);

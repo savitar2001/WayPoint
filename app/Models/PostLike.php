@@ -31,7 +31,10 @@ class PostLike extends Model
 
     //返回所有喜歡該貼文的用戶
     public function getUserLikePost($postId) {
-        $query = "SELECT user_id FROM post_likes WHERE post_id = ?";
+        $query = "SELECT u.id as user_id, u.name, u.avatar_url 
+            FROM post_likes pl
+            JOIN users u ON pl.user_id = u.id
+            WHERE pl.post_id = ?";
         $params = [$postId];
 
         return DB::select($query, $params) ?? null;

@@ -4,14 +4,17 @@ namespace App\Services\Post;
 
 
 use App\Models\PostLike;
+use App\Services\Image\S3StorageService;
 
 class ReviewLikeService {
     private $postLike;
+    private $s3StorageService;
     private $response;
 
-    //創立postLike對象
-    public function  __construct(PostLike $postLike) {
+    //創立postLike,s3Storage對象
+    public function  __construct(PostLike $postLike, S3StorageService $s3StorageService) {
         $this->postLike = $postLike;
+        $this->s3StorageService = $s3StorageService;
         $this->response = [
             'success' => false,
             'error' => '',
@@ -29,5 +32,11 @@ class ReviewLikeService {
             $this->response['data'][] = $res;
         }
         return $this->response;
+    }
+
+    //取得用戶臨時頭像url
+    public function generatePresignedUrl($fileName) {
+        $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl('avatar/',$fileName);
+        return $generatePresignedUrl;
     }
 }

@@ -3,15 +3,18 @@
 
 use Tests\TestCase;
 use App\Services\Post\ReviewCommentService;
+use App\Services\Image\S3StorageService;
 use App\Models\PostComment;
 
 class ReviewCommentServiceTest extends TestCase {
     private $postComment;
+    private $s3StorageService;
     private $reviewCommentService;
 
     protected function setUp(): void {
         $this->postComment = $this->createMock(PostComment::class);
-        $this->reviewCommentService = new ReviewCommentService($this->postComment);
+        $this->s3StorageService = $this->createMock(S3StorageService::class);
+        $this->reviewCommentService = new ReviewCommentService($this->postComment, $this->s3StorageService);
     }
 
     public function testFetchPostCommentSuccess() {
@@ -62,5 +65,32 @@ class ReviewCommentServiceTest extends TestCase {
         
         $this->assertFalse($response['success']);
         $this->assertEquals('查詢該留言的回覆失敗', $response['error']);
+    }
+
+    public function testGeneratePresignedUrlSuccess() {
+        $fileName = 'test.jpg';
+        $this->s3StorageService->method('generatePresignedUrl')->with('avatar/',$fileName)->willReturn(
+            ['success' => true,
+             'data' => ['url' => 'https://test-bucket.s3.amazonaws.com/post/test.jpg']]);
+
+        $response = $this->reviewCommentService->generatePresignedUrl($fileName);
+
+        $this->assertTrue($response['success']);
+        $this->assertEquals(['url' => 'https://test-bucket.s3.amazonaws.com/post/test.jpg'], $response['data']);
+    }
+
+    public function testGeneratePresignedUrlFailure() {
+        $fileName = 'test.jpg';
+        $this->s3StorageService->method('generatePresignedUrl')->with('avatar/',$fileName)->willReturn(
+            [
+                'success' => false,
+                'message' => '獲取url失敗',
+                'data' => []
+            ]);
+
+        $response = $this->reviewCommentService->generatePresignedUrl($fileName);
+
+        $this->assertFalse($response['success']);
+        $this->assertEquals('獲取url失敗', $response['message']);
     }
 }

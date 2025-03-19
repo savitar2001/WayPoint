@@ -49,6 +49,7 @@ class AddCommentService {
             $this->response['error'] = '更新貼文評論數失敗';
         } else {
             $this->response['success'] = true;
+            $this->response['data'][] = '新增貼文評論成功';
         }
 
         return $this->response;

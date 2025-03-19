@@ -2,14 +2,17 @@
 namespace App\Services\User;
 
 use App\Models\User;
+use App\Services\Image\S3StorageService;
 
 class UserProfileService {
     private $user;
+    private $s3StorageService;
     private $response;
 
-    //創立Userr對象
-    public function  __construct(User $user) {
+    //創立User, s3Storage對象
+    public function  __construct(User $user, S3StorageService $s3StorageService) {
         $this->user = $user;
+        $this->s3StorageService = $s3StorageService;
         $this->response = [
             'success' => false,
             'error' => '',
@@ -35,4 +38,11 @@ class UserProfileService {
 
         return $this->response;
     }
+
+    //取得使用者頭像臨時url
+    public function generatePresignedUrl($fileName) {
+        $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl('avatar/',$fileName);
+        return $generatePresignedUrl;
+    }
+
 }

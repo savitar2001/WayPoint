@@ -2,15 +2,18 @@
 
 use Tests\TestCase;
 use App\Services\User\UserProfileService;
+use App\Services\Image\S3StorageService;
 use App\Models\User;
-
+ 
 class UserProfileServiceTest extends TestCase {
     private $user;
+    private $s3StorageService;
     private $userProfileService;
 
     protected function setUp(): void {
         $this->user = $this->createMock(User::class);
-        $this->userProfileService = new UserProfileService($this->user);
+        $this->s3StorageService = $this->createMock(S3StorageService::class);
+        $this->userProfileService = new UserProfileService($this->user, $this->s3StorageService);
     }
 
     public function testGetUserInformationSuccess() {
@@ -46,5 +49,32 @@ class UserProfileServiceTest extends TestCase {
 
         $this->assertFalse($response['success']);
         $this->assertEquals('無法取得使用者資訊', $response['error']);
+    }
+
+    public function testGeneratePresignedUrlSuccess() {
+        $fileName = 'test.jpg';
+        $this->s3StorageService->method('generatePresignedUrl')->with('avatar/',$fileName)->willReturn(
+            ['success' => true,
+             'data' => ['url' => 'https://test-bucket.s3.amazonaws.com/post/test.jpg']]);
+
+        $response = $this->userProfileService->generatePresignedUrl($fileName);
+
+        $this->assertTrue($response['success']);
+        $this->assertEquals(['url' => 'https://test-bucket.s3.amazonaws.com/post/test.jpg'], $response['data']);
+    }
+
+    public function testGeneratePresignedUrlFailure() {
+        $fileName = 'test.jpg';
+        $this->s3StorageService->method('generatePresignedUrl')->with('avatar/',$fileName)->willReturn(
+            [
+                'success' => false,
+                'message' => '獲取url失敗',
+                'data' => []
+            ]);
+
+        $response = $this->userProfileService->generatePresignedUrl($fileName);
+
+        $this->assertFalse($response['success']);
+        $this->assertEquals('獲取url失敗', $response['message']);
     }
 }

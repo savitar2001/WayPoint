@@ -168,4 +168,18 @@ class S3StorageServiceTest extends TestCase
         $this->assertTrue($result['success']);
         $this->assertEquals('https://example-bucket.s3.amazonaws.com/uploads/file.png', $result['data']['url']);
     }
+
+    public function testFailDeleteImage() {
+        Storage::shouldReceive('disk->delete')->andReturn(false);
+        $result = $this->s3StorageService->deleteImage('post/','file.png');
+        $this->assertFalse($result['success']);
+        $this->assertEquals('刪除圖片失敗', $result['message']);
+    }
+
+    public function testSuccessDeleteImage() {
+        Storage::shouldReceive('disk->delete')->andReturn(true);
+        Storage::shouldReceive('disk->exists')->andReturn(false);
+        $result = $this->s3StorageService->deleteImage('post/','file.png');
+        $this->assertTrue($result['success']);
+    }
 }
