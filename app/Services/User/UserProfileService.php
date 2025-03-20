@@ -39,6 +39,20 @@ class UserProfileService {
         return $this->response;
     }
 
+    //用名字取得用戶頭像、id
+    public function getUserByName($name) {
+        $findUserByName = $this->user->findUserByName($name);
+        if ($findUserByName) {
+            $this->response['data']['id'] = $findUserByName['id'];
+            $this->response['data']['name'] = $findUserByName['name'];
+            $this->response['data']['avatarUrl'] = $findUserByName['avatar_url'];
+            $this->response['success'] = true;
+        } else {
+            $this->response['error'] = '無法取得使用者資訊';
+        }
+        return $this->response;
+    }
+
     //取得使用者頭像臨時url
     public function generatePresignedUrl($fileName) {
         $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl('avatar/',$fileName);

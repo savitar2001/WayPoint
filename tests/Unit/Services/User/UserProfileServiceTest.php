@@ -77,4 +77,34 @@ class UserProfileServiceTest extends TestCase {
         $this->assertFalse($response['success']);
         $this->assertEquals('獲取url失敗', $response['message']);
     }
+
+    public function testGetUserByNameSuccess() {
+        $name = 'John Doe';
+
+        $userByName = [
+            'id' => 1,
+            'name' => 'John Doe',
+            'avatar_url' => 'https://example.com/avatar.jpg'
+        ];
+
+        $this->user->method('findUserByName')->with($name)->willReturn($userByName);
+
+        $response = $this->userProfileService->getUserByName($name);
+
+        $this->assertTrue($response['success']);
+        $this->assertEquals(1, $response['data']['id']);
+        $this->assertEquals('John Doe', $response['data']['name']);
+        $this->assertEquals('https://example.com/avatar.jpg', $response['data']['avatarUrl']);
+    }
+
+    public function testGetUserByNameFailure() {
+        $name = 'Nonexistent User';
+
+        $this->user->method('findUserByName')->with($name)->willReturn(false);
+
+        $response = $this->userProfileService->getUserByName($name);
+
+        $this->assertFalse($response['success']);
+        $this->assertEquals('無法取得使用者資訊', $response['error']);
+    }
 }

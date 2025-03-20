@@ -148,6 +148,13 @@ class User extends Authenticatable
         return $result > 0;
     }
 
+    //用名字搜尋用戶資訊
+    public function findUserByName($name) {
+        $query = "SELECT id, name, avatar_url FROM users WHERE name = ?";
+        $params = [$name];
+        return DB::select($query, $params)[0] ?? null;
+    }
+
     //查詢用戶的粉絲id、名字、頭像
     public function findUserFollowerId($userId) {
         $query = "SELECT u.id, u.name, u.avatar_url FROM users u JOIN user_followers uf ON u.id = uf.follower_id WHERE uf.user_id = ?";
