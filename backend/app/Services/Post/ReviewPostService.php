@@ -28,14 +28,14 @@ class ReviewPostService {
             $this->response['error'] = '查詢貼文失敗';
         } else {
             $this->response['success'] = true;
-            $this->response['data'][] = $res;
+            $this->response['data'] = $res;
         }
         return $this->response; 
     }
 
     //取得貼文圖片
     public function generatePresignedUrl($fileName) {
-        $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl('post/',$fileName);
+        $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl($fileName);
         return $generatePresignedUrl;
     }
 }

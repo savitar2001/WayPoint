@@ -1,0 +1,71 @@
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: transparent;
+  width: 50vw; /* 寬度為螢幕的一半 */
+  position: fixed; /* 設置為懸浮 */
+  top: 1rem; /* 距離螢幕頂部 1rem */
+  left: 50%; /* 水平居中 */
+  transform: translateX(-50%); /* 修正水平居中 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 添加陰影效果 */
+  z-index: 1000; /* 確保在其他元素之上 */
+}
+
+.search-input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.toggle-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: none; /* 移除邊框 */
+  border-radius: 50%;
+  background-color: transparent; /* 設置背景為透明 */
+  color: #007bff; /* 設置按鈕圖標顏色 */
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.toggle-button:hover {
+  color: #0056b3; /* 滑鼠懸停時改變圖標顏色 */
+}
+
+.toggle-button.user {
+  transform: rotate(0deg);
+}
+
+.toggle-button.post {
+  transform: rotate(180deg);
+}
+
+.search-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #28a745;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+  background-color: #218838;
+}

@@ -1,0 +1,39 @@
+/* Container styles */
+.register-page {
+  width: 100%; /* 讓容器寬度佔滿螢幕 */
+  height: 100vh; /* 讓容器高度佔滿螢幕 */
+  margin: 0; /* 移除上下邊距 */
+  padding: 20px; /* 保留內邊距 */
+  border: none; 
+  border-radius: 0; 
+  box-shadow: none; 
+  background-color: black;
+  font-family: Arial, sans-serif;
+}
+
+.success-message {
+  color: green;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.error-message {
+  color: red;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  div {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  button {
+    font-size: 14px;
+  }
+}

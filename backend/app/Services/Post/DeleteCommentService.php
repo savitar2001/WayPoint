@@ -43,17 +43,6 @@ class DeleteCommentService {
         return $this->response;
      }
 
-     //在資料庫更新評論數量
-     public function updatePostCommentsCount($postId, $amount = -1) {
-        if ($this->post->updateCommentsCount($postId, $amount) === false) {
-            $this->response['error'] = '更新貼文評論數失敗';
-        } else {
-            $this->response['success'] = true;
-        }
-
-        return $this->response;
-     }
-
      //在資料庫更新評論回覆數量
      public function updateCommentReplyCount($commentId, $amount = -1) {
         if ($this->postComment->updateReplyCount($commentId, $amount) === false) {

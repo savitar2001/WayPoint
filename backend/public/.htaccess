@@ -1,16 +1,8 @@
-# 允許跨源請求(如果前後端在不同域名)
-Header set Access-Control-Allow-Origin "http://localhost:3000"
-Header set Access-Control-Allow-Methods "POST, GET,OPTIONS"
-Header set Access-Control-Allow-Headers "Content-Type, X-CSRF-TOKEN"
-Header set Access-Control-Allow-Credentials "true"
-Header set Content-Type "application/json"
-
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
-
-    RewriteEngine On
+    RewriteEngine On 
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .

@@ -1,17 +1,17 @@
 <?php
 namespace App\Services\User;
 
-use App\Models\UserFollower;
+use App\Models\User;
 use App\Services\Image\S3StorageService;
 
 class ReviewFollowerService{
-    private $userFollower;
+    private $user;
     private $s3StorageService;
     private $response;
 
-     //創立userFollower對象
-    public function  __construct(UserFollower $userFollower, S3StorageService $s3StorageService ) {
-        $this->userFollower = $userFollower;
+     //創立user對象
+    public function  __construct(User $user, S3StorageService $s3StorageService ) {
+        $this->user = $user;
         $this->s3StorageService = $s3StorageService;
         $this->response = [
             'success' => false,
@@ -22,19 +22,19 @@ class ReviewFollowerService{
 
     //查詢用戶所有粉絲id
     public function  getAllUserFollowers($userId) {
-        $res = $this->userFollower->getUserFollowers($userId);
+        $res = $this->user->findUserFollowerId($userId);
         if ($res === false) {
             $this->response['error'] = '查詢粉絲失敗';
         } else {
             $this->response['success'] = true;
-            $this->response['data'][] = $res;
+            $this->response['data'] = $res;
         }
         return $this->response;
     }
 
      //取得使用者頭像臨時url
-     public function generatePresignedUrl($fileName) {
-        $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl('avatar/',$fileName);
+    public function generatePresignedUrl($fileName) {
+        $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl($fileName);
         return $generatePresignedUrl;
     }
 }

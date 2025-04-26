@@ -1,0 +1,51 @@
+.input-field-container {
+  width: 50%; 
+  aspect-ratio: 2/1; 
+  margin: 0 auto; /* 水平居中 */
+  padding: 20px; /* 添加內邊距 */
+  border: 1px solid #ccc; /* 邊框 */
+  border-radius: 8px; /* 圓角邊框 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 添加陰影 */
+  background-color: transparent; /* 背景色 */
+  display: flex; /* 使用 Flexbox */
+  flex-direction: column; /* 子元素垂直排列 */
+  justify-content: center; /* 子元素垂直居中 */
+  align-items: center; /* 子元素水平居中 */
+}
+
+.form-name {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 20px;
+  color: white;
+}
+
+.input-form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: white;
+}
+
+.form-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}

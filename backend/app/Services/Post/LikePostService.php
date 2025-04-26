@@ -22,7 +22,7 @@ class LikePostService{
 
     //檢查該用戶是否已經對於貼文表達喜歡
     public function ifUserLikedPost($userId, $postId) {
-        if ($this->postLike->hasPostLike($userId, $postId) === 1) {
+        if ($this->postLike->hasPostLike($userId, $postId) == true) {
             $this->response['error'] = '已經對這則貼文表達喜歡';
         } else {
             $this->response['success'] = true;
@@ -41,15 +41,4 @@ class LikePostService{
 
         return $this->response;  
     }
-
-    //更新貼文讚數量
-    public function increasePostLikeCount($postId, $amount = 1) {
-        if ($this->post->updateLikesCount($postId, $amount) === false) {
-            $this->response['error'] = '更新貼文讚數失敗';
-        } else {
-            $this->response['success'] = true;
-        }
-
-        return $this->response;
-     }
 }

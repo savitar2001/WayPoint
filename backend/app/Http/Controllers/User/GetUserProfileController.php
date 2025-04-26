@@ -14,8 +14,7 @@ class GetUserProfileController extends Controller {
     }
 
     // 取得使用者資訊
-    public function getUserInformation(Request $request) {
-        $userId = $request->query('userId');
+    public function getUserInformation($userId) {
         if ($userId !== null) {
             $userId = (int) $userId;
         } else {
@@ -40,8 +39,7 @@ class GetUserProfileController extends Controller {
     }
 
     //透過名字尋找用戶
-    public function searchByName(Request $request) {
-        $name = $request->query('name');
+    public function searchByName($name) {
         if ($name == null) {
             return response()->json(['success'=> false, 'error' => '參數不足'], 400);
         }
@@ -53,13 +51,19 @@ class GetUserProfileController extends Controller {
 
          //將圖片網址替換成臨時圖片url
         $image =  $getUserByName['data']['avatarUrl'];
-        $imageUrl = $this->userProfileService->generatePresignedUrl($image);
-        if (!$imageUrl['success']) {
-            return response()->json($imageUrl, 422);
+        if ($image == 'null') {
         } else {
-            $getUserByName['data']['avatarUrl'] = $imageUrl['data']['url'];
+            if (preg_match('/https?:\/\/[^\/]+\/(.+)/', $image ,$matches)) {
+                $filePath = $matches[1]; // 提取的部分
+            }
+            $imageUrl = $this->userProfileService->generatePresignedUrl($filePath);
+            if (!$imageUrl['success']) {
+                return response()->json($imageUrl, 422);
+            } else {
+                $getUserByName['data']['avatarUrl'] = $imageUrl['data']['url'];
+            }
         }
-
+        
         return response()->json($getUserByName, 200);
     }
 }

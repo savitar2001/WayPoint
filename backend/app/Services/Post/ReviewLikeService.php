@@ -25,18 +25,18 @@ class ReviewLikeService {
     //查詢喜歡某篇貼文的用戶
     public function getLikeUserByPost($postId) {
         $res = $this->postLike->getUserLikePost($postId);
-        if ($res == false) {
+        if ($res === false) {
             $this->response['error'] = '查詢按讚貼文用戶失敗';
         } else {
             $this->response['success'] = true;
-            $this->response['data'][] = $res;
+            $this->response['data'] = $res;
         }
         return $this->response;
     }
 
     //取得用戶臨時頭像url
     public function generatePresignedUrl($fileName) {
-        $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl('avatar/',$fileName);
+        $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl($fileName);
         return $generatePresignedUrl;
     }
 }

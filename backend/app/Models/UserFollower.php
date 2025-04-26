@@ -23,7 +23,7 @@ class UserFollower extends Model
     //寫入該用戶的粉絲id
     public function addFollower($userId, $userFollowerId) {
         $query = "INSERT INTO user_followers (user_id, follower_id) VALUES (?,?)";
-        $params = [$userId, $usersFollowerId];
+        $params = [$userId, $userFollowerId];
         $result = DB::insert($query, $params);
 
         return (bool) $result;

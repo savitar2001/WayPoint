@@ -14,9 +14,7 @@ class GetPostCommentController extends Controller {
     }
 
     // 查詢某貼文的留言的內容及用戶資訊api
-    public function getPostComment(Request $request) {
-        $postId = $request->query('postId');
-
+    public function getPostComment($postId) {
         if ($postId !== null) {
             $postId = (int) $postId;
         } else {
@@ -30,21 +28,19 @@ class GetPostCommentController extends Controller {
 
         //將圖片網址替換成臨時圖片url
         for($i = 0; $i < count($fetchPostComment['data']); $i++) {
-            $image =  $fetchPostComment['data'][$i]['avatar_url'];
+            $image =  $fetchPostComment['data'][$i]->avatar_url;
             $imageUrl = $this->reviewCommentService->generatePresignedUrl($image);
             if (!$imageUrl['success']) {
                 return response()->json($imageUrl, 422);
             } else {
-                $fetchPostComment['data'][$i]['avatar_url'] = $imageUrl['data']['url'];
+                $fetchPostComment['data'][$i]->avatar_url = $imageUrl['data']['url'];
             }
         }
         return response()->json($fetchPostComment, 200);
     }
 
     // 查詢某留言的回覆的內容及用戶資訊api
-    public function getCommentReply(Request $request) {
-        $commentId = $request->query('commentId');
-
+    public function getCommentReply($commentId) {
         if ($commentId !== null) {
             $commentId = (int) $commentId;
         } else {
@@ -58,12 +54,18 @@ class GetPostCommentController extends Controller {
 
         //將圖片網址替換成臨時圖片url
         for($i = 0; $i < count($fetchCommentReply['data']); $i++) {
-            $image =  $fetchCommentReply['data'][$i]['avatar_url'];
-            $imageUrl = $this->reviewCommentService->generatePresignedUrl($image);
-            if (!$imageUrl['success']) {
-                return response()->json($imageUrl, 422);
+            $image =  $fetchCommentReply['data'][$i]->avatar_url;
+            if ($image == 'null') {
             } else {
-                $fetchCommentReply['data'][$i]['avatar_url'] = $imageUrl['data']['url'];
+                if (preg_match('/https?:\/\/[^\/]+\/(.+)/', $image ,$matches)) {
+                    $filePath = $matches[1]; // 提取的部分
+                }
+                $imageUrl = $this->reviewCommentService->generatePresignedUrl($filePath);
+                if (!$imageUrl['success']) {
+                    return response()->json($imageUrl, 422);
+                } else {
+                    $fetchCommentReply['data'][$i]->avatar_url = $imageUrl['data']['url'];
+                }
             }
         }
         return response()->json($fetchCommentReply, 200);

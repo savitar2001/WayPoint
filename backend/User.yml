@@ -1,0 +1,421 @@
+openapi: '3.0.3'
+info:
+  title: API Title
+  version: '1.0'
+servers:
+  - url: https://localhost/api
+    description: API routes
+paths:
+  /addSubscriber:
+    post:
+      summary: Add a new subscriber
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  description: The user ID
+                userSubscriberId:
+                  type: integer
+                  description: The user subscriber ID to add
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: array
+                    example: []
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "添加訂閱者失敗/成為粉絲失敗/修改粉絲數失敗/修改用戶追蹤數失敗"
+                  data:
+                    type: array
+                    example: []
+  /createAvatar:
+    post:
+      summary: Create a new avatar
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  description: The user ID
+                base64Image:
+                  type: string
+                  description: The avatar image
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: array
+                    example: []
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "上傳圖片到s3失敗/資料庫更新用戶頭像失敗"
+                  data:
+                    type: array
+                    example: []
+  /removeSubscriber/{followerId}/{subscriberId}:
+    delete:
+      responses:
+        '204':
+          description: No Content
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "刪除訂閱者失敗/刪除粉絲失敗/修改粉絲數失敗/修改用戶追蹤數失敗"
+                  data:
+                    type: array
+                    example: []
+  /getFollower:
+    get:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  description: The user ID
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: "user1"
+                        avatar_url:
+                          type: string
+                          example: "https://localhost/api/user1.jpg"
+
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "參數不足"
+                  data:
+                    type: array
+                    example: []
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "取得追蹤者失敗/取得追蹤者頭像失敗"
+                  data:
+                    type: array
+                    example: []
+  /getSubscriber:
+    get:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  description: The user ID
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: "user1"
+                        avatar_url:
+                          type: string
+                          example: "https://localhost/api/user1.jpg"
+
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "參數不足"
+                  data:
+                    type: array
+                    example: []
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "取得訂閱者失敗/取得訂閱者頭像失敗"
+                  data:
+                    type: array
+                    example: []
+  /getUserInformation:
+    get:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  description: The user ID
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: "user1"
+                      avatar_url:
+                        type: string
+                        example: "https://localhost/api/user1.jpg"
+                      follower_count:
+                        type: integer
+                        example: 1
+                      subscriber_count:
+                        type: integer
+                        example: 1
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "參數不足"
+                  data:
+                    type: array
+                    example: []
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "取得用戶資訊失敗/取得用戶頭像失敗"
+                  data:
+                    type: array
+                    example: []
+  /searchByName:
+    get:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The user name
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: "user1"
+                        avatar_url:
+                          type: string
+                          example: "https://localhost/api/user1.jpg"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "參數不足"
+                  data:
+                    type: array
+                    example: []
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "搜尋用戶失敗/搜尋用戶頭像失敗"
+                  data:
+                    type: array
+                    example: []

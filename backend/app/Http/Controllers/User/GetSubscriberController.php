@@ -14,9 +14,7 @@ class GetSubscriberController extends Controller {
     }
  
     // 查詢用戶所有追蹤戶
-    public function getSubscriber(Request $request) {
-        $userId = $request->query('userId');
-
+    public function getSubscriber($userId) {
         if ($userId !== null) {
             $userId = (int) $userId;
         } else {
@@ -30,12 +28,18 @@ class GetSubscriberController extends Controller {
 
         //將圖片網址替換成臨時圖片url
         for($i = 0; $i < count($getAllUserSubscribers['data']); $i++) {
-            $image =  $getAllUserSubscribers['data'][$i]['avatar_url'];
-            $imageUrl = $this->reviewSubscriberService->generatePresignedUrl($image);
-            if (!$imageUrl['success']) {
-                return response()->json($imageUrl, 422);
+            $image =  $getAllUserSubscribers['data'][$i]->avatar_url;
+            if ($image == 'null') {
             } else {
-                $getAllUserSubscribers['data'][$i]['avatar_url'] = $imageUrl['data']['url'];
+                if (preg_match('/https?:\/\/[^\/]+\/(.+)/', $image ,$matches)) {
+                    $filePath = $matches[1]; // 提取的部分
+                }
+                $imageUrl = $this->reviewSubscriberService->generatePresignedUrl($filePath);
+                if (!$imageUrl['success']) {
+                    return response()->json($imageUrl, 422);
+                } else {
+                    $getAllUserSubscribers['data'][$i]->avatar_url = $imageUrl['data']['url'];
+                }
             }
         }
         return response()->json($getAllUserSubscribers, 200);

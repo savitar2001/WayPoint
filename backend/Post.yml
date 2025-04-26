@@ -1,0 +1,726 @@
+openapi: '3.0.3'
+info:
+  title: API Title
+  version: '1.0'
+servers:
+  - url: https://localhost/api
+    description: API routes
+paths:
+  /creatpost:
+    post:
+      summary: Create a new post
+      operationId: createPost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  description: User ID
+                name:
+                  type: string
+                  description: author name
+                content:
+                  type: string
+                  description: The content of the post
+                  example: "This is the content of my first post."
+                tag:
+                  type: array
+                  description: Optional tags for the post
+                  items:
+                    type: string
+                    maxLength: 255
+                  example: ["tag1", "tag2", "tag3"]
+                base64:
+                  type: string
+                  description: Optional base64-encoded content (e.g., an image or file)
+                  example: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA"
+
+      responses:
+        '200':
+          description: OK
+          content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                      example: true
+                    error:
+                      type: string
+                      example: ""
+                    data:
+                      type: array
+                      example: []
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "貼文數更新失敗/新增貼文至資料庫失敗/上傳貼文圖片失敗"
+                  data:
+                    type: array
+                    example: []
+  /deletePost/{userId}/{postId}:
+    delete:
+      summary: Delete a post
+      operationId: deletePost
+      parameters:
+        - name: userId
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: integer
+        - name: postId
+          in: path
+          description: Post ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: array
+                    example: []
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "貼文數更新失敗/刪除s3圖片失敗/刪除貼文失敗"
+                  data:
+                    type: array
+                    example: []
+  /commentOnPost:
+    post:
+      summary: Comment on a post
+      operationId: commentOnPost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  description: User ID
+                postId:
+                  type: integer
+                  description: Post ID
+                content:
+                  type: string
+                  description: The content of the comment
+                  example: "This is the content of my first comment."
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: array
+                    example: []
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "新增留言失敗/修改貼文留言數失敗"
+                  data:
+                    type: array
+                    example: []
+  /deletePostComment/{userId}/{postId}/{commentId}:
+    delete:
+      summary: Delete a comment on a post
+      operationId: deletePostComment
+      parameters:
+        - name: userId
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: integer
+        - name: postId
+          in: path
+          description: Post ID
+          required: true
+          schema:
+            type: integer
+        - name: commentId
+          in: path
+          description: Comment ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: array
+                    example: []
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "刪除留言失敗/修改貼文留言數失敗"
+                  data:
+                    type: array
+                    example: []
+  /replyToComment:
+    post:
+      summary: Reply to a comment on a post
+      operationId: replyToComment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  description: User ID
+                commentId:
+                  type: integer
+                  description: Comment ID
+                comment:
+                  type: string
+                  description: The content of the reply
+                  example: "This is the content of my first reply."
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: array
+                    example: []
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "新增回覆失敗/修改留言回覆數失敗"
+                  data:
+                    type: array
+                    example: []
+  /deleteReplyComment/{userId}/{commentId}/{replyId}:
+    delete:
+      summary: Delete a reply to a comment on a post
+      operationId: deleteReplyComment
+      parameters:
+        - name: userId
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: integer
+        - name: commentId
+          in: path
+          description: Comment ID
+          required: true
+          schema:
+            type: integer
+        - name: replyId
+          in: path
+          description: Reply ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: array
+                    example: []
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "刪除回覆失敗/修改留言回覆數失敗"
+                  data:
+                    type: array
+                    example: []
+  /getPost:
+    get:
+      summary: Retrieve post information
+      description: Fetch post information based on userId, postId, or tag. At least one parameter is required.
+      parameters:
+        - name: userId
+          in: query
+          required: false
+          description: The ID of the user. Can be null.
+          schema:
+            type: integer
+            nullable: true
+            example: null
+        - name: postId
+          in: query
+          required: false
+          description: The ID of the post. Can be null.
+          schema:
+            type: integer
+            nullable: true
+            example: null
+        - name: tag
+          in: query
+          required: false
+          description: The tag of the post. Can be null.
+          schema:
+            type: string
+            nullable: true
+            example: null
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        user_Id:
+                          type: integer
+                          example: 1
+                        postId:
+                          type: integer
+                          example: 1
+                        user_name:
+                          type: string
+                          example: "John Doe"
+                        content:
+                          type: string
+                          example: "This is the content of my first post."
+                        tag:
+                          type: array
+                          items:
+                            type: string
+                            maxLength: 255
+                          example: "tag1/tag2/tag3"
+                        image_url:
+                          type: string
+                          example: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA"
+                        comments_count:
+                          type: integer
+                        likes_count:
+                          type: integer
+
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "參數不足"
+                  data:
+                    type: array
+                    example: []
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "查詢失敗/取得貼文圖片失敗"
+                  data:
+                    type: array
+                    example: []
+  /likePost:
+    post:
+      summary: Like a post
+      operationId: likePost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  description: User ID
+                postId:
+                  type: integer
+                  description: Post ID
+      responses:
+        '204':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: array
+                    example: []
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "按讚失敗/取消按讚失敗/修改貼文按讚數失敗"
+                  data:
+                    type: array
+                    example: []
+  /getPostLike:
+    get:
+      summary: Retrieve post like information
+      description: Fetch post like information based on postId.
+      parameters:
+        - name: postId
+          in: query
+          required: true
+          description: The ID of the post.
+          schema:
+            type: integer
+            nullable: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        user_Id:
+                          type: integer
+                          example: 1
+                        user_name:
+                          type: string
+                          example: "John Doe"
+                        avatar_url:
+                          type: string
+                          example: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "參數不足"
+                  data:
+                    type: array
+                    example: []
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "查詢失敗/取得用戶頭像圖片失敗"
+  /getPostComment:
+    get:
+      summary: Retrieve post comment information
+      description: Fetch post comment information based on postId.
+      parameters:
+        - name: postId
+          in: query
+          required: true
+          description: The ID of the post.
+          schema:
+            type: integer
+            nullable: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        user_Id:
+                          type: integer
+                          example: 1
+                        user_name:
+                          type: string
+                          example: "John Doe"
+                        avatar_url:
+                          type: string
+                          example: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA"
+                        content:
+                          type: string
+                          example: "This is the content of my first comment."
+                        reply_count:
+                          type: integer
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "參數不足"
+                  data:
+                    type: array
+                    example: []
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "查詢評論失敗/查詢用戶頭像失敗"
+                  data:
+                    type: array
+                    example: []
+  /getCommentReply:
+    get:
+      summary: Retrieve comment reply information
+      description: Fetch comment reply information based on commentId.
+      parameters:
+        - name: commentId
+          in: query
+          required: true
+          description: The ID of the comment.
+          schema:
+            type: integer
+            nullable: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        user_Id:
+                          type: integer
+                          example: 1
+                        user_name:
+                          type: string
+                          example: "John Doe"
+                        avatar_url:
+                          type: string
+                          example: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA"
+                        content:
+                          type: string
+                          example: "This is the content of my first reply."
+                        reply_count:
+                          type: integer
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "參數不足"
+                  data:
+                    type: array
+                    example: []
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "查詢回覆失敗/查詢用戶頭像失敗"
+                  data:
+                    type: array
+                    example: []
+
+
+              

@@ -24,11 +24,6 @@ class DeletePostCommentController extends Controller {
             return response()->json($deleteCommentToPost, 422);
         } 
 
-        $updatePostCommentsCount = $this->deleteCommentService->updatePostCommentsCount($postId);
-        if (!$updatePostCommentsCount['success']) {
-            return response()->json($updatePostCommentsCount, 422);
-        }
-
         return response()->json($updatePostCommentsCount, 204);
     }
 }

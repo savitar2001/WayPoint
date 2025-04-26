@@ -1,0 +1,55 @@
+.user-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* 確保內容兩端對齊 */
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  background-color: transparent;
+}
+
+.user-name {
+  flex: 1; /* 讓用戶名稱占據剩餘空間 */
+  margin-left: 10px;
+  color: #4682b4;
+}
+
+.action-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  position: absolute; /* 絕對定位 */
+  right: 50px; /* 距離右側 10px */
+}
+
+
+.action-button:hover {
+  background-color: #d32f2f;
+}
+
+.close-button {
+  position: absolute;
+  top: 0.5px;
+  right: 0.5px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #4682b4;
+}
+
+.close-button:hover {
+  color: #ff0000;
+}
+
+.other-user-list {
+  position: relative;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: black;/* 背景設為透明 */
+  max-width: 400px;
+  margin: 0 auto;
+}

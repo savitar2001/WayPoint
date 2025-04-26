@@ -15,11 +15,11 @@ class AddSubscriberController extends Controller {
     // 添加訂閱者api
     public function addSubscriber(Request $request) {
         $validatedData = $request->validate([
-            'userId' => 'required|integer',
-            'userSubscriberId' => 'required|integer',
+            'userId' => 'required',
+            'userSubscriberId' => 'required',
         ]);
-        $userId = $validatedData['userId'];
-        $userSubscriberId = $validatedData['userSubscriberId'];
+        $userId = (int)$validatedData['userId'];
+        $userSubscriberId = (int)$validatedData['userSubscriberId'];
 
         $addSubscriberToDatabase = $this->addSubscriberService->addSubscriberToDatabase($userId, $userSubscriberId);
         if (!$addSubscriberToDatabase['success']) {

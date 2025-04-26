@@ -26,7 +26,7 @@ class CreatePostService {
 
      //在資料庫修改貼文者總發文數
      public function changePostAmount($userId) {
-        if ($this->user->changeUserPostAmount($userId, 1) !== 1) {
+        if ($this->user->changeUserPostAmount($userId, 1) != true) {
             $this->response['error'] = '貼文數更新失敗';
             return $this->response;
         }
@@ -37,7 +37,7 @@ class CreatePostService {
 
      //上傳圖片，並回傳圖片網址
      public function uploadBase64Image($base64Image){
-        $uploadBase64Image = $this->s3StorageService->uploadBase64Image($base64Image,'post/');
+        $uploadBase64Image = $this->s3StorageService->uploadBase64Image($base64Image,'posts');
         return $uploadBase64Image;
      }
 

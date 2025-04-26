@@ -1,0 +1,103 @@
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; 
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px; /* 減少內部填充 */
+  margin: 8px auto; /* 減少上下間距並居中 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+  max-width: 600px; /* 限制卡片寬度 */
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.card-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.card-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-user-name {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.card-body {
+  margin-bottom: 16px;
+}
+
+
+.card-image {
+  width: 100%; /* 圖片寬度佔滿容器 */
+  max-height: 800px; /* 限制圖片的最大高度 */
+  object-fit: contain; /* 等比例縮小，確保圖片完整顯示 */
+  background-color: #f0f0f0; /* 可選：為空白區域添加背景色 */
+}
+
+.card-content {
+  font-size: 14px;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.card-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tag-item {
+  background-color: #f0f0f0;
+  color: #007bff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-likes, .card-comments {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.like-button, .comment-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.like-button:hover, .comment-button:hover {
+  background-color: #0056b3;
+}
+
+.card-likes span, .card-comments span {
+  font-size: 14px;
+  color: #555;
+}

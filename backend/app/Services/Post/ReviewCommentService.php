@@ -28,7 +28,7 @@ class ReviewCommentService {
             $this->response['error'] = '查詢貼文留言失敗';
         } else {
             $this->response['success'] = true;
-            $this->response['data'][] = $res;
+            $this->response['data'] = $res;
         }
         return $this->response;
     }
@@ -40,14 +40,14 @@ class ReviewCommentService {
             $this->response['error'] = '查詢該留言的回覆失敗';
         } else {
             $this->response['success'] = true;
-            $this->response['data'][] = $res;
+            $this->response['data'] = $res;
         }
         return $this->response; 
     }
 
     //取得用戶臨時頭像url
     public function generatePresignedUrl($fileName) {
-        $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl('avatar/',$fileName);
+        $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl($fileName);
         return $generatePresignedUrl;
     }
 

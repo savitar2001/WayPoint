@@ -14,9 +14,7 @@ class GetFollowerController extends Controller {
     }
 
     // 查詢用戶所有粉絲
-    public function getFollower(Request $request) {
-        $userId = $request->query('userId');
-
+    public function getFollower($userId) {
         if ($userId !== null) {
             $userId = (int) $userId;
         } else {
@@ -30,12 +28,18 @@ class GetFollowerController extends Controller {
 
         //將圖片網址替換成臨時圖片url
         for($i = 0; $i < count($getAllUserFollowers['data']); $i++) {
-            $image =  $getAllUserFollowers['data'][$i]['avatar_url'];
-            $imageUrl = $this->reviewFollowerService->generatePresignedUrl($image);
-            if (!$imageUrl['success']) {
-                return response()->json($imageUrl, 422);
+            $image =  $getAllUserFollowers['data'][$i]->avatar_url;
+            if ($image == 'null') {
             } else {
-                $getAllUserFollowers['data'][$i]['avatar_url'] = $imageUrl['data']['url'];
+                if (preg_match('/https?:\/\/[^\/]+\/(.+)/', $image ,$matches)) {
+                    $filePath = $matches[1]; // 提取的部分
+                }
+                $imageUrl = $this->reviewFollowerService->generatePresignedUrl($filePath);
+                if (!$imageUrl['success']) {
+                    return response()->json($imageUrl, 422);
+                } else {
+                    $getAllUserFollowers['data'][$i]->avatar_url= $imageUrl['data']['url'];
+                }
             }
         }
         return response()->json($getAllUserFollowers, 200);

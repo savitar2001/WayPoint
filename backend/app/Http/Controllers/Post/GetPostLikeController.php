@@ -14,9 +14,7 @@ class GetPostLikeController extends Controller {
     }
 
     // 查詢喜歡某篇貼文的用戶api
-    public function getPostLike(Request $request) {
-        $postId = $request->query('postId');
-
+    public function getPostLike($postId) {
         if ($postId !== null) {
             $postId = (int) $postId;
         } else {
@@ -30,12 +28,18 @@ class GetPostLikeController extends Controller {
 
         //將圖片網址替換成臨時圖片url
         for($i = 0; $i < count($getLikeUserByPost['data']); $i++) {
-            $image =  $getLikeUserByPost['data'][$i]['avatar_url'];
-            $imageUrl = $this->reviewLikeService->generatePresignedUrl($image);
-            if (!$imageUrl['success']) {
-                return response()->json($imageUrl, 422);
+            $image =  $getLikeUserByPost['data'][$i]->avatar_url;
+            if ($image == 'null') {
             } else {
-                $getLikeUserByPost['data'][$i]['avatar_url'] = $imageUrl['data']['url'];
+                if (preg_match('/https?:\/\/[^\/]+\/(.+)/', $image ,$matches)) {
+                    $filePath = $matches[1]; // 提取的部分
+                }
+                $imageUrl = $this->reviewLikeService->generatePresignedUrl($filePath);
+                if (!$imageUrl['success']) {
+                    return response()->json($imageUrl, 422);
+                } else {
+                    $getLikeUserByPost['data'][$i]->avatar_url = $imageUrl['data']['url'];
+                }
             }
         }
         return response()->json($getLikeUserByPost, 200);

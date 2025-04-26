@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class GetPostLikeControllerTest extends TestCase {
-    use RefreshDatabase, WithFaker;
+    use WithFaker;
     protected $reviewLikeService;
 
     protected function setUp(): void{

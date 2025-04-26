@@ -1,0 +1,71 @@
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid  #333;
+  border-radius: 8px;
+  background-color: transparent;
+  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1); /* 白色陰影 */
+  max-width: 300px;
+  text-align: center;
+  color: white; /* 字體白色 */
+  margin: 0 auto; /* 水平居中 */
+}
+
+.profile-avatar {
+  background-color: transparent;
+  margin-bottom: 15px;
+}
+
+.profile-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 10px 0;
+  background-color: transparent;
+  color: white;
+}
+
+.profile-stats {
+  display: flex;
+  background-color: transparent;
+  justify-content: space-between;
+  width: 100%;
+  margin: 15px 0;
+}
+
+.profile-stat {
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-value {
+  background-color: transparent;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white; /* 字體白色 */
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: white; /* 字體白色 */
+}
+
+.stat-button {
+  display: flex;
+  flex-direction: column; /* 垂直排列文字和數字 */
+  align-items: center; /* 水平居中 */
+  background-color: transparent; /* 設置背景為透明 */
+  border: none; /* 移除邊框 */
+  color: white; /* 字體顏色為白色 */
+  font-size: inherit; /* 繼承字體大小 */
+  cursor: pointer; /* 鼠標懸停時顯示手型 */
+  padding: 0; /* 移除內邊距 */
+  text-align: center; /* 文字居中 */
+}
+
+.profile-actions {
+  margin-top: 15px;
+}

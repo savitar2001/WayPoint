@@ -25,11 +25,6 @@ class CommentOnPostController extends Controller {
             return response()->json($addCommentToPost, 422);
         }
 
-        $updatePostCommentCount = $this->addCommentService->updatePostCommentsCount($validatedData['postId']);
-        if (!$updatePostCommentCount['success']) {
-            return response()->json($updatePostCommentCount, 422);
-        }
-
-        return response()->json($updatePostCommentCount, 200);
+        return response()->json($addCommentToPost, 200);
     }
 }

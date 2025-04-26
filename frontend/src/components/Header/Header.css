@@ -1,0 +1,36 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  position: relative; /* 父容器設置為相對定位 */
+  align-items: center;
+  padding: 10px 20px;
+  background-color: transparent;
+}
+
+.header__logo {
+  flex: 1;
+}
+
+
+.header__user-menu {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end; /* 將用戶操作部分對齊到右邊 */
+  align-items: center; /* 垂直居中 */
+  gap: 10px; /* 按鈕之間的間距 */
+}
+
+.header__button {
+  display: flex;
+  justify-content: center; /* 圖標水平居中 */
+  align-items: center; /* 圖標垂直居中 */
+  width: 50px;
+  height: 50px;
+  background-color: transparent; /* 移除背景顏色 */
+  color: #4682b4; /* 金屬藍 */
+  border: none;
+  border-radius: 50%; /* 圓形按鈕 */
+  cursor: pointer;
+  text-decoration: none; /* 移除 Link 的下劃線 */
+  transition: background-color 0.3s ease; /* 添加背景色過渡效果 */
+}

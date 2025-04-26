@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Post;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\CreatePostService;
+use App\Services\Post\CreatePostService;
 
 class CreatePostController extends Controller {
     protected $createPostService;
@@ -20,7 +20,6 @@ class CreatePostController extends Controller {
             'name' => 'required|string|max:255',
             'content' => 'required|string',
             'tag' => 'nullable|array',
-            'tag.*' => 'string|max:255',
             'base64' => 'nullable|string'
         ]);
 

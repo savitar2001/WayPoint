@@ -26,12 +26,14 @@ class Post extends Model
     ];
 
     //創建貼文
-    public function createPost($userId, $name, $content, $tag, $imageUrl) {
+    public function createPost($userId, $name, $content, $tags, $imageUrl) {
+        $tagsString = implode('/', $tags);
+    
         $query = "INSERT INTO posts (user_id, user_name, content, tag, image_url, status, likes_count, comments_count) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        $params = [$userId, $name, $content, $tag, $imageUrl, 1,0,0];//數字代表status/likeCount/commentCount
+        $params = [$userId, $name, $content, $tagsString, $imageUrl, 1, 0, 0]; // 數字代表 status/likeCount/commentCount
         $result = DB::insert($query, $params);
-
-        return (bool) $result;
+    
+        return (bool)$result;
     }
 
     //刪除貼文 
@@ -69,16 +71,6 @@ class Post extends Model
         }
 
         return DB::select($query, $params) ?? null;
-    }
-
-    //更新貼文喜歡數
-    public function updateLikesCount($postId, $amount) {
-        $query = "UPDATE `posts` SET `likes_count` = `likes_count` + ? WHERE `id` = ?";;
-        $params = [$amount, $postId];
-
-        $result = DB::update($query, $params);
-
-        return $result > 0;
     }
 
     //更新貼文評論數

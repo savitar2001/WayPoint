@@ -30,15 +30,4 @@ class UnlikePostService{
 
         return $this->response;  
     }
-
-    //更新貼文讚數量
-    public function decreasePostLikeCount($postId, $amount = -1) {
-        if ($this->post->updateLikesCount($postId, $amount) === false) {
-            $this->response['error'] = '更新貼文讚數失敗';
-        } else {
-            $this->response['success'] = true;
-        }
-
-        return $this->response;
-     }
 }

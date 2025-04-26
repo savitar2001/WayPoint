@@ -1,0 +1,478 @@
+openapi: '3.0.3'
+info:
+  title: API Title
+  version: '1.0'
+servers:
+  - url: https://localhost
+    description: Web routes
+  - url: https://localhost/api
+    description: API routes
+paths:
+  /register:
+    post:
+      tags:
+        - API
+      summary: Register a new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                confirm_password:
+                  type: string
+      responses:
+        '201':
+          description: User successfully registered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: array
+                    example: []
+        '400':
+          description: Bad request (validation errors or user already exists)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: '此帳號已經存在'
+                  data:
+                    type: array
+                    example: []
+        '429':
+          description: Too many verification requests
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "寄發信件次數超過上限"
+                  data:
+                    type: array
+                    example: []
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  erro:
+                    type: string
+                    example: "寄發驗證信失敗"
+  /verify:
+    post:
+      tags:
+        - API
+      summary: Verify user email
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestId:
+                  type: integer
+                hash:
+                  type: string
+                userId:
+                  type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: array
+                    example: []
+        '400':
+          description: Bad request (validation errors)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: '請求過期/hash錯誤'
+                  data:
+                    type: array
+                    example: []
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "清除請求紀錄失敗/修改用戶帳戶狀態失敗"
+                  data:
+                    type: array
+                    example: []
+  /login:
+    post:
+      tags:
+        - Web
+      summary: Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: array
+                    example: []
+        '400':
+          description: Bad request (validation errors)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: '帳號或密碼有缺'
+                  data:
+                    type: array
+                    example: []
+        '401':
+          description: Bad request (validation errors)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: '密碼錯誤'
+                  data:
+                    type: array
+                    example: []
+        '403':
+          description: Forbidden (user not verified)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: '帳號尚未驗證'
+                  data:
+                    type: array
+                    example: []
+        '429':
+          description: Too many login requests
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "登入次數超過上限"
+                  data:
+                    type: array
+                    example: []
+  /logout:
+    post:
+      tags:
+        - Web
+      summary: Logout
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: array
+                    example: []
+  /deleteAccount:
+    delete:
+      tags:
+        - Web
+      summary: Delete account
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: array
+                    example: []
+        '400':
+          description: Bad request (validation errors)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: '清除登入請求紀錄失敗'
+                  data:
+                    type: array
+                    example: []
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "刪除用戶帳戶失敗/刪除貼文失敗/清除會話資料紀錄失敗"
+                  data:
+                    type: array
+                    example: []
+  /passwordReset:
+    post:
+      tags:
+        - Web
+      summary: Request password reset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: array
+                    example: ['請至郵件繼續完成密碼重設流程']
+        '400':
+          description: Bad request (validation errors)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: '此帳號不存在'
+                  data:
+                    type: array
+                    example: []
+        '429':
+          description: Too many password reset requests
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "寄發信件次數超過上限"
+                  data:
+                    type: array
+                    example: []
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "寄發驗證信失敗"
+                  data:
+                    type: array
+                    example: []
+  /passwordResetVerify:
+    post:
+      tags:
+        - Web
+      summary: Verify password reset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestId:
+                  type: integer
+                hash:
+                  type: string
+                userId:
+                  type: integer
+                password:
+                  type: string
+                confirm_password:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  error:
+                    type: string
+                    example: ""
+                  data:
+                    type: array
+                    example: []
+        '400':
+          description: Bad request (validation errors)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: '請求過期/hash錯誤'
+                  data:
+                    type: array
+                    example: []
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "清除請求紀錄失敗/修改用戶密碼失敗"
+                  data:
+                    type: array
+                    example: []
+  

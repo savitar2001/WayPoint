@@ -1,0 +1,70 @@
+.file-uploader-container {
+  display: flex; /* 使用 Flexbox */
+  flex-direction: column; /* 垂直排列內容 */
+  justify-content: center; /* 垂直居中 */
+  align-items: center; /* 水平居中 */
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.file-uploader-label {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.file-uploader-label:hover {
+  background-color: #0056b3;
+}
+
+.file-uploader-input {
+  display: none;
+}
+
+.file-preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.file-preview {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.file-preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.file-remove-button {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-remove-button:hover {
+  background-color: darkred;
+}

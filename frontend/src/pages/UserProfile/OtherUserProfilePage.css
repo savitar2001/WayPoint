@@ -1,0 +1,22 @@
+/* 頁面全局樣式 */
+.other-user-profile-page {
+  width: 100%; /* 讓容器寬度佔滿螢幕 */
+  height: 100vh; /* 讓容器高度佔滿螢幕 */
+  margin: 0; /* 移除上下邊距 */
+  padding: 20px; /* 保留內邊距 */
+  border: none; 
+  border-radius: 0; 
+  box-shadow: none; 
+  background-color: black;
+  font-family: Arial, sans-serif;
+  align-items: stretch; /* 確保子元素不會被置中 */
+  }
+  
+  /* Loading 和 Error 樣式 */
+  .loading,
+  .error {
+    font-size: 18px;
+    color: #666;
+    margin-top: 20px;
+    text-align: center;
+  }

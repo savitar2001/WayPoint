@@ -1,3 +1,36 @@
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# ===========================
+# Frontend (Node.js) ignores
+# ===========================
+
+# dependencies
+/frontend/node_modules
+/frontend/.pnp
+/frontend/.pnp.js
+
+# testing
+/frontend/coverage
+
+# production
+/frontend/build
+
+# misc
+/frontend/.DS_Store
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
+
+# ===========================
+# Backend (Laravel) ignores
+# ===========================
+
 /backend/.phpunit.cache
 /backend/node_modules
 /backend/public/build
@@ -28,6 +61,11 @@
 /backend/.zed
 /backend/npm-debug.log
 /backend/yarn-error.log
+
+# ===========================
+# Common ignores
+# ===========================
+
 .DS_Store
 Thumbs.db
 desktop.ini

@@ -58,7 +58,7 @@ class User extends Authenticatable
                  FROM users
                  LEFT JOIN loginattempts ON users.id = user AND loginattempts.timestamp > ?
                  WHERE email = ?
-                 GROUP BY users.id";
+                 GROUP BY users.id, name, password, verified";
         $params = [$hourAgo, $email];
 
         return DB::select($query, $params)[0] ?? null;
@@ -138,7 +138,7 @@ class User extends Authenticatable
 
         return $result > 0;
     }
-
+    
     //更新用戶貼文數量
     public function changeUserPostAmount($userId, $amount) {
         $query = 'UPDATE users SET post_amount = post_amount + ? WHERE id = ?';

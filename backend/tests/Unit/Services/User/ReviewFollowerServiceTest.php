@@ -3,23 +3,23 @@
 use Tests\TestCase;
 use App\Services\User\ReviewFollowerService;
 use App\Services\Image\S3StorageService;
-use App\Models\UserFollower;
+use App\Models\User;
 
 class ReviewFollowerServiceTest extends TestCase {
 
     private $reviewFollowerService;
     private $s3StorageService;
-    private $userFollower;
+    private $user;
 
     protected function setUp(): void {
-        $this->userFollower = $this->createMock(UserFollower::class);
+        $this->user= $this->createMock(User::class);
         $this->s3StorageService = $this->createMock(S3StorageService::class);
 
-        $this->reviewFollowerService = new ReviewFollowerService($this->userFollower,$this->s3StorageService);
+        $this->reviewFollowerService = new ReviewFollowerService($this->user,$this->s3StorageService);
     }
 
     public function testGetAllUserFollowersSuccesgetUserFollowerss() {
-        $this->userFollower->method('getUserFollowers')->willReturn([['userId' => 1, 'followerId' => 2]]);
+        $this->user->method('findUserFollowerId')->willReturn([['userId' => 1, 'followerId' => 2]]);
 
         $response = $this->reviewFollowerService->getAllUserFollowers(1);
 
@@ -29,7 +29,7 @@ class ReviewFollowerServiceTest extends TestCase {
     }
 
     public function testGetAllUserFollowersFailure() {
-        $this->userFollower->method('getUserFollowers')->willReturn(false);
+        $this->user->method('findUserFollowerId')->willReturn(false);
 
         $response = $this->reviewFollowerService->getAllUserFollowers(1);
 

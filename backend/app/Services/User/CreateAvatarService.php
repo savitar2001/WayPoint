@@ -22,7 +22,7 @@ class CreateAvatarService {
 
     //上傳圖片，並回傳圖片網址
     public function uploadBase64Image($base64Image){
-        $uploadBase64Image = $this->s3StorageService->uploadBase64Image($base64Image,'avatar/');
+        $uploadBase64Image = $this->s3StorageService->uploadBase64Image($base64Image,'avatar');
         return $uploadBase64Image;
     }
 

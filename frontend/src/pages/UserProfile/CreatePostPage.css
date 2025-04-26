@@ -1,0 +1,32 @@
+.create-post-page {
+  width: 100%; /* 讓容器寬度佔滿螢幕 */
+  height: 100vh; /* 讓容器高度佔滿螢幕 */
+  margin: 0; /* 移除上下邊距 */
+  padding: 20px; /* 保留內邊距 */
+  border: none; 
+  border-radius: 0; 
+  box-shadow: none; 
+  background-color: black;
+  font-family: Arial, sans-serif;
+  align-items: stretch; /* 確保子元素不會被置中 */
+  }
+  
+  .submit-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .submit-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .error-message {
+    color: red;
+    margin-top: 10px;
+  }

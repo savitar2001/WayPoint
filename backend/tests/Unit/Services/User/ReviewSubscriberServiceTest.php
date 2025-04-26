@@ -3,23 +3,23 @@
 use Tests\TestCase;
 use App\Services\User\ReviewSubscriberService;
 use App\Services\Image\S3StorageService;
-use App\Models\UserSubscriber;
+use App\Models\User;
 
 class ReviewSubscriberServiceTest extends TestCase {
 
     private $reviewSubscriberService;
     private $s3StorageService;
-    private $userSubscriber;
+    private $user;
 
     protected function setUp(): void {
-        $this->userSubscriber = $this->createMock(UserSubscriber::class);
+        $this->user = $this->createMock(User::class);
         $this->s3StorageService = $this->createMock(S3StorageService::class);
 
-        $this->reviewSubscriberService = new ReviewSubscriberService($this->userSubscriber,$this->s3StorageService);
+        $this->reviewSubscriberService = new ReviewSubscriberService($this->user,$this->s3StorageService);
     }
 
     public function testGetAllUserSubscribersSuccess() {
-        $this->userSubscriber->method('getUserSubscribers')->willReturn(['userId' => 2, 'subscriberId' => 1]);
+        $this->user->method('findUserSubscriberId')->willReturn(['userId' => 2, 'subscriberId' => 1]);
 
         $response = $this->reviewSubscriberService->getAllUserSubscribers(2);
 
@@ -29,7 +29,7 @@ class ReviewSubscriberServiceTest extends TestCase {
     }
 
     public function testGetAllUserSubscribersFailure() {
-        $this->userSubscriber->method('getUserSubscribers')->willReturn(false);
+        $this->user->method('findUserSubscriberId')->willReturn(false);
 
         $response = $this->reviewSubscriberService->getAllUserSubscribers(1);
 

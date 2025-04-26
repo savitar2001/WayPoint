@@ -4,6 +4,8 @@ namespace App\Services\Image;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Config;
+
  
 class S3StorageService {
     private $response;
@@ -24,8 +26,10 @@ class S3StorageService {
         }
         
         $imageDecode = base64_decode($base64Image);
+        $maxFileSize = Config::get('filesystems.max_file_size');
+        $allowedTypes = Config::get('filesystems.allow_types');
       
-        if (strlen($imageDecode) > config('filesystems.max_file_size')) {
+        if (strlen($imageDecode) > $maxFileSize) {
             $this->response['error'] = '文件大小超過限制';
             return $this->response;
         }
@@ -34,7 +38,7 @@ class S3StorageService {
         $mimeType = finfo_buffer($finfo, $imageDecode);
         finfo_close($finfo);
         
-        if (!in_array($mimeType, config('filesystems.allow_types'))) {
+        if (!in_array($mimeType, $allowedTypes)) {
             $this->response['error'] ='不支持的文件類型';
             return $this->response;
         }
@@ -58,10 +62,14 @@ class S3StorageService {
         $filename = uniqid() . '_' . time() . '.' . $imageData['extension'];
         $path = "{$folder}/{$filename}";
         try {
-            $uploadSuccess = Storage::disk('s3')->put($path, $imageData['imageDecode'], 'public');
+            $uploadSuccess = Storage::disk('s3')->put($path, $imageData['imageDecode']);
             
-            if (!$uploadSuccess || !Storage::disk('s3')->exists($path)) {
-                throw new \Exception('圖片上傳失敗');
+            if (!$uploadSuccess) {
+                throw new \Exception('圖片上傳失敗：無法將檔案寫入 S3。');
+            }
+            
+            if (!Storage::disk('s3')->exists($path)) {
+                throw new \Exception('圖片上傳失敗：檔案寫入 S3 成功，但無法確認檔案是否存在於 S3。');
             }
     
             return [
@@ -83,8 +91,7 @@ class S3StorageService {
     }
 
     // 取得S3預簽名URL
-    public function generatePresignedUrl($folder, $filename, $expires = '+1 hour') {
-        $path = "{$folder}/{$filename}";
+    public function generatePresignedUrl($path, $expires = '+1 hour') {
         try {
             $presignedUrl = Storage::disk('s3')->temporaryUrl($path, now()->addHour());
             

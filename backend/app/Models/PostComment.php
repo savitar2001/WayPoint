@@ -26,14 +26,14 @@ class PostComment extends Model
     //查詢貼文評論使用函數
     //查詢某則貼文的評論
     public function getPostComment($postId) {
-        $query = "SELECT pc.content,pc.reply_count, u.id as user_id, u.name, u.avatar_url FROM post_comments pc JOIN users u ON pc.user_id = u.id WHERE pc.post_id = ? AND pc.parent_id IS NULL ORDER BY pc.created_at DESC";
+        $query = "SELECT pc.id, pc.content,pc.reply_count, u.id as user_id, u.name, u.avatar_url FROM post_comments pc JOIN users u ON pc.user_id = u.id WHERE pc.post_id = ? AND pc.parent_id IS NULL ORDER BY pc.created_at DESC";
         $params = [$postId];
         return DB::select($query, $params) ?? null;
     }
 
      //查詢某則評論的回覆
      public function getCommentReply($commentId) {
-        $query = "SELECT pc.content,pc.reply_count, u.id as user_id, u.name, u.avatar_url FROM post_comments pc JOIN users u ON pc.user_id = u.id  WHERE pc.parent_id = ? ORDER BY pc.created_at DESC";
+        $query = "SELECT pc.id, pc.content,pc.reply_count, u.id as user_id, u.name, u.avatar_url FROM post_comments pc JOIN users u ON pc.user_id = u.id  WHERE pc.parent_id = ? ORDER BY pc.created_at DESC";
         $params = [$commentId];
         return DB::select($query, $params) ?? null;
     }

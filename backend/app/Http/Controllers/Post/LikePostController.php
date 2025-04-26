@@ -29,12 +29,6 @@ class LikePostController extends Controller {
             //按讚
             $addPostLike = $this->likePostService->addPostLike($validatedData['userId'], $validatedData['postId']);
             if ($addPostLike['success'] === true) {
-                $increasePostLikeCount = $this->likePostService->increasePostLikeCount($validatedData['postId']);
-                if ($increasePostLikeCount['success'] === true) {
-                    return response()->json($increasePostLikeCount, 204);
-                } else {
-                    return response()->json($increasePostLikeCount,422);
-                }
             } else {
                 return response()->json($addPostLike, 422);
             }
@@ -42,12 +36,6 @@ class LikePostController extends Controller {
             //取消按讚
             $removePostLike = $this->unlikePostService->removePostLike($validatedData['userId'], $validatedData['postId']);
             if ($removePostLike['success'] === true) {
-                $decreasePostLikeCount = $this->unlikePostService->decreasePostLikeCount($validatedData['postId']);
-                if ($decreasePostLikeCount['success'] === true) {
-                    return response()->json($decreasePostLikeCount, 204);
-                } else {
-                    return response()->json($decreasePostLikeCount, 422);
-                }
             } else {
                 return response()->json($removePostLike, 422);
             }
