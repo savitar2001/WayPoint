@@ -40,7 +40,7 @@ const usePosts = ({ userId = null, postId = null, tag = null }) => {
         newPost.base64
       );
       if (response.data.success) {
-        // 更新本地的貼文列表
+       
         setPosts((prevPosts) => [response.data.data, ...prevPosts]);
       } else {
         setError(response.data.error || 'Failed to create post');

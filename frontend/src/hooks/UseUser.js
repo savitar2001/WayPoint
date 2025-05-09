@@ -7,7 +7,6 @@ const useUser = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    // 搜尋用戶
     const fetchUsersByName = async (name) => {
         setLoading(true);
         setError(null);
@@ -20,7 +19,7 @@ const useUser = () => {
                 : [{
                     id: userData.id,
                     name: userData.name,
-                    avatar_url: userData.avatarUrl, // 修正鍵名
+                    avatar_url: userData.avatarUrl, 
                 }];
                 setUsers(formattedUsers);
             } else {
@@ -33,7 +32,6 @@ const useUser = () => {
         }
     };
 
-    // 取得用戶資訊
     const fetchUserInformation = async (userId) => {
         setLoading(true);
         setError(null);
@@ -51,14 +49,13 @@ const useUser = () => {
         }
     };
 
-    // 創建頭像
     const uploadAvatar = async (userId, base64Image) => {
         setLoading(true);
         setError(null);
         try {
             const response = await createAvatar(userId, base64Image);
             if (response.data && response.data.success) {
-                return response.data; // 返回成功的數據
+                return response.data; 
             } else {
                 setError(response.data.error || 'Failed to upload avatar');
             }
@@ -76,7 +73,7 @@ const useUser = () => {
         error,
         fetchUsersByName,
         fetchUserInformation,
-        uploadAvatar, // 將上傳頭像的功能暴露出去
+        uploadAvatar, 
     };
 };
 

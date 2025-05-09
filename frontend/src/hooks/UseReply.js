@@ -5,7 +5,7 @@ const useReply = (userId) => {
     const [replies, setReplies] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [addingReply, setAddingReply] = useState(false); // State for adding reply
+    const [addingReply, setAddingReply] = useState(false); 
 
     const fetchReplies = async (commentId) => {
         setLoading(true);

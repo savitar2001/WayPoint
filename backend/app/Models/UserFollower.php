@@ -44,4 +44,19 @@ class UserFollower extends Model
         $params = [$userId];
         return DB::select($query, $params) ?? null;
     }
+
+    /**
+     * 查詢該用戶所有粉絲的 ID 陣列，ai推薦寫法，在larvel中推薦query builder寫法
+     * @param int $userId
+     * @return array<int>
+    
+     * public function getUserFollowerIds(int $userId): array
+      *  {
+       *     // 使用查詢建構器的 pluck 方法直接獲取 follower_id 陣列
+        *    return DB::table($this->table)
+         *           ->where('user_id', $userId)
+          *          ->pluck('follower_id')
+           *         ->all(); // 將 Collection 轉換為 array
+        *}
+    */  
 }

@@ -6,7 +6,6 @@ const useFollower = (userId) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    // Fetch followers
     const fetchFollowers = async () => {
         setLoading(true);
         setError(null);
@@ -14,7 +13,7 @@ const useFollower = (userId) => {
             const response = await getFollower(userId);
             const followersData = response.data.data || [];
             setFollowers(followersData);
-            return followersData; // 返回數據
+            return followersData; 
         } catch (err) {
             console.error('Error fetching followers:', err);
             setError(err);
@@ -23,7 +22,6 @@ const useFollower = (userId) => {
         }
     };
 
-    // Remove a follower
     const removeFollower = async (followerId) => {
         setLoading(true);
         setError(null);

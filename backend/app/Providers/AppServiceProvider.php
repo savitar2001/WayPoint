@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         config([
-            'session.domain' => '.new-project.local',
+            'session.domain' => 'localhost',
         ]);
     }
 }

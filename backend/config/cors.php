@@ -19,7 +19,10 @@ return [
 
     'allowed_methods' => ['POST', 'GET', 'OPTIONS', 'DELETE', 'PUT', 'PATCH'],
 
-    'allowed_origins' => ['http://new-project.local:3000'],
+    'allowed_origins' => [
+        'http://new-project.local:3000', // 保留原有的 (如果還需要)
+        'http://localhost:3000'          // 新增前端的 URL
+    ],
 
     'allowed_origins_patterns' => [],
 

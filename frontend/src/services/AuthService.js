@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://new-project.local/api';
-const WEB_BASE_URL = 'http://new-project.local';
+const API_BASE_URL = 'http://localhost/api';
+const WEB_BASE_URL = 'http://localhost';
 
 // Configure axios defaults
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';

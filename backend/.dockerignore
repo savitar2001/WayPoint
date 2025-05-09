@@ -1,0 +1,41 @@
+# Git 版本控制相關
+.git
+.gitignore
+.gitattributes
+
+# Docker 相關
+Dockerfile
+
+# 本機環境設定與快取
+.env
+.env.*
+!.env.example
+.editorconfig
+.phpunit.result.cache
+
+# Composer 依賴 (將在 Dockerfile 中安裝)
+vendor/
+
+# Node.js 依賴 (如果有的話，通常在後端專案中不需要複製)
+node_modules/
+
+# 作業系統檔案
+.DS_Store
+Thumbs.db
+
+# 本機儲存和快取檔案 (可選，因為 Dockerfile 會處理權限，但排除可確保不複製本機內容)
+storage/logs/*.log
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*.php
+bootstrap/cache/*.php
+
+# 其他開發相關檔案 (通常不需要在生產映像檔中)
+README.md
+phpunit.xml
+# vite.config.js # 如果前端資源不是在此 Dockerfile 中建置，可以忽略
+package.json 
+package-lock.json 
+*.yml 
+
+# user_system # 如果這個目錄/檔案不需要在容器中

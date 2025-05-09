@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://new-project.local/api';
+const API_BASE_URL = 'http://localhost/api';
 
 //追蹤其他用戶
 export const addSubscriber = async (userId, userSubscriberId) => {

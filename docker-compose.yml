@@ -1,0 +1,98 @@
+version: '3.8' # 指定 Compose 文件版本
+
+services:
+  frontend:
+    build:
+      context: ./frontend # 前端 Dockerfile 所在的目錄
+      dockerfile: Dockerfile # Dockerfile 的名稱 (如果不是 Dockerfile 就需要指定)
+      args: 
+        - REACT_APP_REVERB_APP_KEY=${REACT_APP_REVERB_APP_KEY}
+        - REACT_APP_REVERB_HOST=${REACT_APP_REVERB_HOST}
+        - REACT_APP_REVERB_PORT=${REACT_APP_REVERB_PORT}
+        - REACT_APP_REVERB_SCHEME=${REACT_APP_REVERB_SCHEME}
+    container_name: my-frontend-app # 自訂容器名稱 (可選)
+    ports:
+      - 3000:80
+    networks:
+      - app-network # 將前端加入自訂網路
+
+  backend:
+    build:
+      context: ./backend # 後端 Dockerfile 所在的目錄
+      dockerfile: Dockerfile # Dockerfile 的名稱
+    container_name: my-backend-app # 自訂容器名稱 (可選)
+    ports:
+      - 80:80 # 將主機的 8000 port 映射到容器的 80 port (假設後端也用 80)
+                  # 如果後端 Dockerfile EXPOSE 不同 port，例如 3000，就寫 "8000:3000"
+    volumes:
+      - ./backend:/var/www/html:cached
+      - storage_data:/var/www/html/storage
+      - bootstrap_cache_data:/var/www/html/bootstrap/cache 
+    environment: # Pass variables from root .env to backend container
+      APP_NAME: ${APP_NAME}
+      APP_ENV: ${APP_ENV}
+      APP_KEY: ${APP_KEY}
+      APP_DEBUG: ${APP_DEBUG}
+      APP_URL: ${APP_URL}
+      
+      DB_CONNECTION: ${DB_CONNECTION}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      # AWS S3 variables
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+      AWS_BUCKET: ${AWS_BUCKET}
+      AWS_USE_PATH_STYLE_ENDPOINT: ${AWS_USE_PATH_STYLE_ENDPOINT}
+      AWS_ALLOW_TYPES: ${AWS_ALLOW_TYPES}
+      AWS_MAX_FILE_SIZE: ${AWS_MAX_FILE_SIZE}
+      # SMTP Mail variables
+      MAIL_MAILER: ${MAIL_MAILER}
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS}
+      MAIL_FROM_NAME: ${MAIL_FROM_NAME}
+      # Allows cookie sharing between localhost:80 and localhost:3000 (browser permitting)
+      SESSION_DRIVER: ${SESSION_DRIVER:-file}
+      SESSION_DOMAIN: ${SESSION_DOMAIN:-null}
+      SESSION_SECURE_COOKIE: ${SESSION_SECURE_COOKIE:-false}
+      SANCTUM_STATEFUL_DOMAINS: ${SANCTUM_STATEFUL_DOMAINS:-localhost:3000,localhost}
+      # --- End Session and Sanctum variables ---
+    networks:
+      - app-network # 將後端加入自訂網路
+    depends_on: 
+      - mysql
+  
+  mysql: # Added MySQL service
+    image: mysql:8.0 # Use MySQL 8.0 image (or your preferred version)
+    container_name: my-mysql-db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-secret} # Set a root password (use .env or default to 'secret')
+    volumes:
+      - mysql_data:/var/lib/mysql # Persist database data
+    networks:
+      - app-network # Add mysql to the network
+
+
+networks: # 定義自訂網路
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local
+  # Define named volumes for backend storage and cache
+  storage_data:
+    driver: local
+  bootstrap_cache_data:
+    driver: local
