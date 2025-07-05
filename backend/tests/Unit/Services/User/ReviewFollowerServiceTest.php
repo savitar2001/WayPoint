@@ -40,7 +40,7 @@ class ReviewFollowerServiceTest extends TestCase {
 
     public function testGeneratePresignedUrlSuccess() {
         $fileName = 'test.jpg';
-        $this->s3StorageService->method('generatePresignedUrl')->with('avatar/',$fileName)->willReturn(
+        $this->s3StorageService->method('generatePresignedUrl')->with($fileName)->willReturn(
             ['success' => true,
              'data' => ['url' => 'https://test-bucket.s3.amazonaws.com/post/test.jpg']]);
 
@@ -52,7 +52,7 @@ class ReviewFollowerServiceTest extends TestCase {
 
     public function testGeneratePresignedUrlFailure() {
         $fileName = 'test.jpg';
-        $this->s3StorageService->method('generatePresignedUrl')->with('avatar/',$fileName)->willReturn(
+        $this->s3StorageService->method('generatePresignedUrl')->with($fileName)->willReturn(
             [
                 'success' => false,
                 'message' => '獲取url失敗',

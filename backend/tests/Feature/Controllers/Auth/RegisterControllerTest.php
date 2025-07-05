@@ -48,6 +48,7 @@ class RegisterControllerTest extends TestCase {
         ])->makePartial();
         
         $this->app->instance(RegisterService::class, $this->registerService);
+        $this->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class);
     }
 
     public function tearDown(): void

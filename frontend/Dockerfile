@@ -37,7 +37,7 @@ COPY --from=builder /app/build /usr/share/nginx/html
 
 RUN chown -R nginx:nginx /usr/share/nginx/html && chmod -R 755 /usr/share/nginx/html
 
-EXPOSE 80
+EXPOSE 3000
 
 # Start Nginx when the container launches
 CMD ["nginx", "-g", "daemon off;"]

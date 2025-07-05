@@ -23,7 +23,7 @@ services:
     container_name: my-backend-app # 自訂容器名稱 (可選)
     ports:
       - 80:80 # 將主機的 8000 port 映射到容器的 80 port (假設後端也用 80)
-                  # 如果後端 Dockerfile EXPOSE 不同 port，例如 3000，就寫 "8000:3000"
+      - "${REACT_APP_REVERB_PORT:-8080}:${REACT_APP_REVERB_PORT:-8080}" # 新增 Reverb 連接埠映射
     volumes:
       - ./backend:/var/www/html:cached
       - storage_data:/var/www/html/storage
@@ -63,11 +63,68 @@ services:
       SESSION_SECURE_COOKIE: ${SESSION_SECURE_COOKIE:-false}
       SANCTUM_STATEFUL_DOMAINS: ${SANCTUM_STATEFUL_DOMAINS:-localhost:3000,localhost}
       # --- End Session and Sanctum variables ---
+      REDIS_CLIENT: ${REDIS_CLIENT:-predis}
+      REDIS_HOST: redis # Use the service name 'redis' here
+      REDIS_PORT: ${REDIS_PORT:-6379}
+      # --- End Redis variables ---
+      REVERB_APP_ID: ${REVERB_APP_ID:-null} 
+      REVERB_APP_KEY: ${REVERB_APP_KEY:-h3rfgcbu97xqnnhjewao} 
+      REVERB_APP_SECRET: ${REVERB_APP_SECRET:-null} 
+      REVERB_HOST: 0.0.0.0 
+      REVERB_PORT: ${REVERB_PORT:-8080} 
+      REVERB_SCHEME: ${REVERB_SCHEME:-http} 
+      REVERB_ALLOW_ORIGIN: ${REVERB_ALLOW_ORIGIN:-http://localhost:3000} 
+
     networks:
       - app-network # 將後端加入自訂網路
-    depends_on: 
+    depends_on:
+      mysql:
+        condition: service_healthy 
+      redis:
+        condition: service_healthy 
+   # 新增的佇列處理器服務
+  queue-worker:
+    build:
+      context: ./backend # 与 backend 服务使用相同的构建上下文和 Dockerfile
+      dockerfile: Dockerfile
+    container_name: my-queue-worker
+    command: php artisan queue:work --verbose --tries=3 --timeout=90 # 运行 queue:work 命令
+    restart: unless-stopped # 容器退出时自动重启
+    volumes:
+      - ./backend:/var/www/html:cached 
+      - storage_data:/var/www/html/storage
+      - bootstrap_cache_data:/var/www/html/bootstrap/cache
+    environment: # 确保 worker 有与 backend 相同的、必要的环境变量
+      # 复制 backend 服务中所有相关的环境变量到这里
+      APP_NAME: ${APP_NAME}
+      APP_ENV: ${APP_ENV}
+      APP_KEY: ${APP_KEY}
+      APP_DEBUG: ${APP_DEBUG} 
+      APP_URL: ${APP_URL}
+      
+      DB_CONNECTION: ${DB_CONNECTION}
+      DB_HOST: mysql 
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+      REDIS_CLIENT: ${REDIS_CLIENT:-predis}
+      REDIS_HOST: redis
+      REDIS_PORT: ${REDIS_PORT:-6379}
+
+      REVERB_APP_ID: ${REVERB_APP_ID:-null}
+      REVERB_APP_KEY: ${REVERB_APP_KEY:-h3rfgcbu97xqnnhjewao}
+      REVERB_APP_SECRET: ${REVERB_APP_SECRET:-null}
+      REVERB_HOST: my-backend-app # <--- 關鍵修改：指向 backend 服務的名稱
+      REVERB_PORT: ${REVERB_PORT:-8080} # 使用 .env 中定义的 REVERB_PORT
+      REVERB_SCHEME: ${REVERB_SCHEME:-http}
+    networks:
+      - app-network
+    depends_on:
+      - backend 
       - mysql
-  
+      - redis
   mysql: # Added MySQL service
     image: mysql:8.0 # Use MySQL 8.0 image (or your preferred version)
     container_name: my-mysql-db
@@ -82,6 +139,27 @@ services:
       - mysql_data:/var/lib/mysql # Persist database data
     networks:
       - app-network # Add mysql to the network
+    healthcheck: # 添加健康檢查
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "${DB_USERNAME:-user}", "-p${DB_PASSWORD:-password}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s 
+  
+  redis: # Added Redis service
+    image: redis:alpine 
+    container_name: my-redis-cache
+    ports:
+      - "6379:6379" 
+    volumes:
+      - redis_data:/data 
+    networks:
+      - app-network 
+    healthcheck: # 添加健康檢查
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 
 networks: # 定義自訂網路
@@ -95,4 +173,6 @@ volumes:
   storage_data:
     driver: local
   bootstrap_cache_data:
+    driver: local
+  redis_data: # Define named volume for Redis data (optional)
     driver: local

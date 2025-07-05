@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\DeleteAccountController;
 use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\TestEventController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -15,4 +16,4 @@ Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 Route::delete('/deleteAccount', [DeleteAccountController::class, 'deleteAccount']);
 Route::post('/passwordReset', [PasswordResetController::class, 'passwordReset'])->name('passwordReset');
 Route::post('/passwordResetVerify', [PasswordResetController::class, 'passwordResetVerify'])->name('passwordResetVerify');
-
+Route::get('/test-event', [TestEventController::class, 'fireTestEvent']);

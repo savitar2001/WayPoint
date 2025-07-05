@@ -1,5 +1,14 @@
 FROM php:8.2-apache
 WORKDIR /var/www/html
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    libzip-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions
+RUN docker-php-ext-install pdo pdo_mysql bcmath zip pcntl
+
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY composer.json composer.lock ./
 COPY . .
@@ -17,5 +26,12 @@ RUN touch /var/www/html/public/.htaccess && chmod 644 /var/www/html/public/.htac
 # 再次確保整個專案目錄的所有權，特別是 public 目錄
 RUN chown -R www-data:www-data /var/www/html
 COPY apache-vhost.conf /etc/apache2/sites-available/000-default.conf
-EXPOSE 80
 RUN a2enmod rewrite
+
+
+COPY start-app.sh /usr/local/bin/start-app.sh
+RUN chmod +x /usr/local/bin/start-app.sh
+
+EXPOSE 80
+
+CMD ["/usr/local/bin/start-app.sh"]

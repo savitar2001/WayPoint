@@ -22,13 +22,13 @@ class ReviewCommentServiceTest extends TestCase {
         $mockData = [
             ['id' => 1, 'post_id' => $postId, 'user_id' => 2, 'content' => 'Test comment']
         ];
-        
+         
         $this->postComment->method('getPostComment')->with($postId)->willReturn($mockData);
         
         $response = $this->reviewCommentService->fetchPostComment($postId);
         
         $this->assertTrue($response['success']);
-        $this->assertEquals($mockData, $response['data'][0]);
+        $this->assertEquals($mockData, $response['data']);
     }
 
     public function testFetchPostCommentFailure() {
@@ -53,7 +53,7 @@ class ReviewCommentServiceTest extends TestCase {
         $response = $this->reviewCommentService->fetchCommentReply($commentId);
         
         $this->assertTrue($response['success']);
-        $this->assertEquals($mockData, $response['data'][0]);
+        $this->assertEquals($mockData, $response['data']);
     }
 
     public function testFetchCommentReplyFailure() {
@@ -69,7 +69,7 @@ class ReviewCommentServiceTest extends TestCase {
 
     public function testGeneratePresignedUrlSuccess() {
         $fileName = 'test.jpg';
-        $this->s3StorageService->method('generatePresignedUrl')->with('avatar/',$fileName)->willReturn(
+        $this->s3StorageService->method('generatePresignedUrl')->with($fileName)->willReturn(
             ['success' => true,
              'data' => ['url' => 'https://test-bucket.s3.amazonaws.com/post/test.jpg']]);
 
@@ -81,7 +81,7 @@ class ReviewCommentServiceTest extends TestCase {
 
     public function testGeneratePresignedUrlFailure() {
         $fileName = 'test.jpg';
-        $this->s3StorageService->method('generatePresignedUrl')->with('avatar/',$fileName)->willReturn(
+        $this->s3StorageService->method('generatePresignedUrl')->with($fileName)->willReturn(
             [
                 'success' => false,
                 'message' => '獲取url失敗',

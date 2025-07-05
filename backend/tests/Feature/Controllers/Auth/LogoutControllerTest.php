@@ -14,6 +14,7 @@ class LogoutControllerTest extends TestCase{
         $this->logoutService = Mockery::mock(LogoutService::class, [
         ])->makePartial();
         $this->app->instance(LogoutService::class, $this->logoutService);
+        $this->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class);
     
     }
 

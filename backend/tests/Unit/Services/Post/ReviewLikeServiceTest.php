@@ -27,8 +27,8 @@ class ReviewLikeServiceTest extends TestCase {
 
         $this->assertTrue($result['success']);
         $this->assertEmpty($result['error']);
-        $this->assertCount(1, $result['data']);
-        $this->assertEquals($mockResponse, $result['data'][0]);
+        $this->assertCount(2, $result['data']);
+        $this->assertEquals($mockResponse, $result['data']);
     }
 
     public function testGetLikeUserByPostFailure() {
@@ -45,7 +45,7 @@ class ReviewLikeServiceTest extends TestCase {
 
     public function testGeneratePresignedUrlSuccess() {
         $fileName = 'test.jpg';
-        $this->s3StorageService->method('generatePresignedUrl')->with('avatar/',$fileName)->willReturn(
+        $this->s3StorageService->method('generatePresignedUrl')->with($fileName)->willReturn(
             ['success' => true,
              'data' => ['url' => 'https://test-bucket.s3.amazonaws.com/post/test.jpg']]);
 
@@ -57,7 +57,7 @@ class ReviewLikeServiceTest extends TestCase {
 
     public function testGeneratePresignedUrlFailure() {
         $fileName = 'test.jpg';
-        $this->s3StorageService->method('generatePresignedUrl')->with('avatar/',$fileName)->willReturn(
+        $this->s3StorageService->method('generatePresignedUrl')->with($fileName)->willReturn(
             [
                 'success' => false,
                 'message' => '獲取url失敗',

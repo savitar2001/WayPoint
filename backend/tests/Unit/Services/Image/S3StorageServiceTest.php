@@ -77,7 +77,7 @@ class S3StorageServiceTest extends TestCase
     }
 
   
-    public function testHandlesUploadFailure()
+    public function testHandlesUploadFailure() 
     {
         Storage::shouldReceive('disk->put')->andReturn(false);
         
@@ -88,7 +88,7 @@ class S3StorageServiceTest extends TestCase
         $result = $this->s3StorageService->uploadBase64Image($base64Image, $folder);
 
         $this->assertFalse($result['success']);
-        $this->assertEquals('圖片上傳失敗', $result['message']);
+        $this->assertEquals('圖片上傳失敗：無法將檔案寫入 S3。', $result['message']);
     }
 
     
@@ -154,7 +154,7 @@ class S3StorageServiceTest extends TestCase
         $folder = 'uploads';
         $result = $this->s3StorageService->uploadBase64Image($base64Image, $folder);
         $this->assertFalse($result['success']);
-        $this->assertEquals('圖片上傳失敗', $result['message']);
+        $this->assertEquals('圖片上傳失敗：檔案寫入 S3 成功，但無法確認檔案是否存在於 S3。', $result['message']);
     }
 
     public function testSuccessfulS3UrlGeneration() {

@@ -10,3 +10,44 @@
   font-family: Arial, sans-serif;
   align-items: stretch; /* 確保子元素不會被置中 */
 }
+
+.delete-confirm-dialog {
+  padding: 20px;
+  text-align: center;
+  background-color: white; /* Ensure background for modal content */
+  border-radius: 8px; /* Optional: match modal style */
+}
+
+.delete-confirm-dialog p {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #333;
+}
+
+.delete-confirm-buttons button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.delete-confirm-buttons .confirm-button {
+  background-color: #dc3545; /* Red for destructive actions */
+  color: white;
+}
+
+.delete-confirm-buttons .confirm-button:hover {
+  background-color: #c82333;
+}
+
+.delete-confirm-buttons .cancel-button {
+  background-color: #6c757d; /* Standard cancel button color */
+  color: white;
+}
+
+.delete-confirm-buttons .cancel-button:hover {
+  background-color: #5a6268;
+}

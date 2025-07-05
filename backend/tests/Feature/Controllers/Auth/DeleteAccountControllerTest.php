@@ -28,6 +28,7 @@ class DeleteAccountControllerTest extends TestCase {
         ])->makePartial();
 
         $this->app->instance(DeleteAccountService::class, $this->deleteAccountService);
+        $this->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class);
         
     }
 

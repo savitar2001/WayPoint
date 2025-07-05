@@ -112,17 +112,26 @@ class NotificationRawSqlRepository implements NotificationRepositoryInterface
     /**
      * 根據接收者 ID 查找所有未讀通知。
      */
-    public function findUnreadByNotifiable(string $notifiableId, string $notifiableType): Collection
+    public function findUnreadByNotifiable(string $notifiableId, string $type): Collection
     {
-        $sql = "SELECT id, type, notifiable_type, notifiable_id, data, causer_id, causer_type, read_at, created_at, updated_at
+        if ($type !== 'all') {
+            $sql = "SELECT id, type, notifiable_type, notifiable_id, data, causer_id, causer_type, read_at, created_at, updated_at
                 FROM notifications
                 WHERE notifiable_id = ? AND notifiable_type = ? AND read_at IS NULL
-                ORDER BY created_at DESC"; // 通常按創建時間排序
+                ORDER BY created_at DESC"; 
+            $bindings = [$notifiableId, $type];
+        } else {
+            $sql = "SELECT id, type, notifiable_type, notifiable_id, data, causer_id, causer_type, read_at, created_at, updated_at
+                FROM notifications
+                WHERE notifiable_id = ? AND read_at IS NULL
+                ORDER BY created_at DESC"; 
+            $bindings = [$notifiableId];
+        }
 
-        $dtos = new Collection(); // 使用 Laravel Collection
+        $dtos = new Collection(); 
 
         try {
-            $results = DB::select($sql, [$notifiableId, $notifiableType]);
+            $results = DB::select($sql, $bindings);
 
             foreach ($results as $result) {
                  try {
@@ -137,7 +146,7 @@ class NotificationRawSqlRepository implements NotificationRepositoryInterface
                  }
             }
         } catch (Throwable $e) {
-            Log::error("Error finding unread notifications for [{$notifiableType}:{$notifiableId}]: " . $e->getMessage(), ['exception' => $e]);
+            Log::error("Error finding unread notifications for [{$type}:{$notifiableId}]: " . $e->getMessage(), ['exception' => $e]);
             // 發生查詢錯誤時返回空集合
         }
 

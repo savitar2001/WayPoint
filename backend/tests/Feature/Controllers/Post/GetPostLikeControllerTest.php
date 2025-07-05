@@ -21,11 +21,10 @@ class GetPostLikeControllerTest extends TestCase {
         $this->reviewLikeService->method('getLikeUserByPost')->willReturn([
             'success' => true,
             'data' => [
-                [
+                (object)[
                     "user_id" => 1,
                     "name" => "User One",
-                    'avatar_url' => 'original_image_url'
-                ]
+                    'avatar_url' => 'http://example.com/avatar1.jpg'],
             ]
         ]);
 
@@ -36,7 +35,7 @@ class GetPostLikeControllerTest extends TestCase {
             ]
         ]);
 
-        $response = $this->getJson('/api/getPostLike?postId=1');
+        $response = $this->getJson('/api/getPostLike/1');
 
         $response->assertStatus(200)
                  ->assertJson([
@@ -53,11 +52,7 @@ class GetPostLikeControllerTest extends TestCase {
     public function testGetPostLikeWithMissingParameters() {
         $response = $this->getJson('/api/getPostLike');
 
-        $response->assertStatus(400)
-                 ->assertJson([
-                     'success' => false,
-                     'error' => '參數不足'
-                 ]);
+        $response->assertStatus(404);
     }
 
     public function testGetPostLikeWithInvalidParameters(){
@@ -66,7 +61,7 @@ class GetPostLikeControllerTest extends TestCase {
             'error' => '查詢按讚貼文用戶失敗'
         ]);
 
-        $response = $this->getJson('/api/getPostLike?postId=1');
+        $response = $this->getJson('/api/getPostLike/1');
 
         $response->assertStatus(422)
                  ->assertJson([
@@ -79,11 +74,11 @@ class GetPostLikeControllerTest extends TestCase {
         $this->reviewLikeService->method('getLikeUserByPost')->willReturn([
             'success' => true,
             'data' => [
-                [
+                (object)[
                     "user_id" => 1,
                     "name" => "User One",
-                    'avatar_url' => 'original_image_url'
-                ]
+                   'avatar_url' => 'http://example.com/avatar1.jpg'],
+                
             ]
         ]);
 
@@ -92,7 +87,7 @@ class GetPostLikeControllerTest extends TestCase {
             'error' => '獲取url失敗'
         ]);
 
-        $response = $this->getJson('/api/getPostLike?postId=1');
+        $response = $this->getJson('/api/getPostLike/1');
       
         $response->assertStatus(422)
                  ->assertJson([

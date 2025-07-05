@@ -55,7 +55,7 @@ class CreatePostServiceTest extends TestCase {
     }
 
     public function testUploadBase64ImageSuccess() {
-        $this->s3StorageServiceMock->method('uploadBase64Image')->with('base64Image', 'post/')->willReturn(['success' => true, 'data' => ['url' => 'http://example.com/image.jpg']]);
+        $this->s3StorageServiceMock->method('uploadBase64Image')->with('base64Image', 'posts')->willReturn(['success' => true, 'data' => ['url' => 'http://example.com/image.jpg']]);
 
         $response = $this->createPostService->uploadBase64Image('base64Image');
 
@@ -64,7 +64,7 @@ class CreatePostServiceTest extends TestCase {
     }
 
     public function testUploadBase64ImageFail() {
-        $this->s3StorageServiceMock->method('uploadBase64Image')->with('base64Image', 'post/')->willReturn(['success' => false, 'error' => '上傳圖片失敗']);
+        $this->s3StorageServiceMock->method('uploadBase64Image')->with('base64Image', 'posts')->willReturn(['success' => false, 'error' => '上傳圖片失敗']);
 
         $response = $this->createPostService->uploadBase64Image('base64Image');
 
@@ -131,12 +131,12 @@ class CreatePostServiceTest extends TestCase {
 
     public function testNotifyFollowersOfNewPostUserInformationQueryException() {
         $userId = 1;
-        Log::shouldReceive('error')->once(); // Optional: assert logging
+        Log::shouldReceive('error')->once(); 
 
         $this->userMock->expects($this->once())
             ->method('userInformation')
             ->with($userId)
-            ->willThrowException(new QueryException('SQL', [], new \Exception()));
+            ->willThrowException(new QueryException('sql','SQL', [], new \PDOException()));
 
         $response = $this->createPostService->notifyFollowersOfNewPost($userId);
 
@@ -157,8 +157,7 @@ class CreatePostServiceTest extends TestCase {
         $this->userFollowerMock->expects($this->once())
             ->method('getUserFollowers')
             ->with($userId)
-            ->willThrowException(new QueryException('SQL', [], new \Exception()));
-
+            ->willThrowException(new QueryException('sql','SQL', [], new \PDOException()));
         $response = $this->createPostService->notifyFollowersOfNewPost($userId);
 
         $this->assertFalse($response['success']);

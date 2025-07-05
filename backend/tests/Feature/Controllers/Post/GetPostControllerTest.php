@@ -21,8 +21,8 @@ class GetPostControllerTest extends TestCase {
         $this->reviewPostService->method('fetchPostInfo')->willReturn([
             'success' => true,
             'data' => [
-                [
-                    'image_url' => 'original_image_url'
+                (object)[
+                    'image_url' => 'http://example.com/post.jpg'
                 ]
             ]
         ]);
@@ -34,7 +34,7 @@ class GetPostControllerTest extends TestCase {
             ]
         ]);
 
-        $response = $this->getJson('/api/getPost?userId=1&postId=1&tag=test');
+        $response = $this->getJson('/api/getPost/1/1/test');
 
         $response->assertStatus(200)
                  ->assertJson([
@@ -50,11 +50,8 @@ class GetPostControllerTest extends TestCase {
     public function testGetPostWithMissingParameters() {
         $response = $this->getJson('/api/getPost');
 
-        $response->assertStatus(400)
-                 ->assertJson([
-                     'success' => false,
-                     'error' => '參數不足'
-                 ]);
+        $response->assertStatus(404);
+                
     }
 
     public function testGetPostWithInvalidParameters(){
@@ -63,7 +60,7 @@ class GetPostControllerTest extends TestCase {
             'error' => '查詢貼文失敗'
         ]);
 
-        $response = $this->getJson('/api/getPost?userId=1&postId=1&tag=test');
+        $response = $this->getJson('/api/getPost/1/1/test');
 
         $response->assertStatus(422)
                  ->assertJson([
@@ -76,8 +73,8 @@ class GetPostControllerTest extends TestCase {
         $this->reviewPostService->method('fetchPostInfo')->willReturn([
             'success' => true,
             'data' => [
-                [
-                    'image_url' => 'original_image_url'
+                (object)[
+                    'image_url' =>  'http://example.com/post.jpg'
                 ]
             ]
         ]);
@@ -87,7 +84,7 @@ class GetPostControllerTest extends TestCase {
             'error' => '獲取url失敗'
         ]);
 
-        $response = $this->getJson('/api/getPost?userId=1&postId=1&tag=test');
+        $response = $this->getJson('/api/getPost/1/1/test');
       
         $response->assertStatus(422)
                  ->assertJson([

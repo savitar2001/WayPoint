@@ -30,7 +30,7 @@ class ReviewPostServiceTest extends TestCase {
         $response = $this->reviewPostService->fetchPostInfo($userId, $postId, $tag);
 
         $this->assertTrue($response['success']);
-        $this->assertEquals($expectedResult, $response['data'][0]);
+        $this->assertEquals($expectedResult, $response['data']);
         $this->assertEmpty($response['error']);
     }
 
@@ -52,16 +52,16 @@ class ReviewPostServiceTest extends TestCase {
 
     public function testFetchPostInfoWithNoParams() {
         $this->post->method('searchPost')->with(null, null, null)->willReturn(['id' => 123, 'user_id' => 1, 'content' => 'Test post without filters']);
-
+ 
         $response = $this->reviewPostService->fetchPostInfo();
 
         $this->assertTrue($response['success']);
-        $this->assertEquals(['id' => 123, 'user_id' => 1, 'content' => 'Test post without filters'], $response['data'][0]);
+        $this->assertEquals(['id' => 123, 'user_id' => 1, 'content' => 'Test post without filters'], $response['data']);
     }
 
     public function testGeneratePresignedUrlSuccess() {
         $fileName = 'test.jpg';
-        $this->s3StorageService->method('generatePresignedUrl')->with('post/',$fileName)->willReturn(
+        $this->s3StorageService->method('generatePresignedUrl')->with($fileName)->willReturn(
             ['success' => true,
              'data' => ['url' => 'https://test-bucket.s3.amazonaws.com/post/test.jpg']]);
 
@@ -73,7 +73,7 @@ class ReviewPostServiceTest extends TestCase {
 
     public function testGeneratePresignedUrlFailure() {
         $fileName = 'test.jpg';
-        $this->s3StorageService->method('generatePresignedUrl')->with('post/',$fileName)->willReturn(
+        $this->s3StorageService->method('generatePresignedUrl')->with($fileName)->willReturn(
             [
                 'success' => false,
                 'message' => '獲取url失敗',

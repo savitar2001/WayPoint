@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Feature;
+namespace Tests\Feature\Controllers\Post;
 
 use Tests\TestCase;
 use App\Models\Post;
@@ -29,11 +29,6 @@ class CommentOnPostControllerTest extends TestCase{
             ->with($postId, $userId, $comment)
             ->andReturn(['success' => true]);
 
-        $this->addCommentService->shouldReceive('updatePostCommentsCount')
-            ->once()
-            ->with($postId)
-            ->andReturn(['success' => true]);
-
         $response = $this->postJson('/api/commentOnPost', [
             'userId' => $userId,
             'postId' => $postId,
@@ -61,31 +56,5 @@ class CommentOnPostControllerTest extends TestCase{
 
         $response->assertStatus(422)
             ->assertJson(['error' => '新增貼文留言失敗']);
-    }
-
-    public function testUpdatePostCommentsCountFails() {
-        $postId = 1;
-        $userId = 1;
-        $comment = 'This is a test comment';
-
-        $this->addCommentService->shouldReceive('addCommentToPost')
-            ->once()
-            ->with($postId, $userId, $comment)
-            ->andReturn(['success' => true]);
-
-        $this->addCommentService->shouldReceive('updatePostCommentsCount')
-            ->once()
-            ->with($postId)
-            ->andReturn(['success' => false, 'error' => '更新貼文評論數失敗']);
-
-
-        $response = $this->postJson('/api/commentOnPost', [
-            'userId' => $userId,
-            'postId' => $postId,
-            'comment' => $comment,
-        ]);
-
-        $response->assertStatus(422)
-            ->assertJson(['error' => '更新貼文評論數失敗']);
     }
 }

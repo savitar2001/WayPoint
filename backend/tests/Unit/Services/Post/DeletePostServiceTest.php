@@ -56,8 +56,10 @@ class DeletePostServiceTest extends TestCase {
     }
 
     public function testDeleteImageSuccess() {
-        $this->s3StorageServiceMock->method('deleteImage')->with('post/', 'fileName')->willReturn(['success' => true]);
-        $this->postMock->method('searchPost')->willReturn(['image_url' => 'fileName']);
+        $postObject = new \stdClass();
+        $postObject->image_url = 'fileName';
+        $this->s3StorageServiceMock->method('deleteImage')->with('posts', 'fileName')->willReturn(['success' => true]);
+        $this->postMock->method('searchPost')->willReturn([$postObject]);
 
         $response = $this->deletePostService->deleteImage(1);
 
@@ -65,11 +67,13 @@ class DeletePostServiceTest extends TestCase {
     }
 
     public function testDeleteImageFail() {
-        $this->s3StorageServiceMock->method('deleteImage')->with('post/', 'fileName')->willReturn(['success' => false, 'error' => '刪除圖片失敗']);
-        $this->postMock->method('searchPost')->willReturn(['image_url' => 'fileName']);
-
+        $postObject = new \stdClass();
+        $postObject->image_url = 'fileName';
+        $this->s3StorageServiceMock->method('deleteImage')->with('posts', 'fileName')->willReturn(['success' => false, 'error' => '刪除圖片失敗']);
+        $this->postMock->method('searchPost')->willReturn([$postObject]);
+    
         $response = $this->deletePostService->deleteImage(1);
-
+    
         $this->assertFalse($response['success']);
         $this->assertEquals('刪除圖片失敗', $response['error']);
     }

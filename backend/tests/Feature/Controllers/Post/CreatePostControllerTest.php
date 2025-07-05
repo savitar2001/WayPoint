@@ -4,7 +4,8 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Services\CreatePostService;
+use App\Services\Post\CreatePostService;
+use App\Services\Broadcast\CreatePostBroadcastService;
 use Mockery;
 
 class CreatePostControllerTest extends TestCase {
@@ -17,9 +18,12 @@ class CreatePostControllerTest extends TestCase {
 
         $this->createPostService = Mockery::mock(CreatePostService::class);
         $this->app->instance(CreatePostService::class, $this->createPostService);
+        $this->createPostBroadcastService = Mockery::mock(CreatePostBroadcastService::class);
+        $this->app->instance(CreatePostBroadcastService::class, $this->createPostBroadcastService);
     }
 
     public function testCreatePostSuccess() {
+        $fakeUserId = 999;
         $this->createPostService->shouldReceive('changePostAmount')
             ->once()
             ->with(1)
@@ -34,6 +38,14 @@ class CreatePostControllerTest extends TestCase {
             ->once()
             ->with(1, 'Sample Post', 'This is a sample post.', ['tag1', 'tag2'], 'http://example.com/image.jpg')
             ->andReturn(['success' => true]);
+
+        $this->createPostService->shouldReceive('notifyFollowersOfNewPost')
+            ->once()
+            ->with(1)
+            ->andReturn(['success' => true]);
+        $this->createPostBroadcastService->shouldReceive('dispatchPostPublishedEvent')
+        ->once()
+        ->with(1);
 
         $response = $this->postJson('/api/createPost', [
             'userId' => 1,

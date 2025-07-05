@@ -38,6 +38,7 @@ class LoginControllerTest extends TestCase
         Route::middleware(['web'])->group(function () {
             Route::post('/web/login', [LoginController::class, 'login']);
         });
+        $this->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class);
     }
 
     public function tearDown(): void {

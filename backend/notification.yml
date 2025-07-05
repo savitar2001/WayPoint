@@ -1,0 +1,327 @@
+openapi: '3.0.3'
+info:
+  title: Notification API
+  version: '1.0'
+  description: API for managing user notifications including new post notifications and other system notifications
+servers:
+  - url: https://localhost/api
+    description: API routes
+paths:
+  /getUnreadNotifications/{notifiableId}/{type}:
+    get:
+      description: Retrieve all unread notifications for a specific user by their ID and notification type
+      operationId: getUnreadNotifications
+      tags:
+        - Notifications
+      parameters:
+        - name: notifiableId
+          in: path
+          description: The ID of the user to get notifications for
+          required: true
+          schema:
+            type: string
+            example: "1"
+        - name: type
+          in: path
+          description: The type of notifications to retrieve (URL-encoded if it contains special characters like backslashes)
+          required: true
+          schema:
+            type: string
+            example: "App%5CModels%5CUser" # Example for "App\Models\User"
+      responses:
+        '200':
+          description: Successfully retrieved unread notifications
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Notification' # Corrected: Reference Notification schema
+        '400':
+          description: Bad Request - Missing or invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError' # Corrected: Reference ApiError schema
+              examples:
+                missingParameters:
+                  value:
+                    status: "fail"
+                    message: "參數不足"
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError' # Corrected: Reference ApiError schema
+              examples:
+                serverError:
+                  value:
+                    status: "error"
+                    message: "Failed to retrieve notifications"
+
+  /markNotificationAsRead:
+    post:
+      description: Mark a single notification as read by providing its ID
+      operationId: markNotificationAsRead
+      tags:
+        - Notifications
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                notificationId:
+                  type: string
+                  format: uuid
+                  description: The UUID of the notification to mark as read
+                  example: "550e8400-e29b-41d4-a716-446655440000"
+              required:
+                - notificationId
+      responses:
+        '200':
+          description: Notification successfully marked as read
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Notification marked as read"
+        '404':
+          description: Notification not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError' # Corrected: Reference ApiError schema
+              examples:
+                notFound:
+                  value:
+                    status: "fail"
+                    message: "Notification not found"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError' # Corrected: Reference ValidationError schema
+              examples:
+                validationError:
+                  value:
+                    message: "The given data was invalid."
+                    errors:
+                      notificationId: ["The notification id field is required."]
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError' # Corrected: Reference ApiError schema
+              examples:
+                serverError:
+                  value:
+                    status: "error"
+                    message: "Failed to mark notification as read"
+
+  /markAllNotificationsAsRead:
+    post:
+      description: Mark all unread notifications as read for a specific user
+      operationId: markAllNotificationsAsRead
+      tags:
+        - Notifications
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                notifiableId:
+                  type: string
+                  description: The ID of the user whose notifications should be marked as read
+                  example: "1"
+                notifiableType:
+                  type: string
+                  description: The type of the notifiable entity (e.g., App\\Models\\User)
+                  example: "App\\Models\\User"
+              required:
+                - notifiableId
+                - notifiableType
+      responses:
+        '200':
+          description: All notifications successfully marked as read
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "All notifications marked as read"
+                  updated_count:
+                    type: integer
+                    description: Number of notifications that were updated
+                    example: 5
+        '404':
+          description: No unread notifications found for the user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError' # Corrected: Reference ApiError schema
+              examples:
+                notFound:
+                  value:
+                    status: "fail"
+                    message: "No unread notifications found"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError' # Corrected: Reference ValidationError schema
+              examples:
+                validationError:
+                  value:
+                    message: "The given data was invalid."
+                    errors:
+                      notifiableId: ["The notifiable id field is required."]
+                      notifiableType: ["The notifiable type field is required."]
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError' # Corrected: Reference ApiError schema
+              examples:
+                serverError:
+                  value:
+                    status: "error"
+                    message: "Failed to mark all notifications as read"
+
+components:
+  schemas:
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the notification
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        type:
+          type: string
+          description: The type of notification
+          example: "NewPostNotification"
+        notifiable_type:
+          type: string
+          description: The model type that should receive the notification
+          example: "App\\Models\\User"
+        notifiable_id:
+          type: string # Assuming IDs are strings, adjust if they are integers
+          description: The ID of the model that should receive the notification
+          example: "1"
+        causer_id:
+          type: string # Assuming IDs are strings
+          nullable: true
+          description: The ID of the entity that caused this notification
+          example: "2"
+        causer_type:
+          type: string
+          nullable: true
+          description: The model type of the entity that caused this notification
+          example: "App\\Models\\User"
+        data:
+          type: object
+          description: Additional data for the notification
+          properties:
+            message:
+              type: string
+              example: "用戶名發布了新貼文"
+            # Add other potential data fields here
+        read_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the notification was read (null if unread)
+          example: null
+        created_at:
+          type: string
+          format: date-time
+          description: When the notification was created
+          example: "2025-01-01T12:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: When the notification was last updated
+          example: "2025-01-01T12:00:00Z"
+      required:
+        - id
+        - type
+        - notifiable_type
+        - notifiable_id
+        - data
+        - created_at
+        - updated_at
+
+    ApiError: # New schema for general API errors
+      type: object
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: string
+          description: "The status of the error response ('fail' for client errors, 'error' for server errors)"
+          enum: [fail, error]
+          example: "fail"
+        message:
+          type: string
+          description: "A human-readable message providing more details about the error."
+          example: "Resource not found"
+
+    ValidationError: # New schema for 422 validation errors
+      type: object
+      required:
+        - message
+        - errors
+      properties:
+        message:
+          type: string
+          example: "The given data was invalid."
+        errors:
+          type: object
+          description: "An object containing validation errors for specific fields."
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            field_name: ["Error message for this field."]
+
+  securitySchemes:
+    sanctum:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # Or token, depending on your setup
+
+security:
+  - sanctum: []
+
+tags:
+  - name: Notifications
+    description: Operations for managing user notifications including new post alerts and system notifications

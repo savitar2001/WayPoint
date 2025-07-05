@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './PostCard.css';
 
-const PostCard = ({posts, onLike, onComment}) => {
+const PostCard = ({posts, onLike, onComment, onDelete}) => {
   return (
     <div className="post-list">
       {posts.map((post) => {
@@ -27,6 +27,15 @@ const PostCard = ({posts, onLike, onComment}) => {
                 <div className="card-user-info">
                   <h4 className="card-user-name">{user_name}</h4>
                 </div>
+                {onDelete && (
+                  <button
+                    onClick={() => onDelete(id)}
+                    className="delete-button"
+                    aria-label="Delete post"
+                  >
+                    💀
+                  </button>
+                )}
               </div>
   
               {/* 中間區域 */}
@@ -86,6 +95,7 @@ PostCard.propTypes = {
   ).isRequired,
   onLike: PropTypes.func.isRequired,
   onComment: PropTypes.func.isRequired,
+  onDelete: PropTypes.func
 };
 
 export default PostCard;

@@ -25,7 +25,7 @@ class DeletePostService {
 
      //在資料庫修改貼文者總發文數 
      public function changePostAmount($userId) {
-        if ($this->user->changeUserPostAmount($userId, -1) !== 1) {
+        if (!$this->user->changeUserPostAmount($userId, -1)) {
             $this->response['error'] = '貼文數更新失敗';
             return $this->response;
         }
@@ -37,8 +37,14 @@ class DeletePostService {
      //刪除s3上的圖片
      public function deleteImage($postId) {
         $fileName = $this->post->searchPost(null,$postId,null);
-        $deleteImage = $this->s3StorageService->deleteImage('post/',$fileName['image_url']);
-        return $deleteImage;
+        if (is_array($fileName) && !empty($fileName)) {
+            $postObject = $fileName[0]; // 從陣列中取得第一個貼文物件
+
+            if (is_object($postObject) && isset($postObject->image_url) && $postObject->image_url !== null) {
+                $deleteImage = $this->s3StorageService->deleteImage('posts',$postObject->image_url);
+                return $deleteImage;
+            } 
+        }
      }
 
      //在資料庫刪除貼文

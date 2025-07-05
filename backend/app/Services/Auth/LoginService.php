@@ -5,6 +5,7 @@ namespace App\Services\Auth;
 use App\Models\User;
 use App\Models\LoginAttempt;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth; 
 
 class LoginService {
     private $user;
@@ -65,8 +66,10 @@ class LoginService {
             $this->loginAttempt->recordFailedAttempt($this->getId($email), $_SERVER['REMOTE_ADDR']);
             $this->response['error'] = '密碼錯誤';
         } else {
+            $authenticatableUser = $this->user->find($data->id);
             $this->response['success'] = true;
             $this->loginAttempt->clearAttempt($this->getId($email));
+            Auth::login($authenticatableUser); 
         }
         return $this->response;
     }

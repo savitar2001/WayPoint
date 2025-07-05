@@ -45,10 +45,10 @@ interface NotificationRepositoryInterface
      * 根據接收者 ID 查找所有未讀通知。
      *
      * @param string $notifiableId 接收者的 ID (例如 User ID)。
-     * @param string $notifiableType 接收者的類型 (例如 App\Models\User::class)。
+     * @param string $type 通知的類型 (例如'NewPostNotification'代表有新貼文發佈)
      * @return Collection<int, NotificationDTO> 包含未讀通知 DTO 的集合。
      */
-    public function findUnreadByNotifiable(string $notifiableId, string $notifiableType): Collection;
+    public function findUnreadByNotifiable(string $notifiableId, string $type): Collection;
 
     /**
      * 將特定通知標記為已讀。

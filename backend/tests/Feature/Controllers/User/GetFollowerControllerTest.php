@@ -22,12 +22,12 @@ class GetFollowerControllerTest extends TestCase{
     public function testGetFollowerSuccess(){
         $this->reviewFollowerService->shouldReceive('getAllUserFollowers')
             ->once()
-            ->with(1)
+            ->with('1')
             ->andReturn([
                 'success' => true,
                 'data' => [
-                    ['id' => 1, 'avatar_url' => 'avatar1.jpg'],
-                    ['id' => 2, 'avatar_url' => 'avatar2.jpg'],
+                    (object)['id' => 1, 'avatar_url' => 'http://example.com/avatar1.jpg'],
+                    (object)['id' => 2, 'avatar_url' => 'http://example.com/avatar2.jpg'],
                 ],
             ]);
 
@@ -38,9 +38,8 @@ class GetFollowerControllerTest extends TestCase{
                 ['success' => true, 'data' => ['url' => 'https://example.com/avatar2.jpg']]
             );
 
-        $response = $this->getJson('/api/getFollower?userId=1');
+        $response = $this->getJson('/api/getFollower/' . '1');
 
-        // Assert: 驗證響應
         $response->assertStatus(200)
                  ->assertJson([
                      'success' => true,
@@ -56,25 +55,19 @@ class GetFollowerControllerTest extends TestCase{
         // Act: 發送請求，缺少 userId
         $response = $this->getJson('/api/getFollower');
 
-        // Assert: 驗證響應
-        $response->assertStatus(400)
-                 ->assertJson([
-                     'success' => false,
-                     'error' => '參數不足',
-                 ]);
+        $response->assertStatus(404);
     }
 
     public function testGetFollowerFailureOnGetAllUserFollowers(){
-        // Arrange: 模擬 ReviewFollowerService 的行為
         $this->reviewFollowerService->shouldReceive('getAllUserFollowers')
             ->once()
-            ->with(1)
+            ->with('1')
             ->andReturn([
                 'success' => false,
                 'error' => '查詢粉絲失敗',
             ]);
 
-        $response = $this->getJson('/api/getFollower?userId=1');
+        $response = $this->getJson('/api/getFollower/' . '1');
 
         $response->assertStatus(422)
                  ->assertJson([
@@ -90,7 +83,7 @@ class GetFollowerControllerTest extends TestCase{
             ->andReturn([
                 'success' => true,
                 'data' => [
-                    ['id' => 1, 'avatar_url' => 'avatar1.jpg'],
+                    (object)['id' => 1, 'avatar_url' => 'http://example.com/avatar1.jpg'],
                 ],
             ]);
 
@@ -102,10 +95,8 @@ class GetFollowerControllerTest extends TestCase{
                 'error' => '生成臨時 URL 失敗',
             ]);
 
-        // Act: 發送請求
-        $response = $this->getJson('/api/getFollower?userId=1');
+        $response = $this->getJson('/api/getFollower/' . '1');
 
-        // Assert: 驗證響應
         $response->assertStatus(422)
                  ->assertJson([
                      'success' => false,
@@ -115,7 +106,7 @@ class GetFollowerControllerTest extends TestCase{
 
     protected function tearDown(): void
     {
-        Mockery::close(); // 清理 Mockery
+        Mockery::close(); 
         parent::tearDown();
     }
 }

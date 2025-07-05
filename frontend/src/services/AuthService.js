@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { initializeEcho as initEcho, disconnectEcho as discEcho, getEcho } from './echo'; 
 
 const API_BASE_URL = 'http://localhost/api';
 const WEB_BASE_URL = 'http://localhost';
@@ -10,16 +11,27 @@ axios.defaults.withXSRFToken = true;
 
 
 // 初始化 CSRF Cookie
-const initializeCsrfToken = async () => {
+export const initializeCsrfToken = async () => {
     await axios.get(`${WEB_BASE_URL}/sanctum/csrf-cookie`);
     console.log('CSRF Cookie 已初始化');
+    const tokenValue = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('XSRF-TOKEN='))
+    ?.split('=')[1];
+    return tokenValue ? decodeURIComponent(tokenValue) : null;
 };
 
 // 登入
-export const login = async (email, password) => {
-    await initializeCsrfToken();
+export const login = async (email, password,dispatch) => {
+    let csrfToken = null;
+    csrfToken = await initializeCsrfToken();
     const response = await axios.post(`${WEB_BASE_URL}/login`, { email, password }, 
     );
+    if (response.data.data && response.data.data.userId) { 
+        console.log('Echo initialized after login from AuthService');
+        initEcho(response.data.data.userId, dispatch, csrfToken);
+        console.log('Echo initialized after login from AuthService');
+    }
     return response.data;
 };
 
@@ -45,6 +57,10 @@ export const verifyAccount = async (requestId, hash, userId) => {
 export const logout = async () => {
     await initializeCsrfToken();
     const response = await axios.post(`${WEB_BASE_URL}/logout`);
+    if (getEcho()) {
+        discEcho(); 
+        console.log('Echo disconnected after logout from AuthService');
+    }
     return response; // 返回後端的響應數據
 }
 

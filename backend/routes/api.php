@@ -19,6 +19,8 @@ use App\Http\Controllers\User\RemoveSubscriberController;
 use App\Http\Controllers\User\GetFollowerController;
 use App\Http\Controllers\User\GetSubscriberController;
 use App\Http\Controllers\User\GetUserProfileController;
+use App\Http\Controllers\Notification\NotificationController;
+use App\Events\NewMessage;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -44,4 +46,7 @@ Route::get('/getFollower/{userId}', [GetFollowerController::class, 'getFollower'
 Route::get('/getSubscriber/{userId}', [GetSubscriberController::class, 'getSubscriber']);
 Route::get('/getUserInformation/{userId}', [GetUserProfileController::class, 'getUserInformation']);
 Route::get('/searchByName/{name}', [GetUserProfileController::class, 'searchByName']);
+Route::get('/getUnreadNotifications/{notifiableId}/{type}', [NotificationController::class, 'getUnreadNotifications']);
+Route::post('/markNotificationAsRead', [NotificationController::class, 'markNotificationAsRead']);
+Route::post('/markAllNotificationsAsRead', [NotificationController::class, 'markAllNotificationsAsRead']);
 

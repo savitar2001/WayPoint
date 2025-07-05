@@ -1,0 +1,32 @@
+/* filepath: /Applications/XAMPP/xamppfiles/htdocs/side-project/new-project/frontend/src/components/Marquee.css */
+.marquee-container {
+  position: fixed;
+  top: 20px; /* Adjust vertical position as needed */
+  left: 0;
+  width: 100%;
+  background-color: rgba(255, 165, 0, 0.75); /* Orange, 75% transparent */
+  overflow: hidden; /* Crucial for the marquee effect */
+  white-space: nowrap; /* Ensures text stays on a single line */
+  z-index: 1000; /* Keeps it on top of other content */
+  padding: 10px 0; /* Vertical padding for the bar itself */
+  box-sizing: border-box;
+}
+
+.marquee-text {
+  display: inline-block; /* Allows animation and respects white-space: nowrap from parent */
+  color: white;
+  font-size: 18px; /* Adjust font size as needed */
+  margin: 0; /* Reset default paragraph margin */
+  padding-left: 100%; /* Starts the text off-screen to the right (100% of container width) */
+  animation: scroll-left 15s linear; /* Animation name, duration, timing function */
+                                    /* Duration must match setTimeout in Marquee.js */
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0%); /* Initial position (text begins off-screen due to padding-left) */
+  }
+  100% {
+    transform: translateX(-100%); /* Moves the element left by its entire width (padding + text content), effectively scrolling it out of view */
+  }
+}

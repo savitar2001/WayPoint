@@ -28,7 +28,7 @@ const UserProfilePage = () => {
   const [isSubscriberListOpen, setIsSubscriberListOpen] = useState(false);
 
   // 貼文相關狀態
-  const { posts, fetchPosts, error: postError } = usePosts({ userId });
+  const { posts, fetchPosts, error: postError, handleDeletePost } = usePosts({ userId });
   const [selectedPost, setSelectedPost] = useState(null); // 用於存儲選中的貼文
   const { comments, fetchComments, submitComment } = useComment(userId);
   const [selectedComment, setSelectedComment] = useState(null);//用於存儲選中的留言
@@ -36,6 +36,9 @@ const UserProfilePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); 
   const { likes,fetchLikes,isLiked,toggleLike } = useLike(userId);
   const [modalType, setModalType] = useState(null); // 'like', 'comment', 'reply' 或 null
+  // 刪除確認相關狀態
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [postToDeleteId, setPostToDeleteId] = useState(null);
   useEffect(() => {
     if (userId) {
       fetchUserInformation(userId);
@@ -152,6 +155,30 @@ const UserProfilePage = () => {
     setSelectedPost(null);
     setSelectedComment(null);
   };
+
+   // 開啟刪除確認 Modal
+   const handleOpenDeleteConfirm = (postId) => {
+    setPostToDeleteId(postId);
+    setIsDeleteConfirmOpen(true);
+  };
+
+   // 取消刪除
+   const handleCancelDelete = () => {
+    setIsDeleteConfirmOpen(false);
+    setPostToDeleteId(null);
+  };
+
+  // 確認刪除
+  const handleConfirmDelete = async () => {
+    if (postToDeleteId) {
+      await handleDeletePost(postToDeleteId);
+      setIsDeleteConfirmOpen(false);
+      if (selectedPost && selectedPost.id === postToDeleteId) {
+        handleCloseModal();
+      }
+      setPostToDeleteId(null);
+    }
+  };
   if (error || subscriberError) {
     return <div>Error: {error || subscriberError}</div>;
   }
@@ -204,6 +231,7 @@ const UserProfilePage = () => {
           posts={posts}
           onLike={() => handleLikeClick(selectedPost?.id)}
           onComment={() => handleCommentClick(selectedPost.id)}
+          onDelete={() => handleOpenDeleteConfirm(selectedPost.id)} 
         />
         {/* 只在點擊 like 按鈕時顯示 Like 組件 */}
         {modalType === 'like' && (
@@ -240,6 +268,18 @@ const UserProfilePage = () => {
             />
           </div>
         )}
+      </Modal>
+    )}
+    {/* 刪除確認 Modal */}
+    {isDeleteConfirmOpen && (
+      <Modal isOpen={isDeleteConfirmOpen} onClose={handleCancelDelete}>
+        <div className="delete-confirm-dialog">
+          <p>確定刪除嗎？</p>
+          <div className="delete-confirm-buttons">
+            <button onClick={handleConfirmDelete} className="confirm-button">確認</button>
+            <button onClick={handleCancelDelete} className="cancel-button">取消</button>
+          </div>
+        </div>
       </Modal>
     )}
     </div>

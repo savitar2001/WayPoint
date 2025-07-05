@@ -24,6 +24,6 @@ class DeletePostCommentController extends Controller {
             return response()->json($deleteCommentToPost, 422);
         } 
 
-        return response()->json($updatePostCommentsCount, 204);
+        return response()->json($deleteCommentToPost, 204);
     }
 }

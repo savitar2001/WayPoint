@@ -17,7 +17,7 @@ const LoginPage = () => {
 
   const handleButtonClick  = async () => {
     try {
-      const response = await login(email, password);
+      const response = await login(email, password,dispatch);
       if (response['success'] === true) {
         const {userId, userName} = response['data'];
         dispatch(loginAction({ userId, userName }));

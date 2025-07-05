@@ -22,12 +22,12 @@ class GetSubscriberControllerTest extends TestCase{
     public function testGetSubscriberSuccess(){
         $this->reviewSubscriberService->shouldReceive('getAllUserSubscribers')
             ->once()
-            ->with(1)
+            ->with('1')
             ->andReturn([
                 'success' => true,
                 'data' => [
-                    ['id' => 1, 'avatar_url' => 'avatar1.jpg'],
-                    ['id' => 2, 'avatar_url' => 'avatar2.jpg'],
+                    (object)['id' => 1, 'avatar_url' => 'http://example.com/avatar1.jpg'],
+                    (object)['id' => 2, 'avatar_url' => 'http://example.com/avatar2.jpg'],
                 ],
             ]);
 
@@ -39,7 +39,7 @@ class GetSubscriberControllerTest extends TestCase{
             );
 
         // Act: 發送請求
-        $response = $this->getJson('/api/getSubscriber?userId=1');
+        $response = $this->getJson('/api/getSubscriber/' . '1');
 
         // Assert: 驗證響應
         $response->assertStatus(200)
@@ -58,11 +58,7 @@ class GetSubscriberControllerTest extends TestCase{
         $response = $this->getJson('/api/getSubscriber');
 
         // Assert: 驗證響應
-        $response->assertStatus(400)
-                 ->assertJson([
-                     'success' => false,
-                     'error' => '參數不足',
-                 ]);
+        $response->assertStatus(404);
     }
 
     public function testGetSubscriberFailureOnGetAllUserSubscribers()
@@ -70,14 +66,14 @@ class GetSubscriberControllerTest extends TestCase{
         // Arrange: 模擬 ReviewSubscriberService 的行為
         $this->reviewSubscriberService->shouldReceive('getAllUserSubscribers')
             ->once()
-            ->with(1)
+            ->with('1')
             ->andReturn([
                 'success' => false,
                 'error' => '查詢追蹤戶失敗',
             ]);
 
         // Act: 發送請求
-        $response = $this->getJson('/api/getSubscriber?userId=1');
+        $response = $this->getJson('/api/getSubscriber/' . '1');
 
         // Assert: 驗證響應
         $response->assertStatus(422)
@@ -89,14 +85,13 @@ class GetSubscriberControllerTest extends TestCase{
 
     public function testGetSubscriberFailureOnGeneratePresignedUrl()
     {
-        // Arrange: 模擬 ReviewSubscriberService 的行為
         $this->reviewSubscriberService->shouldReceive('getAllUserSubscribers')
             ->once()
-            ->with(1)
+            ->with('1')
             ->andReturn([
                 'success' => true,
                 'data' => [
-                    ['id' => 1, 'avatar_url' => 'avatar1.jpg'],
+                    (object)['id' => 1, 'avatar_url' => 'http://example.com/avatar1.jpg'],
                 ],
             ]);
 
@@ -109,7 +104,7 @@ class GetSubscriberControllerTest extends TestCase{
             ]);
 
         // Act: 發送請求
-        $response = $this->getJson('/api/getSubscriber?userId=1');
+        $response = $this->getJson('/api/getSubscriber/' . '1');
 
         // Assert: 驗證響應
         $response->assertStatus(422)

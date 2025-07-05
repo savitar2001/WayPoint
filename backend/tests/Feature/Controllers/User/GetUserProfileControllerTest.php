@@ -43,7 +43,7 @@ class GetUserProfileControllerTest extends TestCase{
             ->with('test.jpg')
             ->andReturn($presignedUrl);
 
-        $response = $this->getJson('/api/getUserInfromation?userId=' . $userId);
+        $response = $this->getJson('/api/getUserInformation/' . $userId);
 
         $response->assertStatus(200)
             ->assertJson([
@@ -71,7 +71,7 @@ class GetUserProfileControllerTest extends TestCase{
             ->with($userId)
             ->andReturn($userInformation);
 
-        $response = $this->getJson('/api/getUserInfromation?userId=' . $userId);
+        $response = $this->getJson('/api/getUserInformation/' . $userId);
 
         $response->assertStatus(422)
             ->assertJson($userInformation);
@@ -85,7 +85,7 @@ class GetUserProfileControllerTest extends TestCase{
             'data' => [
                 'id' => 1,
                 'name' => $name,
-                'avatarUrl' => 'avatar/test.jpg'
+                'avatarUrl' => 'http://example.com/avatar/test.jpg'
             ]
         ];
         $presignedUrl = [
@@ -103,7 +103,7 @@ class GetUserProfileControllerTest extends TestCase{
             ->with('avatar/test.jpg')
             ->andReturn($presignedUrl);
 
-        $response = $this->getJson('/api/searchByName?name=' . $name);
+        $response = $this->getJson('/api/searchByName/'.$name);
 
         $response->assertStatus(200)
             ->assertJson([
@@ -129,7 +129,7 @@ class GetUserProfileControllerTest extends TestCase{
             ->with($name)
             ->andReturn($userByName);
 
-        $response = $this->getJson('/api/searchByName?name=' . $name);
+        $response = $this->getJson('/api/searchByName/'.$name);
 
         $response->assertStatus(422)
             ->assertJson($userByName);
@@ -137,23 +137,15 @@ class GetUserProfileControllerTest extends TestCase{
 
     public function testGetUserInformationMissingParameter()
     {
-        $response = $this->getJson('/api/getUserInfromation');
+        $response = $this->getJson('/api/getUserInformation');
 
-        $response->assertStatus(400)
-            ->assertJson([
-                'success' => false,
-                'error' => '參數不足'
-            ]);
+        $response->assertStatus(404);
     }
 
     public function testSearchByNameMissingParameter()
     {
         $response = $this->getJson('/api/searchByName');
 
-        $response->assertStatus(400)
-            ->assertJson([
-                'success' => false,
-                'error' => '參數不足'
-            ]);
+        $response->assertStatus(404);
     }
 }

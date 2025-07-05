@@ -19,7 +19,7 @@ class UserProfileServiceTest extends TestCase {
     public function testGetUserInformationSuccess() {
         $userId = 1;
 
-        $userInformation = [
+        $userInformation = (object)[
             'id' => 1,
             'name' => 'John Doe',
             'avatar_url' => 'https://example.com/avatar.jpg',
@@ -53,7 +53,7 @@ class UserProfileServiceTest extends TestCase {
 
     public function testGeneratePresignedUrlSuccess() {
         $fileName = 'test.jpg';
-        $this->s3StorageService->method('generatePresignedUrl')->with('avatar/',$fileName)->willReturn(
+        $this->s3StorageService->method('generatePresignedUrl')->with($fileName)->willReturn(
             ['success' => true,
              'data' => ['url' => 'https://test-bucket.s3.amazonaws.com/post/test.jpg']]);
 
@@ -65,7 +65,7 @@ class UserProfileServiceTest extends TestCase {
 
     public function testGeneratePresignedUrlFailure() {
         $fileName = 'test.jpg';
-        $this->s3StorageService->method('generatePresignedUrl')->with('avatar/',$fileName)->willReturn(
+        $this->s3StorageService->method('generatePresignedUrl')->with($fileName)->willReturn(
             [
                 'success' => false,
                 'message' => '獲取url失敗',
@@ -81,7 +81,7 @@ class UserProfileServiceTest extends TestCase {
     public function testGetUserByNameSuccess() {
         $name = 'John Doe';
 
-        $userByName = [
+        $userByName = (object)[
             'id' => 1,
             'name' => 'John Doe',
             'avatar_url' => 'https://example.com/avatar.jpg'

@@ -15,7 +15,7 @@ class CreateAvatarServiceTest extends TestCase {
         $this->s3StorageService = $this->createMock(S3StorageService::class);
         $this->createAvatarService = new CreateAvatarService($this->userMock, $this->s3StorageService);
     }
-
+ 
     public function testCreateAvatarSuccess() {
         $userId = 1;
         $avatarUrl = 'https://s3.amazonaws.com/path/to/file.png';
@@ -40,7 +40,7 @@ class CreateAvatarServiceTest extends TestCase {
     }
 
     public function testUploadBase64ImageSuccess() {
-        $this->s3StorageService->method('uploadBase64Image')->with('base64Image', 'avatar/')->willReturn(['success' => true, 'data' => ['url' => 'http://example.com/image.jpg']]);
+        $this->s3StorageService->method('uploadBase64Image')->with('base64Image', 'avatar')->willReturn(['success' => true, 'data' => ['url' => 'http://example.com/image.jpg']]);
 
         $response = $this->createAvatarService->uploadBase64Image('base64Image');
 
@@ -49,7 +49,7 @@ class CreateAvatarServiceTest extends TestCase {
     }
 
     public function testUploadBase64ImageFail() {
-        $this->s3StorageService->method('uploadBase64Image')->with('base64Image', 'avatar/')->willReturn(['success' => false, 'error' => '上傳圖片失敗']);
+        $this->s3StorageService->method('uploadBase64Image')->with('base64Image', 'avatar')->willReturn(['success' => false, 'error' => '上傳圖片失敗']);
 
         $response = $this->createAvatarService->uploadBase64Image('base64Image');
 

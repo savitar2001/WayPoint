@@ -1,0 +1,2385 @@
+
+   PASS  DeleteAccountServiceTest
+  ✓ clear login attempt success                                          0.06s  
+  ✓ clear login attempt fail
+  ✓ clear post success
+  ✓ clear post fail
+  ✓ clear user information success
+  ✓ clear user information fail
+  ✓ clear session success                                                0.01s  
+  ✓ clear session with error
+
+   FAIL  LoginServiceTest
+  ⨯ is verified not verified                                             0.06s  
+  ⨯ is verified already verified                                         0.01s  
+  ⨯ has exceed login attempt exceeded                                    0.01s  
+  ⨯ has exceed login attempt not exceeded                                0.01s  
+  ⨯ verify password incorrect                                            0.05s  
+  ⨯ verify password correct                                              0.05s  
+  ✓ get remain attempt                                                   0.01s  
+  ⨯ get id                                                               0.01s  
+  ⨯ get name                                                             0.01s  
+  ⨯ start session success                                                0.01s  
+  ✓ start session error                                                  0.01s  
+
+   PASS  Tests\Unit\Services\Auth\LogoutServiceTest
+  ✓ logout success                                                       0.02s  
+  ✓ logout failure on clear auth                                         0.01s  
+  ✓ logout failure on clear session                                      0.01s  
+  ✓ logout failure on regenerate token                                   0.01s  
+
+   PASS  PasswordResetServiceTest
+  ✓ check user exist when user exists                                    0.02s  
+  ✓ check user exist when user does not exist                            0.01s  
+  ✓ validate with invalid password                                       0.01s  
+  ✓ validate non matching passwords                                      0.01s  
+  ✓ validate with valid password                                         0.01s  
+  ✓ check verification request fail                                      0.01s  
+  ✓ check verification request success                                   0.01s  
+  ✓ insert send record fail                                              0.01s  
+  ✓ insert send record success                                           0.01s  
+  ✓ send email fail                                                      0.01s  
+  ✓ send email success                                                   0.01s  
+  ✓ inspect verification fail                                            0.01s  
+  ✓ inspect verification success                                         0.01s  
+  ✓ clear user request fail                                              0.01s  
+  ✓ clear user request success                                           0.01s  
+  ✓ password reset fail                                                  0.05s  
+  ✓ password reset success                                               0.05s  
+
+   PASS  RegisterServiceTest
+  ✓ check user exist when user exists                                    0.02s  
+  ✓ check user exist when user does not exist
+  ✓ validate user registration with invalidh name
+  ✓ validate user registration with invalid email
+  ✓ validate user registration with invalid password
+  ✓ validate user registration with non matching passwords
+  ✓ create user success                                                  0.05s  
+  ✓ create user failure                                                  0.05s  
+  ✓ check verification request fail
+  ✓ check verification request success
+  ✓ insert send record fail
+  ✓ insert send record success
+  ✓ send email fail
+  ✓ send email success
+  ✓ inspect verification fail
+  ✓ inspect verification success
+  ✓ clear user request fail
+  ✓ clear user request success
+  ✓ update user state failed validation
+  ✓ update user state success
+
+   PASS  SendEmailServiceTest
+  ✓ check verification request with already verified user                0.02s  
+  ✓ check verification request with exceeded limit                       0.01s  
+  ✓ check verification request success                                   0.01s  
+  ✓ reset password request with exceeded limit                           0.01s  
+  ✓ password reset request success                                       0.01s  
+  ✓ insert send record failure                                           0.05s  
+  ✓ insert send record success                                           0.05s  
+  ✓ send validation email failure                                        0.01s  
+  ✓ send validation email success                                        0.01s  
+
+   PASS  VerificationMailTest
+  ✓ verification mail construction                                       0.01s  
+  ✓ envelope has correct subject
+  ✓ content uses correct view
+  ✓ attachments are empty
+
+   PASS  VerifyServiceTest
+  ✓ check verification with expired hash                                 0.01s  
+  ✓ check verification with invalid hash                                 0.01s  
+  ✓ check verification success                                           0.01s  
+  ✓ failed clear record                                                  0.01s  
+  ✓ clear record success                                                 0.01s  
+
+   FAIL  S3StorageServiceTest
+  ✓ validates correct base64 image                                       0.02s  
+  ✓ fails validation for unsupported mime type                           0.01s  
+  ✓ fails validation when image is too large                             0.01s  
+  ✓ fails validation when base64 decoding fails                          0.01s  
+  ✓ uploads a valid image successfully                                   0.01s  
+  ⨯ handles upload failure                                               0.01s  
+  ✓ generates presigned url successfully                                 0.01s  
+  ✓ handles presigned url generation failure                             0.01s  
+  ✓ upload base64 image with invalid image                               0.01s  
+  ✓ generate presigned url with non existent file                        0.01s  
+  ✓ upload base64 image with storage exception                           0.01s  
+  ⨯ s3 exists failure                                                    0.01s  
+  ✓ successful s3 url generation                                         0.01s  
+  ✓ fail delete image                                                    0.01s  
+  ✓ success delete image                                                 0.01s  
+
+   FAIL  Tests\Unit\Services\Notification\NotificationServiceTest
+  ⨯ get unread notifications returns success with data                   0.02s  
+  ⨯ get unread notifications returns error on exception
+  ⨯ mark notification as read returns success
+  ⨯ mark notification as read returns false on failure
+  ⨯ mark notification as read returns error on exception
+  ⨯ mark all notifications as read returns success
+  ⨯ mark all notifications as read returns false on failure
+  ⨯ mark all notifications as read returns error on exception
+
+   FAIL  AddCommentServiceTest
+  ✓ add comment to post success                                          0.01s  
+  ✓ add comment to post fail
+  ✓ add reply to comment success
+  ✓ add reply to comment fail
+  ⨯ update post comments count success
+  ⨯ update post comments count failure
+  ✓ update commentreply count success
+  ✓ update commentreply count failure
+
+   PASS  CreatePostServiceTest
+  ✓ change post amount success                                           0.01s  
+  ✓ change post amount failure
+  ✓ upload base64 image success
+  ✓ upload base64 image fail
+  ✓ create post to database success
+  ✓ create post to database failure
+  ✓ notify followers of new post success                                 0.01s  
+  ✓ notify followers of new post user information query exception
+  ✓ notify followers of new post get user followers query exception
+  ✓ notify followers of new post no followers
+  ✓ notify followers of new post follower missing follower id
+  ✓ notify followers of new post save many fails
+
+   FAIL  DeleteCommentServiceTest
+  ✓ delete comment to post success
+  ✓ delete comment to post fail
+  ✓ delete reply to comment success
+  ✓ delete reply to comment fail
+  ⨯ update post comments count success
+  ⨯ update post comments count failure
+  ✓ update commentreply count success
+  ✓ update commentreply count failure
+
+   FAIL  DeletePostServiceTest
+  ✓ change post amount success
+  ✓ change post amount failure
+  ✓ delete post to database success
+  ✓ create post to database failure
+  ⨯ delete image success
+  ⨯ delete image fail
+
+   FAIL  LikePostServiceTest
+  ✓ check if user liked post when already liked                          0.01s  
+  ✓ check if user liked post when not liked
+  ✓ add post like when success
+  ✓ add post like when fail
+  ⨯ update post like count
+  ⨯ update post like count failure
+
+   FAIL  ReviewCommentServiceTest
+  ⨯ fetch post comment success
+  ✓ fetch post comment failure
+  ⨯ fetch comment reply success
+  ✓ fetch comment reply failure
+  ⨯ generate presigned url success
+  ⨯ generate presigned url failure
+
+   FAIL  ReviewLikeServiceTest
+  ⨯ get like user by post success
+  ✓ get like user by post failure
+  ⨯ generate presigned url success
+  ⨯ generate presigned url failure
+
+   FAIL  ReviewPostServiceTest
+  ⨯ fetch post info success
+  ✓ fetch post info failure
+  ⨯ fetch post info with no params
+  ⨯ generate presigned url success
+  ⨯ generate presigned url failure
+
+   FAIL  UnlikePostServiceTest
+  ✓ remove post like success
+  ✓ remove post like failure
+  ⨯ update post like count
+  ⨯ update post like count failure
+
+   PASS  AddSubscriberServiceTest
+  ✓ add subscriber to database success                                   0.01s  
+  ✓ add subscriber to database failure
+  ✓ add follower to database success
+  ✓ add follower to database failure
+  ✓ update user subscriber count failure
+  ✓ update user follower count success
+  ✓ update user follower count failure
+
+   FAIL  CreateAvatarServiceTest
+  ✓ create avatar success
+  ✓ create avatar failure
+  ⨯ upload base64 image success
+  ⨯ upload base64 image fail
+
+   PASS  RemoveSubscriberServiceTest
+  ✓ remove subscriber from database success
+  ✓ remove subscriber from database failure
+  ✓ remove follower to database success
+  ✓ remove follower to database failure
+  ✓ update user subscriber count success
+  ✓ update user subscriber count failure
+  ✓ update user follower count success
+  ✓ update user follower count failure
+
+   FAIL  ReviewFollowerServiceTest
+  ✓ get all user followers succesget user followerss
+  ✓ get all user followers failure
+  ⨯ generate presigned url success
+  ⨯ generate presigned url failure
+
+   FAIL  ReviewSubscriberServiceTest
+  ✓ get all user subscribers success
+  ✓ get all user subscribers failure
+  ⨯ generate presigned url success
+  ⨯ generate presigned url failure
+
+   FAIL  UserProfileServiceTest
+  ⨯ get user information success
+  ✓ get user information failure
+  ⨯ generate presigned url success
+  ⨯ generate presigned url failure
+  ⨯ get user by name success
+  ✓ get user by name failure
+
+   FAIL  Tests\Feature\DeleteAccountControllerTest
+  ⨯ delete account success                                               0.13s  
+  ⨯ delete account fails on login attempt                                0.01s  
+  ⨯ delete account fails on clear post                                   0.01s  
+  ⨯ delete account fails on clear user information                       0.01s  
+  ⨯ delete account fails on clear session                                0.01s  
+
+   FAIL  Tests\Feature\Auth\LoginControllerTest
+  ⨯ validates empty input data                                           0.01s  
+  ⨯ validates invalid email format                                       0.01s  
+  ⨯ checks if user is verified                                           0.01s  
+  ⨯ checks login attempts limit                                          0.01s  
+  ⨯ validates incorrect password                                         0.01s  
+  ⨯ logs in successfully                                                 0.01s  
+  ✓ csrf protection                                                      0.01s  
+  ✓ s middleware is applied                                              0.01s  
+
+   FAIL  Tests\Feature\Auth\LogoutControllerTest
+  ⨯ logout service is called                                             0.01s  
+
+   FAIL  Tests\Feature\Auth\PasswordResetControllerTest
+  ⨯ user password reset successfully                                     0.02s  
+  ⨯ password reset fails when user not exists                            0.01s  
+  ⨯ password reset fails when verification rate limit exceeded           0.01s  
+  ⨯ password reset fails when insert send record fails                   0.01s  
+  ⨯ password reset fails when email sending fails                        0.01s  
+  ⨯ verification successfully                                            0.01s  
+  ⨯ password reset fails with invalid password                           0.01s  
+  ⨯ password reset fails with mismatched passwords                       0.01s  
+  ⨯ verification fails with invalid verification data                    0.01s  
+  ⨯ verification fails when clearing request fails                       0.01s  
+  ⨯ verification fails when updating user password fails                 0.01s  
+
+   PASS  Tests\Feature\Auth\RegisterControllerTest
+  ✓ user register successfully                                           0.01s  
+  ✓ register fails when user already exists                              0.01s  
+  ✓ register fails with invalid name                                     0.01s  
+  ✓ register fails with invalid email                                    0.01s  
+  ✓ register fails with invalid password                                 0.01s  
+  ✓ register fails with mismatched passwords                             0.01s  
+  ✓ register fails when user creation fails                              0.01s  
+  ✓ register fails when verification rate limit exceeded                 0.01s  
+  ✓ register fails when insert send record fails                         0.01s  
+  ✓ register fails when email sending fails                              0.01s  
+  ✓ verification successfully                                            0.01s  
+  ✓ verification fails with invalid verification data                    0.01s  
+  ✓ verification fails when clearing request fails                       0.01s  
+  ✓ verification fails when updating user state fails                    0.01s  
+
+   FAIL  Tests\Feature\CommentOnPostControllerTest
+  ⨯ comment on post success                                              0.02s  
+  ✓ add comment to post fails                                            0.01s  
+  ⨯ update post comments count fails                                     0.01s  
+
+   FAIL  Tests\Feature\CreatePostControllerTest
+  ⨯ create post success                                                  0.02s  
+  ⨯ change post amount fails                                             0.01s  
+  ⨯ upload base64 image fails                                            0.01s  
+  ⨯ create post to database fails                                        0.01s  
+
+   FAIL  Tests\Feature\DeletePostCommentControllerTest
+  ⨯ delete comment to post success                                       0.01s  
+  ✓ delete comment to post failure                                       0.01s  
+  ⨯ update post comments count fail                                      0.01s  
+
+   PASS  Tests\Feature\DeletePostControllerTest
+  ✓ delete post success                                                  0.01s  
+  ✓ change post amount fails                                             0.01s  
+  ✓ delete image fails                                                   0.01s  
+  ✓ delete post to database fails                                        0.01s  
+
+   PASS  Tests\Feature\DeleteReplyCommentControllerTest
+  ✓ delete reply comment success                                         0.01s  
+  ✓ delete reply comment failure                                         0.01s  
+  ✓ update comment reply count fail                                      0.01s  
+
+   FAIL  Tests\Feature\GetPostCommentControllerTest
+  ⨯ get post comment with valid parameters                               0.01s  
+  ⨯ get post comment with missing parameters                             0.01s  
+  ⨯ get post comment with invalid parameters                             0.01s  
+  ⨯ get post comment fail get image                                      0.01s  
+  ⨯ get comment replt with valid parameters                              0.01s  
+  ⨯ get comment replt with missing parameters                            0.01s  
+  ⨯ get comment reply with invalid parameters                            0.01s  
+  ⨯ get comment reply fail get image                                     0.01s  
+
+   FAIL  Tests\Feature\GetPostControllerTest
+  ⨯ get post with valid parameters                                       0.01s  
+  ⨯ get post with missing parameters                                     0.01s  
+  ⨯ get post with invalid parameters                                     0.01s  
+  ⨯ get post fail get image                                              0.01s  
+
+   FAIL  Tests\Feature\GetPostLikeControllerTest
+  ⨯ get post like with valid parameters                                  0.01s  
+  ⨯ get post like with missing parameters                                0.01s  
+  ⨯ get post like with invalid parameters                                0.01s  
+  ⨯ get post like fail get image                                         0.01s  
+
+   FAIL  Tests\Feature\LikePostControllerTest
+  ⨯ like post success                                                    0.01s  
+  ⨯ remove like success                                                  0.01s  
+  ✓ like post failure in add post like                                   0.01s  
+  ⨯ like post failure in increase post like count                        0.01s  
+  ✓ unlike post failure in remove post like                              0.01s  
+  ⨯ like post failure in decrease post like count                        0.01s  
+
+   PASS  Tests\Feature\ReplyToCommentControllerTest
+  ✓ reply to comment success                                             0.01s  
+  ✓ add comment to post fails                                            0.01s  
+  ✓ update post comments count fails                                     0.01s  
+
+   PASS  Tests\Feature\User\AddUserSubscriberControllerTest
+  ✓ add user subscriber success                                          0.01s  
+  ✓ add user subscriber failure on add subscriber                        0.01s  
+  ✓ add user subscriber failure on add follower                          0.01s  
+  ✓ add user subscriber failure on update subscriber count               0.01s  
+  ✓ add user subscriber failure on update follower count                 0.01s  
+  ✓ add user subscriber validation error                                 0.01s  
+
+   PASS  Tests\Feature\User\CreateAvatarControllerTest
+  ✓ create avatar success                                                0.01s  
+  ✓ create avatar upload image failure                                   0.01s  
+  ✓ create avatar update avatar failure                                  0.01s  
+  ✓ create avatar validation error                                       0.01s  
+
+   FAIL  Tests\Feature\User\GetFollowerControllerTest
+  ⨯ get follower success                                                 0.01s  
+  ⨯ get follower missing user id                                         0.01s  
+  ⨯ get follower failure on get all user followers                       0.01s  
+  ⨯ get follower failure on generate presigned url                       0.01s  
+
+   FAIL  Tests\Feature\User\GetSubscriberControllerTest
+  ⨯ get subscriber success                                               0.01s  
+  ⨯ get subscriber missing user id                                       0.01s  
+  ⨯ get subscriber failure on get all user subscribers                   0.01s  
+  ⨯ get subscriber failure on generate presigned url                     0.01s  
+
+   FAIL  Tests\Feature\GetUserProfileControllerTest
+  ⨯ get user information success                                         0.01s  
+  ⨯ get user information failure                                         0.01s  
+  ⨯ search by name success                                               0.01s  
+  ⨯ search by name failure                                               0.01s  
+  ⨯ get user information missing parameter                               0.01s  
+  ⨯ search by name missing parameter                                     0.01s  
+
+   PASS  Tests\Feature\User\RemoveSubscriberControllerTest
+  ✓ remove subscriber success                                            0.01s  
+  ✓ remove subscriber failure on remove subscriber from database         0.01s  
+  ✓ remove subscriber failure on remove follower to database             0.01s  
+  ✓ remove subscriber failure on update subscriber count                 0.01s  
+  ✓ remove subscriber failure on update follower count                   0.01s  
+
+   PASS  Tests\Feature\ExampleTest
+  ✓ the application returns a successful response                        0.01s  
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  LoginServiceTest > is verified not verified         ErrorException   
+  Attempt to read property "verified" on array
+
+  at app/Services/Auth/LoginService.php:44
+     40▕     }
+     41▕ 
+     42▕     //此帳號是否經過驗證
+     43▕     public function isVerified($email) {
+  ➜  44▕         if ($this->user->findUserByEmail($email)->verified === 0) {
+     45▕             $this->response['error'] = '用戶尚未經過驗證';
+     46▕         } else {
+     47▕             $this->response['success'] = true;
+     48▕         }
+
+  1   tests/Unit/Services/Auth/LoginServiceTest.php:23
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  LoginServiceTest > is verified already verified     ErrorException   
+  Attempt to read property "verified" on array
+
+  at app/Services/Auth/LoginService.php:44
+     40▕     }
+     41▕ 
+     42▕     //此帳號是否經過驗證
+     43▕     public function isVerified($email) {
+  ➜  44▕         if ($this->user->findUserByEmail($email)->verified === 0) {
+     45▕             $this->response['error'] = '用戶尚未經過驗證';
+     46▕         } else {
+     47▕             $this->response['success'] = true;
+     48▕         }
+
+  1   tests/Unit/Services/Auth/LoginServiceTest.php:30
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  LoginServiceTest > has exceed login attempt excee…  ErrorException   
+  Attempt to read property "attempts" on array
+
+  at app/Services/Auth/LoginService.php:54
+     50▕     }
+     51▕ 
+     52▕     //是否超過登入限制次數
+     53▕     public function hasExceedLoginAttempt($email) {
+  ➜  54▕         if ($this->user->findUserByEmail($email)->attempts > config('auth.max_login_attempt')) {
+     55▕             $this->response['error'] = '嘗試登入次數超過上限，請在一小時後嘗試';
+     56▕         } else {
+     57▕             $this->response['success'] = true;
+     58▕         }
+
+  1   tests/Unit/Services/Auth/LoginServiceTest.php:36
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  LoginServiceTest > has exceed login attempt not e…  ErrorException   
+  Attempt to read property "attempts" on array
+
+  at app/Services/Auth/LoginService.php:54
+     50▕     }
+     51▕ 
+     52▕     //是否超過登入限制次數
+     53▕     public function hasExceedLoginAttempt($email) {
+  ➜  54▕         if ($this->user->findUserByEmail($email)->attempts > config('auth.max_login_attempt')) {
+     55▕             $this->response['error'] = '嘗試登入次數超過上限，請在一小時後嘗試';
+     56▕         } else {
+     57▕             $this->response['success'] = true;
+     58▕         }
+
+  1   tests/Unit/Services/Auth/LoginServiceTest.php:43
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  LoginServiceTest > verify password incorrect        ErrorException   
+  Attempt to read property "password" on array
+
+  at app/Services/Auth/LoginService.php:65
+     61▕ 
+     62▕     //驗證密碼，回傳布林
+     63▕     public function verifyPassword($email,$password) {
+     64▕         $data = $this->user->findUserByEmail($email);
+  ➜  65▕         if (password_verify($password,$data->password) === false) {
+     66▕             $this->loginAttempt->recordFailedAttempt($this->getId($email), $_SERVER['REMOTE_ADDR']);
+     67▕             $this->response['error'] = '密碼錯誤';
+     68▕         } else {
+     69▕             $authenticatableUser = $this->user->find($data->id);
+
+  1   tests/Unit/Services/Auth/LoginServiceTest.php:51
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  LoginServiceTest > verify password correct          ErrorException   
+  Attempt to read property "password" on array
+
+  at app/Services/Auth/LoginService.php:65
+     61▕ 
+     62▕     //驗證密碼，回傳布林
+     63▕     public function verifyPassword($email,$password) {
+     64▕         $data = $this->user->findUserByEmail($email);
+  ➜  65▕         if (password_verify($password,$data->password) === false) {
+     66▕             $this->loginAttempt->recordFailedAttempt($this->getId($email), $_SERVER['REMOTE_ADDR']);
+     67▕             $this->response['error'] = '密碼錯誤';
+     68▕         } else {
+     69▕             $authenticatableUser = $this->user->find($data->id);
+
+  1   tests/Unit/Services/Auth/LoginServiceTest.php:59
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  LoginServiceTest > get id                           ErrorException   
+  Attempt to read property "id" on array
+
+  at app/Services/Auth/LoginService.php:86
+     82▕     }
+     83▕ 
+     84▕     //取得id並記錄於session中
+     85▕     public function getId($email) {
+  ➜  86▕         $id = $this->user->findUserByEmail($email)->id;
+     87▕         return $id;
+     88▕     }
+     89▕     
+     90▕     //取得使用者姓名並記錄於session中
+
+  1   tests/Unit/Services/Auth/LoginServiceTest.php:71
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  LoginServiceTest > get name                         ErrorException   
+  Attempt to read property "name" on array
+
+  at app/Services/Auth/LoginService.php:92
+     88▕     }
+     89▕     
+     90▕     //取得使用者姓名並記錄於session中
+     91▕     public function getName($email) {
+  ➜  92▕         $name = $this->user->findUserByEmail($email)->name;
+     93▕         return $name;
+     94▕     }
+     95▕ 
+     96▕     //啟動會話
+
+  1   tests/Unit/Services/Auth/LoginServiceTest.php:77
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  LoginServiceTest > start session success                             
+  Failed asserting that false is true.
+
+  at tests/Unit/Services/Auth/LoginServiceTest.php:87
+     83▕         $this->userMock->method('findUserByEmail')->willReturn(['id' => 123, 'name' => 'leon']);
+     84▕         
+     85▕         $response = $this->loginService->startSession($email);
+     86▕         
+  ➜  87▕         $this->assertTrue($response['success']);
+     88▕         $this->assertContains('登入成功', $response['data']);
+     89▕     }
+     90▕ 
+     91▕     public function testStartSessionError() {
+
+  1   tests/Unit/Services/Auth/LoginServiceTest.php:87
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  S3StorageServiceTest > handles upload failure                        
+  Failed asserting that two strings are equal.
+  -'圖片上傳失敗'
+  +'圖片上傳失敗：無法將檔案寫入 S3。'
+  
+
+  at tests/Unit/Services/Image/S3StorageServiceTest.php:91
+     87▕ 
+     88▕         $result = $this->s3StorageService->uploadBase64Image($base64Image, $folder);
+     89▕ 
+     90▕         $this->assertFalse($result['success']);
+  ➜  91▕         $this->assertEquals('圖片上傳失敗', $result['message']);
+     92▕     }
+     93▕ 
+     94▕     
+     95▕     public function testGeneratesPresignedUrlSuccessfully()
+
+  1   tests/Unit/Services/Image/S3StorageServiceTest.php:91
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  S3StorageServiceTest > s3 exists failure                             
+  Failed asserting that two strings are equal.
+  -'圖片上傳失敗'
+  +'圖片上傳失敗：檔案寫入 S3 成功，但無法確認檔案是否存在於 S3。'
+  
+
+  at tests/Unit/Services/Image/S3StorageServiceTest.php:157
+    153▕         $base64Image = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgAB/VMHEdIAAAAASUVORK5CYII=';
+    154▕         $folder = 'uploads';
+    155▕         $result = $this->s3StorageService->uploadBase64Image($base64Image, $folder);
+    156▕         $this->assertFalse($result['success']);
+  ➜ 157▕         $this->assertEquals('圖片上傳失敗', $result['message']);
+    158▕     }
+    159▕ 
+    160▕     public function testSuccessfulS3UrlGeneration() {
+    161▕         Storage::shouldReceive('disk->put')->andReturn(true);
+
+  1   tests/Unit/Services/Image/S3StorageServiceTest.php:157
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Unit\Services\Notification\NotificationServiceTe…  TypeError   
+  App\Services\Notification\NotificationService::getUnreadNotifications(): Return value must be of type Illuminate\Support\Collection, array returned
+
+  at app/Services/Notification/NotificationService.php:29
+     25▕         try {
+     26▕             $notifications = $this->notificationRepository->findUnreadByNotifiable($notifiableId, $type);
+     27▕             return [
+     28▕                 'status' => 'success',
+  ➜  29▕                 'data' => $notifications
+     30▕             ];
+     31▕         } catch (Exception $e) {
+     32▕             Log::error("Service error in getUnreadNotifications for {$notifiableId}, type {$type}: " . $e->getMessage(), ['exception' => $e]);
+     33▕             return [
+
+  1   app/Services/Notification/NotificationService.php:29
+  2   tests/Unit/Services/Notification/NotificationServiceTest.php:43
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Unit\Services\Notification\NotificationServiceTe…  Exception   
+  DB error
+
+  at tests/Unit/Services/Notification/NotificationServiceTest.php:60
+     56▕         $this->notificationRepositoryMock
+     57▕             ->shouldReceive('findUnreadByNotifiable')
+     58▕             ->once()
+     59▕             ->with($notifiableId, $type)
+  ➜  60▕             ->andThrow(new Exception('DB error'));
+     61▕ 
+     62▕         Log::shouldReceive('error')->once();
+     63▕ 
+     64▕         $result = $this->notificationService->getUnreadNotifications($notifiableId, $type);
+
+  1   tests/Unit/Services/Notification/NotificationServiceTest.php:60
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Unit\Services\Notification\NotificationServiceTe…  TypeError   
+  App\Services\Notification\NotificationService::markNotificationAsRead(): Return value must be of type bool, array returned
+
+  at app/Services/Notification/NotificationService.php:53
+     49▕         try {
+     50▕             $markAsRead = $this->notificationRepository->markAsRead($notificationId);
+     51▕             if ($markAsRead) {
+     52▕                 return [
+  ➜  53▕                     'status' => 'success',
+     54▕                     'message' => '通知已成功標注為已讀'
+     55▕                 ];
+     56▕             } else {
+     57▕                 return [
+
+  1   app/Services/Notification/NotificationService.php:53
+  2   tests/Unit/Services/Notification/NotificationServiceTest.php:83
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Unit\Services\Notification\NotificationServiceTe…  TypeError   
+  App\Services\Notification\NotificationService::markNotificationAsRead(): Return value must be of type bool, array returned
+
+  at app/Services/Notification/NotificationService.php:58
+     54▕                     'message' => '通知已成功標注為已讀'
+     55▕                 ];
+     56▕             } else {
+     57▕                 return [
+  ➜  58▕                     'status' => 'false', 
+     59▕                     'message' => '通知標注已讀失敗'
+     60▕                 ];
+     61▕             }
+     62▕         } catch (Exception $e) {
+
+  1   app/Services/Notification/NotificationService.php:58
+  2   tests/Unit/Services/Notification/NotificationServiceTest.php:101
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Unit\Services\Notification\NotificationServiceTe…  Exception   
+  DB error
+
+  at tests/Unit/Services/Notification/NotificationServiceTest.php:117
+    113▕         $this->notificationRepositoryMock
+    114▕             ->shouldReceive('markAsRead')
+    115▕             ->once()
+    116▕             ->with($notificationId)
+  ➜ 117▕             ->andThrow(new Exception('DB error'));
+    118▕ 
+    119▕         Log::shouldReceive('error')->once();
+    120▕ 
+    121▕         $result = $this->notificationService->markNotificationAsRead($notificationId);
+
+  1   tests/Unit/Services/Notification/NotificationServiceTest.php:117
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Unit\Services\Notification\NotificationServiceTe…  TypeError   
+  App\Services\Notification\NotificationService::markAllNotificationsAsRead(): Return value must be of type int, array returned
+
+  at app/Services/Notification/NotificationService.php:84
+     80▕         try {
+     81▕             $markAllAsRead = $this->notificationRepository->markAllAsRead($notifiableId, $notifiableType);
+     82▕             if ($markAllAsRead) {
+     83▕                 return [
+  ➜  84▕                     'status' => 'success',
+     85▕                     'message' => '通知已成功標注為已讀'
+     86▕                 ];
+     87▕             } else {
+     88▕                 return [
+
+  1   app/Services/Notification/NotificationService.php:84
+  2   tests/Unit/Services/Notification/NotificationServiceTest.php:140
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Unit\Services\Notification\NotificationServiceTe…  TypeError   
+  App\Services\Notification\NotificationService::markAllNotificationsAsRead(): Return value must be of type int, array returned
+
+  at app/Services/Notification/NotificationService.php:89
+     85▕                     'message' => '通知已成功標注為已讀'
+     86▕                 ];
+     87▕             } else {
+     88▕                 return [
+  ➜  89▕                     'status' => 'false', 
+     90▕                     'message' => '通知標注已讀失敗'
+     91▕                 ];
+     92▕             }
+     93▕         } catch (Exception $e) {
+
+  1   app/Services/Notification/NotificationService.php:89
+  2   tests/Unit/Services/Notification/NotificationServiceTest.php:159
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Unit\Services\Notification\NotificationServiceTe…  Exception   
+  DB error
+
+  at tests/Unit/Services/Notification/NotificationServiceTest.php:176
+    172▕         $this->notificationRepositoryMock
+    173▕             ->shouldReceive('markAllAsRead')
+    174▕             ->once()
+    175▕             ->with($notifiableId, $notifiableType)
+  ➜ 176▕             ->andThrow(new Exception('DB error'));
+    177▕ 
+    178▕         Log::shouldReceive('error')->once();
+    179▕ 
+    180▕         $result = $this->notificationService->markAllNotificationsAsRead($notifiableId, $notifiableType);
+
+  1   tests/Unit/Services/Notification/NotificationServiceTest.php:176
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  AddCommentServiceTest > update post comments count success   Error   
+  Call to undefined method App\Services\Post\AddCommentService::updatePostCommentsCount()
+
+  at tests/Unit/Services/Post/AddCommentServiceTest.php:59
+     55▕ 
+     56▕      public function testUpdatePostCommentsCountSuccess() {
+     57▕         $this->post->method('updateCommentsCount')->willReturn(true);
+     58▕ 
+  ➜  59▕         $response = $this->addCommentService->updatePostCommentsCount(1, 1);
+     60▕ 
+     61▕         $this->assertTrue($response['success']);
+     62▕         $this->assertEmpty($response['error']);
+     63▕     }
+
+  1   tests/Unit/Services/Post/AddCommentServiceTest.php:59
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  AddCommentServiceTest > update post comments count failure   Error   
+  Call to undefined method App\Services\Post\AddCommentService::updatePostCommentsCount()
+
+  at tests/Unit/Services/Post/AddCommentServiceTest.php:68
+     64▕ 
+     65▕     public function testUpdatePostCommentsCountFailure() {
+     66▕         $this->post->method('updateCommentsCount')->willReturn(false);
+     67▕ 
+  ➜  68▕         $response = $this->addCommentService->updatePostCommentsCount(1, 1);
+     69▕ 
+     70▕         $this->assertFalse($response['success']);
+     71▕         $this->assertEquals('更新貼文評論數失敗', $response['error']);
+     72▕     }
+
+  1   tests/Unit/Services/Post/AddCommentServiceTest.php:68
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  DeleteCommentServiceTest > update post comments count succ…  Error   
+  Call to undefined method App\Services\Post\DeleteCommentService::updatePostCommentsCount()
+
+  at tests/Unit/Services/Post/DeleteCommentServiceTest.php:70
+     66▕ 
+     67▕     public function testUpdatePostCommentsCountSuccess() {
+     68▕         $this->post->method('updateCommentsCount')->willReturn(true);
+     69▕ 
+  ➜  70▕         $response = $this->deleteCommentService->updatePostCommentsCount(1, -1);
+     71▕ 
+     72▕         $this->assertTrue($response['success']);
+     73▕         $this->assertEmpty($response['error']);
+     74▕     }
+
+  1   tests/Unit/Services/Post/DeleteCommentServiceTest.php:70
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  DeleteCommentServiceTest > update post comments count fail…  Error   
+  Call to undefined method App\Services\Post\DeleteCommentService::updatePostCommentsCount()
+
+  at tests/Unit/Services/Post/DeleteCommentServiceTest.php:79
+     75▕ 
+     76▕     public function testUpdatePostCommentsCountFailure() {
+     77▕         $this->post->method('updateCommentsCount')->willReturn(false);
+     78▕ 
+  ➜  79▕         $response = $this->deleteCommentService->updatePostCommentsCount(1, -1);
+     80▕ 
+     81▕         $this->assertFalse($response['success']);
+     82▕         $this->assertEquals('更新貼文評論數失敗', $response['error']);
+     83▕     }
+
+  1   tests/Unit/Services/Post/DeleteCommentServiceTest.php:79
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  DeletePostServiceTest > delete image success                         
+  Failed asserting that null is true.
+
+  at tests/Unit/Services/Post/DeletePostServiceTest.php:64
+     60▕         $this->postMock->method('searchPost')->willReturn(['image_url' => 'fileName']);
+     61▕ 
+     62▕         $response = $this->deletePostService->deleteImage(1);
+     63▕ 
+  ➜  64▕         $this->assertTrue($response['success']);
+     65▕     }
+     66▕ 
+     67▕     public function testDeleteImageFail() {
+     68▕         $this->s3StorageServiceMock->method('deleteImage')->with('post/', 'fileName')->willReturn(['success' => false, 'error' => '刪除圖片失敗']);
+
+  1   tests/Unit/Services/Post/DeletePostServiceTest.php:64
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  DeletePostServiceTest > delete image fail                            
+  Failed asserting that null is false.
+
+  at tests/Unit/Services/Post/DeletePostServiceTest.php:73
+     69▕         $this->postMock->method('searchPost')->willReturn(['image_url' => 'fileName']);
+     70▕ 
+     71▕         $response = $this->deletePostService->deleteImage(1);
+     72▕ 
+  ➜  73▕         $this->assertFalse($response['success']);
+     74▕         $this->assertEquals('刪除圖片失敗', $response['error']);
+     75▕     }
+     76▕ }
+
+  1   tests/Unit/Services/Post/DeletePostServiceTest.php:73
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  LikePostServiceTest > update p…  MethodCannotBeConfiguredException   
+  Trying to configure method "updateLikesCount" which cannot be configured because it does not exist, has not been specified, is final, or is static
+
+  at tests/Unit/Services/Post/LikePostServiceTest.php:71
+     67▕     public function testUpdatePostLikeCount() {
+     68▕         $postId = 100;
+     69▕         $amount = 1;
+     70▕ 
+  ➜  71▕         $this->post->method('updateLikesCount')->willReturn(true);
+     72▕ 
+     73▕         $response = $this->likePostService->increasePostLikeCount($postId, $amount);
+     74▕ 
+     75▕         $this->assertTrue($response['success']);
+
+  1   tests/Unit/Services/Post/LikePostServiceTest.php:71
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  LikePostServiceTest > update p…  MethodCannotBeConfiguredException   
+  Trying to configure method "updateLikesCount" which cannot be configured because it does not exist, has not been specified, is final, or is static
+
+  at tests/Unit/Services/Post/LikePostServiceTest.php:82
+     78▕     public function testUpdatePostLikeCountFailure() {
+     79▕         $postId = 100;
+     80▕         $amount = 1;
+     81▕ 
+  ➜  82▕         $this->post->method('updateLikesCount')->willReturn(false);
+     83▕ 
+     84▕         $response = $this->likePostService->increasePostLikeCount($postId, $amount);
+     85▕ 
+     86▕         $this->assertFalse($response['success']);
+
+  1   tests/Unit/Services/Post/LikePostServiceTest.php:82
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  ReviewCommentServiceTest > fetch post comment success                
+  Failed asserting that two arrays are equal.
+   Array (
+  -    0 => [...]
+  +    'id' => 1
+  +    'post_id' => 1
+  +    'user_id' => 2
+  +    'content' => 'Test comment'
+   )
+  
+
+  at tests/Unit/Services/Post/ReviewCommentServiceTest.php:31
+     27▕         
+     28▕         $response = $this->reviewCommentService->fetchPostComment($postId);
+     29▕         
+     30▕         $this->assertTrue($response['success']);
+  ➜  31▕         $this->assertEquals($mockData, $response['data'][0]);
+     32▕     }
+     33▕ 
+     34▕     public function testFetchPostCommentFailure() {
+     35▕         $postId = 1;
+
+  1   tests/Unit/Services/Post/ReviewCommentServiceTest.php:31
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  ReviewCommentServiceTest > fetch comment reply success               
+  Failed asserting that two arrays are equal.
+   Array (
+  -    0 => [...]
+  +    'id' => 20
+  +    'comment_id' => 10
+  +    'user_id' => 3
+  +    'content' => 'Reply comment'
+   )
+  
+
+  at tests/Unit/Services/Post/ReviewCommentServiceTest.php:56
+     52▕         
+     53▕         $response = $this->reviewCommentService->fetchCommentReply($commentId);
+     54▕         
+     55▕         $this->assertTrue($response['success']);
+  ➜  56▕         $this->assertEquals($mockData, $response['data'][0]);
+     57▕     }
+     58▕ 
+     59▕     public function testFetchCommentReplyFailure() {
+     60▕         $commentId = 10;
+
+  1   tests/Unit/Services/Post/ReviewCommentServiceTest.php:56
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  ReviewCommentServiceTest > generate presigned url success            
+  Expectation failed for method name is "generatePresignedUrl" when invoked zero or more times
+Parameter 0 for invocation App\Services\Image\S3StorageService::generatePresignedUrl('test.jpg', '+1 hour') does not match expected value.
+Failed asserting that two strings are equal.
+  -'avatar/'
+  +'test.jpg'
+  
+
+  at app/Services/Post/ReviewCommentService.php:50
+     46▕     }
+     47▕ 
+     48▕     //取得用戶臨時頭像url
+     49▕     public function generatePresignedUrl($fileName) {
+  ➜  50▕         $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl($fileName);
+     51▕         return $generatePresignedUrl;
+     52▕     }
+     53▕ 
+     54▕ }
+
+  1   app/Services/Post/ReviewCommentService.php:50
+  2   tests/Unit/Services/Post/ReviewCommentServiceTest.php:76
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  ReviewCommentServiceTest > generate presigned url failure            
+  Expectation failed for method name is "generatePresignedUrl" when invoked zero or more times
+Parameter 0 for invocation App\Services\Image\S3StorageService::generatePresignedUrl('test.jpg', '+1 hour') does not match expected value.
+Failed asserting that two strings are equal.
+  -'avatar/'
+  +'test.jpg'
+  
+
+  at app/Services/Post/ReviewCommentService.php:50
+     46▕     }
+     47▕ 
+     48▕     //取得用戶臨時頭像url
+     49▕     public function generatePresignedUrl($fileName) {
+  ➜  50▕         $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl($fileName);
+     51▕         return $generatePresignedUrl;
+     52▕     }
+     53▕ 
+     54▕ }
+
+  1   app/Services/Post/ReviewCommentService.php:50
+  2   tests/Unit/Services/Post/ReviewCommentServiceTest.php:91
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  ReviewLikeServiceTest > get like user by post success                
+  Failed asserting that actual size 2 matches expected size 1.
+
+  at tests/Unit/Services/Post/ReviewLikeServiceTest.php:30
+     26▕         $result = $this->reviewLikeService->getLikeUserByPost($postId);
+     27▕ 
+     28▕         $this->assertTrue($result['success']);
+     29▕         $this->assertEmpty($result['error']);
+  ➜  30▕         $this->assertCount(1, $result['data']);
+     31▕         $this->assertEquals($mockResponse, $result['data'][0]);
+     32▕     }
+     33▕ 
+     34▕     public function testGetLikeUserByPostFailure() {
+
+  1   tests/Unit/Services/Post/ReviewLikeServiceTest.php:30
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  ReviewLikeServiceTest > generate presigned url success               
+  Expectation failed for method name is "generatePresignedUrl" when invoked zero or more times
+Parameter 0 for invocation App\Services\Image\S3StorageService::generatePresignedUrl('test.jpg', '+1 hour') does not match expected value.
+Failed asserting that two strings are equal.
+  -'avatar/'
+  +'test.jpg'
+  
+
+  at app/Services/Post/ReviewLikeService.php:39
+     35▕     }
+     36▕ 
+     37▕     //取得用戶臨時頭像url
+     38▕     public function generatePresignedUrl($fileName) {
+  ➜  39▕         $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl($fileName);
+     40▕         return $generatePresignedUrl;
+     41▕     }
+     42▕ }
+
+  1   app/Services/Post/ReviewLikeService.php:39
+  2   tests/Unit/Services/Post/ReviewLikeServiceTest.php:52
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  ReviewLikeServiceTest > generate presigned url failure               
+  Expectation failed for method name is "generatePresignedUrl" when invoked zero or more times
+Parameter 0 for invocation App\Services\Image\S3StorageService::generatePresignedUrl('test.jpg', '+1 hour') does not match expected value.
+Failed asserting that two strings are equal.
+  -'avatar/'
+  +'test.jpg'
+  
+
+  at app/Services/Post/ReviewLikeService.php:39
+     35▕     }
+     36▕ 
+     37▕     //取得用戶臨時頭像url
+     38▕     public function generatePresignedUrl($fileName) {
+  ➜  39▕         $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl($fileName);
+     40▕         return $generatePresignedUrl;
+     41▕     }
+     42▕ }
+
+  1   app/Services/Post/ReviewLikeService.php:39
+  2   tests/Unit/Services/Post/ReviewLikeServiceTest.php:67
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  ReviewPostServiceTest > fetch post info success                      
+  null does not match expected type "array".
+
+  at tests/Unit/Services/Post/ReviewPostServiceTest.php:33
+     29▕ 
+     30▕         $response = $this->reviewPostService->fetchPostInfo($userId, $postId, $tag);
+     31▕ 
+     32▕         $this->assertTrue($response['success']);
+  ➜  33▕         $this->assertEquals($expectedResult, $response['data'][0]);
+     34▕         $this->assertEmpty($response['error']);
+     35▕     }
+     36▕ 
+     37▕
+
+  1   tests/Unit/Services/Post/ReviewPostServiceTest.php:33
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  ReviewPostServiceTest > fetch post info with no params               
+  null does not match expected type "array".
+
+  at tests/Unit/Services/Post/ReviewPostServiceTest.php:59
+     55▕ 
+     56▕         $response = $this->reviewPostService->fetchPostInfo();
+     57▕ 
+     58▕         $this->assertTrue($response['success']);
+  ➜  59▕         $this->assertEquals(['id' => 123, 'user_id' => 1, 'content' => 'Test post without filters'], $response['data'][0]);
+     60▕     }
+     61▕ 
+     62▕     public function testGeneratePresignedUrlSuccess() {
+     63▕         $fileName = 'test.jpg';
+
+  1   tests/Unit/Services/Post/ReviewPostServiceTest.php:59
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  ReviewPostServiceTest > generate presigned url success               
+  Expectation failed for method name is "generatePresignedUrl" when invoked zero or more times
+Parameter 0 for invocation App\Services\Image\S3StorageService::generatePresignedUrl('test.jpg', '+1 hour') does not match expected value.
+Failed asserting that two strings are equal.
+  -'post/'
+  +'test.jpg'
+  
+
+  at app/Services/Post/ReviewPostService.php:38
+     34▕     }
+     35▕ 
+     36▕     //取得貼文圖片
+     37▕     public function generatePresignedUrl($fileName) {
+  ➜  38▕         $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl($fileName);
+     39▕         return $generatePresignedUrl;
+     40▕     }
+     41▕ }
+
+  1   app/Services/Post/ReviewPostService.php:38
+  2   tests/Unit/Services/Post/ReviewPostServiceTest.php:68
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  ReviewPostServiceTest > generate presigned url failure               
+  Expectation failed for method name is "generatePresignedUrl" when invoked zero or more times
+Parameter 0 for invocation App\Services\Image\S3StorageService::generatePresignedUrl('test.jpg', '+1 hour') does not match expected value.
+Failed asserting that two strings are equal.
+  -'post/'
+  +'test.jpg'
+  
+
+  at app/Services/Post/ReviewPostService.php:38
+     34▕     }
+     35▕ 
+     36▕     //取得貼文圖片
+     37▕     public function generatePresignedUrl($fileName) {
+  ➜  38▕         $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl($fileName);
+     39▕         return $generatePresignedUrl;
+     40▕     }
+     41▕ }
+
+  1   app/Services/Post/ReviewPostService.php:38
+  2   tests/Unit/Services/Post/ReviewPostServiceTest.php:83
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  UnlikePostServiceTest > update…  MethodCannotBeConfiguredException   
+  Trying to configure method "updateLikesCount" which cannot be configured because it does not exist, has not been specified, is final, or is static
+
+  at tests/Unit/Services/Post/UnlikePostServiceTest.php:47
+     43▕     public function testUpdatePostLikeCount() {
+     44▕         $postId = 100;
+     45▕         $amount = 1;
+     46▕ 
+  ➜  47▕         $this->post->method('updateLikesCount')->willReturn(true);
+     48▕ 
+     49▕         $response = $this->unlikePostService->decreasePostLikeCount($postId, $amount);
+     50▕ 
+     51▕         $this->assertTrue($response['success']);
+
+  1   tests/Unit/Services/Post/UnlikePostServiceTest.php:47
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  UnlikePostServiceTest > update…  MethodCannotBeConfiguredException   
+  Trying to configure method "updateLikesCount" which cannot be configured because it does not exist, has not been specified, is final, or is static
+
+  at tests/Unit/Services/Post/UnlikePostServiceTest.php:58
+     54▕     public function testUpdatePostLikeCountFailure() {
+     55▕         $postId = 100;
+     56▕         $amount = 1;
+     57▕ 
+  ➜  58▕         $this->post->method('updateLikesCount')->willReturn(false);
+     59▕ 
+     60▕         $response = $this->unlikePostService->decreasePostLikeCount($postId, $amount);
+     61▕ 
+     62▕         $this->assertFalse($response['success']);
+
+  1   tests/Unit/Services/Post/UnlikePostServiceTest.php:58
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  CreateAvatarServiceTest > upload base64 image success                
+  Expectation failed for method name is "uploadBase64Image" when invoked zero or more times
+Parameter 1 for invocation App\Services\Image\S3StorageService::uploadBase64Image('base64Image', 'avatar') does not match expected value.
+Failed asserting that two strings are equal.
+  -'avatar/'
+  +'avatar'
+  
+
+  at app/Services/User/CreateAvatarService.php:25
+     21▕     }
+     22▕ 
+     23▕     //上傳圖片，並回傳圖片網址
+     24▕     public function uploadBase64Image($base64Image){
+  ➜  25▕         $uploadBase64Image = $this->s3StorageService->uploadBase64Image($base64Image,'avatar');
+     26▕         return $uploadBase64Image;
+     27▕     }
+     28▕ 
+     29▕      //在資料庫添加該使用者頭貼資訊
+
+  1   app/Services/User/CreateAvatarService.php:25
+  2   tests/Unit/Services/User/CreateAvatarServiceTest.php:45
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  CreateAvatarServiceTest > upload base64 image fail                   
+  Expectation failed for method name is "uploadBase64Image" when invoked zero or more times
+Parameter 1 for invocation App\Services\Image\S3StorageService::uploadBase64Image('base64Image', 'avatar') does not match expected value.
+Failed asserting that two strings are equal.
+  -'avatar/'
+  +'avatar'
+  
+
+  at app/Services/User/CreateAvatarService.php:25
+     21▕     }
+     22▕ 
+     23▕     //上傳圖片，並回傳圖片網址
+     24▕     public function uploadBase64Image($base64Image){
+  ➜  25▕         $uploadBase64Image = $this->s3StorageService->uploadBase64Image($base64Image,'avatar');
+     26▕         return $uploadBase64Image;
+     27▕     }
+     28▕ 
+     29▕      //在資料庫添加該使用者頭貼資訊
+
+  1   app/Services/User/CreateAvatarService.php:25
+  2   tests/Unit/Services/User/CreateAvatarServiceTest.php:54
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  ReviewFollowerServiceTest > generate presigned url success           
+  Expectation failed for method name is "generatePresignedUrl" when invoked zero or more times
+Parameter 0 for invocation App\Services\Image\S3StorageService::generatePresignedUrl('test.jpg', '+1 hour') does not match expected value.
+Failed asserting that two strings are equal.
+  -'avatar/'
+  +'test.jpg'
+  
+
+  at app/Services/User/ReviewFollowerService.php:37
+     33▕     }
+     34▕ 
+     35▕      //取得使用者頭像臨時url
+     36▕     public function generatePresignedUrl($fileName) {
+  ➜  37▕         $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl($fileName);
+     38▕         return $generatePresignedUrl;
+     39▕     }
+     40▕ }
+
+  1   app/Services/User/ReviewFollowerService.php:37
+  2   tests/Unit/Services/User/ReviewFollowerServiceTest.php:47
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  ReviewFollowerServiceTest > generate presigned url failure           
+  Expectation failed for method name is "generatePresignedUrl" when invoked zero or more times
+Parameter 0 for invocation App\Services\Image\S3StorageService::generatePresignedUrl('test.jpg', '+1 hour') does not match expected value.
+Failed asserting that two strings are equal.
+  -'avatar/'
+  +'test.jpg'
+  
+
+  at app/Services/User/ReviewFollowerService.php:37
+     33▕     }
+     34▕ 
+     35▕      //取得使用者頭像臨時url
+     36▕     public function generatePresignedUrl($fileName) {
+  ➜  37▕         $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl($fileName);
+     38▕         return $generatePresignedUrl;
+     39▕     }
+     40▕ }
+
+  1   app/Services/User/ReviewFollowerService.php:37
+  2   tests/Unit/Services/User/ReviewFollowerServiceTest.php:62
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  ReviewSubscriberServiceTest > generate presigned url success         
+  Expectation failed for method name is "generatePresignedUrl" when invoked zero or more times
+Parameter 0 for invocation App\Services\Image\S3StorageService::generatePresignedUrl('test.jpg', '+1 hour') does not match expected value.
+Failed asserting that two strings are equal.
+  -'avatar/'
+  +'test.jpg'
+  
+
+  at app/Services/User/ReviewSubscriberService.php:37
+     33▕     }
+     34▕ 
+     35▕     //取得使用者頭像臨時url
+     36▕     public function generatePresignedUrl($fileName) {
+  ➜  37▕         $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl($fileName);
+     38▕         return $generatePresignedUrl;
+     39▕     }
+     40▕ }
+
+  1   app/Services/User/ReviewSubscriberService.php:37
+  2   tests/Unit/Services/User/ReviewSubscriberServiceTest.php:47
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  ReviewSubscriberServiceTest > generate presigned url failure         
+  Expectation failed for method name is "generatePresignedUrl" when invoked zero or more times
+Parameter 0 for invocation App\Services\Image\S3StorageService::generatePresignedUrl('test.jpg', '+1 hour') does not match expected value.
+Failed asserting that two strings are equal.
+  -'avatar/'
+  +'test.jpg'
+  
+
+  at app/Services/User/ReviewSubscriberService.php:37
+     33▕     }
+     34▕ 
+     35▕     //取得使用者頭像臨時url
+     36▕     public function generatePresignedUrl($fileName) {
+  ➜  37▕         $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl($fileName);
+     38▕         return $generatePresignedUrl;
+     39▕     }
+     40▕ }
+
+  1   app/Services/User/ReviewSubscriberService.php:37
+  2   tests/Unit/Services/User/ReviewSubscriberServiceTest.php:62
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  UserProfileServiceTest > get user information success                
+  Failed asserting that null matches expected 'John Doe'.
+
+  at tests/Unit/Services/User/UserProfileServiceTest.php:36
+     32▕ 
+     33▕         $response = $this->userProfileService->getUserInformation($userId);
+     34▕ 
+     35▕         $this->assertTrue($response['success']);
+  ➜  36▕         $this->assertEquals('John Doe', $response['data']['name']);
+     37▕         $this->assertEquals('https://example.com/avatar.jpg', $response['data']['avatarUrl']);
+     38▕         $this->assertEquals(10, $response['data']['postAmount']);
+     39▕         $this->assertEquals(200, $response['data']['subscriberCount']);
+     40▕         $this->assertEquals(150, $response['data']['followerCount']);
+
+  1   tests/Unit/Services/User/UserProfileServiceTest.php:36
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  UserProfileServiceTest > generate presigned url success              
+  Expectation failed for method name is "generatePresignedUrl" when invoked zero or more times
+Parameter 0 for invocation App\Services\Image\S3StorageService::generatePresignedUrl('test.jpg', '+1 hour') does not match expected value.
+Failed asserting that two strings are equal.
+  -'avatar/'
+  +'test.jpg'
+  
+
+  at app/Services/User/UserProfileService.php:57
+     53▕     }
+     54▕ 
+     55▕     //取得使用者頭像臨時url
+     56▕     public function generatePresignedUrl($fileName) {
+  ➜  57▕         $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl($fileName);
+     58▕         return $generatePresignedUrl;
+     59▕     }
+     60▕ 
+     61▕ }
+
+  1   app/Services/User/UserProfileService.php:57
+  2   tests/Unit/Services/User/UserProfileServiceTest.php:60
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  UserProfileServiceTest > generate presigned url failure              
+  Expectation failed for method name is "generatePresignedUrl" when invoked zero or more times
+Parameter 0 for invocation App\Services\Image\S3StorageService::generatePresignedUrl('test.jpg', '+1 hour') does not match expected value.
+Failed asserting that two strings are equal.
+  -'avatar/'
+  +'test.jpg'
+  
+
+  at app/Services/User/UserProfileService.php:57
+     53▕     }
+     54▕ 
+     55▕     //取得使用者頭像臨時url
+     56▕     public function generatePresignedUrl($fileName) {
+  ➜  57▕         $generatePresignedUrl = $this->s3StorageService->generatePresignedUrl($fileName);
+     58▕         return $generatePresignedUrl;
+     59▕     }
+     60▕ 
+     61▕ }
+
+  1   app/Services/User/UserProfileService.php:57
+  2   tests/Unit/Services/User/UserProfileServiceTest.php:75
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  UserProfileServiceTest > get user by name success                    
+  Failed asserting that null matches expected 1.
+
+  at tests/Unit/Services/User/UserProfileServiceTest.php:95
+     91▕ 
+     92▕         $response = $this->userProfileService->getUserByName($name);
+     93▕ 
+     94▕         $this->assertTrue($response['success']);
+  ➜  95▕         $this->assertEquals(1, $response['data']['id']);
+     96▕         $this->assertEquals('John Doe', $response['data']['name']);
+     97▕         $this->assertEquals('https://example.com/avatar.jpg', $response['data']['avatarUrl']);
+     98▕     }
+     99▕
+
+  1   tests/Unit/Services/User/UserProfileServiceTest.php:95
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\DeleteAccountControllerTest > delete account succes…   
+  Expected response status code [200] but received 419.
+Failed asserting that 419 is identical to 200.
+
+  at tests/Feature/Controllers/Auth/DeleteAccountControllerTest.php:53
+     49▕ 
+     50▕         $response = $this->delete('/deleteAccount');
+     51▕ 
+     52▕         // 斷言回應
+  ➜  53▕         $response->assertStatus(200)
+     54▕                  ->assertJson([
+     55▕                     'success' => true,
+     56▕                     'error' => '',
+     57▕                     'data' => ['成功刪除帳戶']
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\DeleteAccountControllerTest > delete account fails…    
+  Expected response status code [400] but received 419.
+Failed asserting that 419 is identical to 400.
+
+  at tests/Feature/Controllers/Auth/DeleteAccountControllerTest.php:67
+     63▕ 
+     64▕       
+     65▕         $response = $this->delete('/deleteAccount');
+     66▕ 
+  ➜  67▕         $response->assertStatus(400)
+     68▕                  ->assertJson(['success' => false, 'error' => '清除登入請求紀錄失敗']);
+     69▕     }
+     70▕     public function testDeleteAccountFailsOnClearPost() {
+     71▕         Session::put('userId', 1);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\DeleteAccountControllerTest > delete account fails…    
+  Expected response status code [500] but received 419.
+Failed asserting that 419 is identical to 500.
+
+  at tests/Feature/Controllers/Auth/DeleteAccountControllerTest.php:77
+     73▕         $this->deleteAccountService->shouldReceive('clearPost')->andReturn(['success' => false, 'error'=>'刪除貼文失敗']);
+     74▕ 
+     75▕         $response = $this->delete('/deleteAccount');
+     76▕ 
+  ➜  77▕         $response->assertStatus(500)
+     78▕                  ->assertJson(['success' => false, 'error' => '刪除貼文失敗']);
+     79▕     }
+     80▕ 
+     81▕     public function testDeleteAccountFailsOnClearUserInformation() {
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\DeleteAccountControllerTest > delete account fails…    
+  Expected response status code [500] but received 419.
+Failed asserting that 419 is identical to 500.
+
+  at tests/Feature/Controllers/Auth/DeleteAccountControllerTest.php:89
+     85▕         $this->deleteAccountService->shouldReceive('clearUserInformation')->andReturn(['success' => false, 'error'=>'刪除用戶資料失敗']);
+     86▕ 
+     87▕         $response = $this->delete('/deleteAccount');
+     88▕ 
+  ➜  89▕         $response->assertStatus(500)
+     90▕                  ->assertJson(['success' => false, 'error' => '刪除用戶資料失敗']);
+     91▕     }
+     92▕ 
+     93▕     public function testDeleteAccountFailsOnClearSession() {
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\DeleteAccountControllerTest > delete account fails…    
+  Expected response status code [500] but received 419.
+Failed asserting that 419 is identical to 500.
+
+  at tests/Feature/Controllers/Auth/DeleteAccountControllerTest.php:102
+     98▕         $this->deleteAccountService->shouldReceive('clearSession')->andReturn(['success' => false, 'error' => '清除會話資料時發生錯誤']);
+     99▕         
+    100▕         $response = $this->delete('/deleteAccount');
+    101▕         
+  ➜ 102▕         $response->assertStatus(500)
+    103▕             ->assertJson(['success' => false, 'error' => '清除會話資料時發生錯誤']);
+    104▕     }
+    105▕ }
+    106▕
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\LoginControllerTest > validates empty input da…   
+  Expected response status code [400] but received 419.
+Failed asserting that 419 is identical to 400.
+
+  at tests/Feature/Controllers/Auth/LoginControllerTest.php:54
+     50▕             'email' => '',
+     51▕             'password' => ''
+     52▕         ]);
+     53▕ 
+  ➜  54▕         $response->assertStatus(400)
+     55▕             ->assertJson([
+     56▕                 'success' => false,
+     57▕                 'error' => '缺少必要的登入資料'
+     58▕             ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\LoginControllerTest > validates invalid email…    
+  Expected response status code [400] but received 419.
+Failed asserting that 419 is identical to 400.
+
+  at tests/Feature/Controllers/Auth/LoginControllerTest.php:67
+     63▕             'email' => 'invalid-email',
+     64▕             'password' => 'password123'
+     65▕         ]);
+     66▕ 
+  ➜  67▕         $response->assertStatus(400)
+     68▕             ->assertJson([
+     69▕                 'success' => false,
+     70▕                 'error' => '無效的郵箱格式'
+     71▕             ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\LoginControllerTest > checks if user is verifi…   
+  Expected response status code [403] but received 419.
+Failed asserting that 419 is identical to 403.
+
+  at tests/Feature/Controllers/Auth/LoginControllerTest.php:87
+     83▕             'email' => 'test@example.com',
+     84▕             'password' => 'password123'
+     85▕         ]);
+     86▕ 
+  ➜  87▕         $response->assertStatus(403)
+     88▕             ->assertJson([
+     89▕                 'success' => false,
+     90▕                 'error' => '用戶尚未經過驗證'
+     91▕             ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\LoginControllerTest > checks login attempts li…   
+  Expected response status code [429] but received 419.
+Failed asserting that 419 is identical to 429.
+
+  at tests/Feature/Controllers/Auth/LoginControllerTest.php:110
+    106▕             'email' => 'test@example.com',
+    107▕             'password' => 'password123'
+    108▕         ]);
+    109▕ 
+  ➜ 110▕         $response->assertStatus(429)
+    111▕             ->assertJson([
+    112▕                 'success' => false,
+    113▕                 'error' => '嘗試登入次數超過上限，請在一小時後嘗試'
+    114▕             ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\LoginControllerTest > validates incorrect pass…   
+  Expected response status code [401] but received 419.
+Failed asserting that 419 is identical to 401.
+
+  at tests/Feature/Controllers/Auth/LoginControllerTest.php:148
+    144▕             'email' => 'test@example.com',
+    145▕             'password' => 'wrong_password'
+    146▕         ]);
+    147▕ 
+  ➜ 148▕         $response->assertStatus(401)
+    149▕             ->assertJson([
+    150▕                 'success' => false,
+    151▕                 'error' => '密碼錯誤',
+    152▕                 'data' => [],
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\LoginControllerTest > logs in successfully        
+  Expected response status code [200] but received 419.
+Failed asserting that 419 is identical to 200.
+
+  at tests/Feature/Controllers/Auth/LoginControllerTest.php:180
+    176▕             'email' => 'test@example.com',
+    177▕             'password' => 'correct_password'
+    178▕         ]);
+    179▕ 
+  ➜ 180▕         $response->assertStatus(200)
+    181▕             ->assertJson([
+    182▕                 'success' => true,
+    183▕                 'data' => ['登入成功']
+    184▕             ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\LogoutControllerTest > logout service is calle…   
+  Expected response status code [200] but received 419.
+Failed asserting that 419 is identical to 200.
+
+  at tests/Feature/Controllers/Auth/LogoutControllerTest.php:36
+     32▕         ]);
+     33▕ 
+     34▕         $response = $this->postJson('/logout');
+     35▕ 
+  ➜  36▕         $response->assertStatus(200)->assertJson([
+     37▕             'success' => true,
+     38▕             'error' => '',
+     39▕             'data' => ['成功登出']
+     40▕         ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\PasswordResetControllerTest > user password re…   
+  Expected response status code [201] but received 419.
+Failed asserting that 419 is identical to 201.
+
+  at tests/Feature/Controllers/Auth/PasswordResetControllerTest.php:100
+     96▕             ]);
+     97▕ 
+     98▕         $response = $this->postJson('/passwordReset', $userData);
+     99▕ 
+  ➜ 100▕         $response->assertStatus(201)
+    101▕             ->assertJson([
+    102▕                 'success' => true,
+    103▕                 'error' => '',
+    104▕                 'data' => ['請至郵件繼續完成密碼重設流程']
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\PasswordResetControllerTest > password reset f…   
+  Expected response status code [400] but received 419.
+Failed asserting that 419 is identical to 400.
+
+  at tests/Feature/Controllers/Auth/PasswordResetControllerTest.php:120
+    116▕         $this->passwordResetService->shouldReceive('checkUserExist')->andReturn(['success'=>false, 'error' => '此帳戶尚未建立']);
+    117▕ 
+    118▕         $response = $this->postJson('/passwordReset', $userData);
+    119▕ 
+  ➜ 120▕         $response->assertStatus(400)
+    121▕             ->assertJson([
+    122▕                 'success' => false,
+    123▕                 'error' => '此帳戶尚未建立'
+    124▕             ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\PasswordResetControllerTest > password reset f…   
+  Expected response status code [429] but received 419.
+Failed asserting that 419 is identical to 429.
+
+  at tests/Feature/Controllers/Auth/PasswordResetControllerTest.php:140
+    136▕         $this->passwordResetService->shouldReceive('checkVerificationRequest')->andReturn(['success' => false, 'error' => '重設密碼次數超過當日上限']);
+    137▕ 
+    138▕         $response = $this->postJson('/passwordReset', $userData);
+    139▕ 
+  ➜ 140▕         $response->assertStatus(429)
+    141▕             ->assertJson([
+    142▕                 'success' => false,
+    143▕                 'error' => '重設密碼次數超過當日上限'
+    144▕             ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\PasswordResetControllerTest > password reset f…   
+  Expected response status code [400] but received 419.
+Failed asserting that 419 is identical to 400.
+
+  at tests/Feature/Controllers/Auth/PasswordResetControllerTest.php:174
+    170▕             ->andReturn(['success' => false, 'error' => '紀錄插入失敗']);
+    171▕ 
+    172▕         $response = $this->postJson('/passwordReset', $userData);
+    173▕ 
+  ➜ 174▕         $response->assertStatus(400)
+    175▕             ->assertJson([
+    176▕                 'success' => false,
+    177▕                 'error' => '紀錄插入失敗'
+    178▕             ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\PasswordResetControllerTest > password reset f…   
+  Expected response status code [500] but received 419.
+Failed asserting that 419 is identical to 500.
+
+  at tests/Feature/Controllers/Auth/PasswordResetControllerTest.php:224
+    220▕             ]);
+    221▕ 
+    222▕         $response = $this->postJson('/passwordReset', $userData);
+    223▕ 
+  ➜ 224▕         $response->assertStatus(500)
+    225▕             ->assertJson([
+    226▕                 'success' => false,
+    227▕                 'error' => '寄送驗證信失敗'
+    228▕             ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\PasswordResetControllerTest > verification suc…   
+  Expected response status code [200] but received 419.
+Failed asserting that 419 is identical to 200.
+
+  at tests/Feature/Controllers/Auth/PasswordResetControllerTest.php:248
+    244▕         $this->passwordResetService->shouldReceive('passwordReset')->andReturn(['success' => true,'data' => ['密碼更新完成']]);
+    245▕ 
+    246▕         $response = $this->postJson('/passwordResetVerify', $verificationData);
+    247▕ 
+  ➜ 248▕         $response->assertStatus(200)
+    249▕             ->assertJson([
+    250▕                 'success' => true,
+    251▕                 'data' => ['密碼更新完成']
+    252▕             ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\PasswordResetControllerTest > password reset f…   
+  Expected response status code [400] but received 419.
+Failed asserting that 419 is identical to 400.
+
+  at tests/Feature/Controllers/Auth/PasswordResetControllerTest.php:269
+    265▕         $this->passwordResetService->shouldReceive('validateUserPasswordReset')->andReturn(['success'=>false, 'error'=> '密碼格式不符合規範']);
+    266▕ 
+    267▕         $response = $this->postJson('/passwordResetVerify', $verificationData);
+    268▕ 
+  ➜ 269▕         $response->assertStatus(400)
+    270▕             ->assertJson([
+    271▕                 'success' => false,
+    272▕                 'error' => '密碼格式不符合規範'
+    273▕             ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\PasswordResetControllerTest > password reset f…   
+  Expected response status code [400] but received 419.
+Failed asserting that 419 is identical to 400.
+
+  at tests/Feature/Controllers/Auth/PasswordResetControllerTest.php:291
+    287▕ 
+    288▕ 
+    289▕         $response = $this->postJson('/passwordResetVerify', $verificationData);
+    290▕ 
+  ➜ 291▕         $response->assertStatus(400)
+    292▕             ->assertJson([
+    293▕                 'success' => false,
+    294▕                 'error' => '確認密碼與密碼不同'
+    295▕             ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\PasswordResetControllerTest > verification fai…   
+  Expected response status code [400] but received 419.
+Failed asserting that 419 is identical to 400.
+
+  at tests/Feature/Controllers/Auth/PasswordResetControllerTest.php:316
+    312▕             $this->passwordResetService->shouldReceive('validateUserPasswordReset')->andReturn(['success'=>true]);
+    313▕ 
+    314▕         $response = $this->postJson('/passwordResetVerify', $verificationData);
+    315▕ 
+  ➜ 316▕         $response->assertStatus(400)
+    317▕             ->assertJson([
+    318▕                 'success' => false,
+    319▕                 'error' => '無效哈希碼'
+    320▕             ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\PasswordResetControllerTest > verification fai…   
+  Expected response status code [500] but received 419.
+Failed asserting that 419 is identical to 500.
+
+  at tests/Feature/Controllers/Auth/PasswordResetControllerTest.php:343
+    339▕             ]);
+    340▕ 
+    341▕         $response = $this->postJson('/passwordResetVerify', $verificationData);
+    342▕ 
+  ➜ 343▕         $response->assertStatus(500)
+    344▕             ->assertJson([
+    345▕                 'success' => false,
+    346▕                 'error' => '清除請求紀錄失敗'
+    347▕             ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\Auth\PasswordResetControllerTest > verification fai…   
+  Expected response status code [500] but received 419.
+Failed asserting that 419 is identical to 500.
+
+  at tests/Feature/Controllers/Auth/PasswordResetControllerTest.php:367
+    363▕ 
+    364▕ 
+    365▕         $response = $this->postJson('/passwordResetVerify', $verificationData);
+    366▕ 
+  ➜ 367▕         $response->assertStatus(500)
+    368▕             ->assertJson([
+    369▕                 'success' => false,
+    370▕                 'error' => '更新密碼失敗'
+    371▕             ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\CommentOnPostControllerTest…   InvalidCountException   
+  Method updatePostCommentsCount(1) from Mockery_21_App_Services_Post_AddCommentService should be called
+ exactly 1 times but called 0 times.
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\CommentOnPostControllerTest > update post comments…    
+  Expected response status code [422] but received 200.
+Failed asserting that 200 is identical to 422.
+
+  at tests/Feature/Controllers/Post/CommentOnPostControllerTest.php:88
+     84▕             'postId' => $postId,
+     85▕             'comment' => $comment,
+     86▕         ]);
+     87▕ 
+  ➜  88▕         $response->assertStatus(422)
+     89▕             ->assertJson(['error' => '更新貼文評論數失敗']);
+     90▕     }
+     91▕ }
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\CreatePostControllerTest > create post success         
+  Expected response status code [200] but received 500.
+Failed asserting that 500 is identical to 200.
+
+  at tests/Feature/Controllers/Post/CreatePostControllerTest.php:46
+     42▕             'tag' => ['tag1', 'tag2'],
+     43▕             'base64' => 'base64string'
+     44▕         ]);
+     45▕ 
+  ➜  46▕         $response->assertStatus(200)
+     47▕             ->assertJson(['success' => true]);
+     48▕     }
+     49▕ 
+     50▕     public function testChangePostAmountFails() {
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\CreatePostControllerTest > change post amount fails    
+  Expected response status code [422] but received 500.
+Failed asserting that 500 is identical to 422.
+
+  at tests/Feature/Controllers/Post/CreatePostControllerTest.php:64
+     60▕             'tag' => ['tag1', 'tag2'],
+     61▕             'base64' => 'base64string'
+     62▕         ]);
+     63▕ 
+  ➜  64▕         $response->assertStatus(422)
+     65▕             ->assertJson(['success' => false, 'error' => '貼文數更新失敗']);
+     66▕     }
+     67▕ 
+     68▕     public function testUploadBase64ImageFails() {
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\CreatePostControllerTest > upload base64 image fail…   
+  Expected response status code [422] but received 500.
+Failed asserting that 500 is identical to 422.
+
+  at tests/Feature/Controllers/Post/CreatePostControllerTest.php:87
+     83▕             'tag' => ['tag1', 'tag2'],
+     84▕             'base64' => 'base64string'
+     85▕         ]);
+     86▕ 
+  ➜  87▕         $response->assertStatus(422)
+     88▕             ->assertJson(['success' => false, 'error' => '上傳圖片失敗']);
+     89▕     }
+     90▕ 
+     91▕     public function testCreatePostToDatabaseFails() {
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\CreatePostControllerTest > create post to database…    
+  Expected response status code [422] but received 500.
+Failed asserting that 500 is identical to 422.
+
+  at tests/Feature/Controllers/Post/CreatePostControllerTest.php:115
+    111▕             'tag' => ['tag1', 'tag2'],
+    112▕             'base64' => 'base64string'
+    113▕         ]);
+    114▕ 
+  ➜ 115▕         $response->assertStatus(422)
+    116▕             ->assertJson(['success' => false, 'error' => '新增貼文至資料庫失敗']);
+    117▕     }
+    118▕ 
+    119▕     protected function tearDown(): void
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\DeletePostCommentControllerTest > delete comment to…   
+  Expected response status code [204] but received 500.
+Failed asserting that 500 is identical to 204.
+
+  at tests/Feature/Controllers/Post/DeletePostCommentControllerTest.php:38
+     34▕             ->andReturn(['success' => true]);
+     35▕ 
+     36▕         $response = $this->deleteJson("/api/deletePostComment/1/1/1");
+     37▕ 
+  ➜  38▕         $response->assertStatus(204);
+     39▕     }
+     40▕ 
+     41▕     public function testDeleteCommentToPostFailure(){
+     42▕         $userId = 1;
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\DeletePostCommentControllerTest > update post comme…   
+  Expected response status code [422] but received 500.
+Failed asserting that 500 is identical to 422.
+
+  at tests/Feature/Controllers/Post/DeletePostCommentControllerTest.php:72
+     68▕             ->with($postId)
+     69▕             ->andReturn(['success' => false, 'error' => '更新貼文評論數失敗']);
+     70▕ 
+     71▕         $response = $this->deleteJson("/api/deletePostComment/1/1/1");
+  ➜  72▕         $response->assertStatus(422)
+     73▕         ->assertJson(['success' => false, 'error' => '更新貼文評論數失敗']);
+     74▕     }
+     75▕ }
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\GetPostCommentControllerTest > get post comment wit…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+  at tests/Feature/Controllers/Post/GetPostCommentControllerTest.php:41
+     37▕         ]);
+     38▕ 
+     39▕         $response = $this->getJson('/api/getPostComment?postId=1');
+     40▕ 
+  ➜  41▕         $response->assertStatus(200)
+     42▕                  ->assertJson([
+     43▕                      'success' => true,
+     44▕                      'data' => [
+     45▕                          [   "user_id" => 1,
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\GetPostCommentControllerTest > get post comment wit…   
+  Expected response status code [400] but received 404.
+Failed asserting that 404 is identical to 400.
+
+  at tests/Feature/Controllers/Post/GetPostCommentControllerTest.php:56
+     52▕ 
+     53▕     public function testGetPostCommentWithMissingParameters() {
+     54▕         $response = $this->getJson('/api/getPostComment');
+     55▕ 
+  ➜  56▕         $response->assertStatus(400)
+     57▕                  ->assertJson([
+     58▕                      'success' => false,
+     59▕                      'error' => '參數不足'
+     60▕                  ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\GetPostCommentControllerTest > get post comment wit…   
+  Expected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+
+  at tests/Feature/Controllers/Post/GetPostCommentControllerTest.php:71
+     67▕         ]);
+     68▕ 
+     69▕         $response = $this->getJson('/api/getPostComment?postId=1');
+     70▕ 
+  ➜  71▕         $response->assertStatus(422)
+     72▕                  ->assertJson([
+     73▕                      'success' => false,
+     74▕                      'error' => '查詢貼文留言失敗'
+     75▕                  ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\GetPostCommentControllerTest > get post comment fai…   
+  Expected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+
+  at tests/Feature/Controllers/Post/GetPostCommentControllerTest.php:97
+     93▕         ]);
+     94▕ 
+     95▕         $response = $this->getJson('/api/getPostComment?postId=1');
+     96▕       
+  ➜  97▕         $response->assertStatus(422)
+     98▕                  ->assertJson([
+     99▕                      'success' => false,
+    100▕                      'error' => '獲取url失敗'
+    101▕                  ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\GetPostCommentControllerTest > get comment replt wi…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+  at tests/Feature/Controllers/Post/GetPostCommentControllerTest.php:125
+    121▕         ]);
+    122▕ 
+    123▕         $response = $this->getJson('/api/getCommentReply?commentId=1');
+    124▕ 
+  ➜ 125▕         $response->assertStatus(200)
+    126▕                  ->assertJson([
+    127▕                      'success' => true,
+    128▕                      'data' => [
+    129▕                          [   "user_id" => 1,
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\GetPostCommentControllerTest > get comment replt wi…   
+  Expected response status code [400] but received 404.
+Failed asserting that 404 is identical to 400.
+
+  at tests/Feature/Controllers/Post/GetPostCommentControllerTest.php:140
+    136▕ 
+    137▕     public function testGetCommentRepltWithMissingParameters() {
+    138▕         $response = $this->getJson('/api/getCommentReply');
+    139▕ 
+  ➜ 140▕         $response->assertStatus(400)
+    141▕                  ->assertJson([
+    142▕                      'success' => false,
+    143▕                      'error' => '參數不足'
+    144▕                  ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\GetPostCommentControllerTest > get comment reply wi…   
+  Expected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+
+  at tests/Feature/Controllers/Post/GetPostCommentControllerTest.php:155
+    151▕         ]);
+    152▕ 
+    153▕         $response = $this->getJson('/api/getCommentReply?commentId=1');
+    154▕ 
+  ➜ 155▕         $response->assertStatus(422)
+    156▕                  ->assertJson([
+    157▕                      'success' => false,
+    158▕                      'error' => '查詢該留言的回覆失敗'
+    159▕                  ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\GetPostCommentControllerTest > get comment reply fa…   
+  Expected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+
+  at tests/Feature/Controllers/Post/GetPostCommentControllerTest.php:181
+    177▕         ]);
+    178▕ 
+    179▕         $response = $this->getJson('/api/getCommentReply?commentId=1');
+    180▕       
+  ➜ 181▕         $response->assertStatus(422)
+    182▕                  ->assertJson([
+    183▕                      'success' => false,
+    184▕                      'error' => '獲取url失敗'
+    185▕                  ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\GetPostControllerTest > get post with valid paramet…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+  at tests/Feature/Controllers/Post/GetPostControllerTest.php:39
+     35▕         ]);
+     36▕ 
+     37▕         $response = $this->getJson('/api/getPost?userId=1&postId=1&tag=test');
+     38▕ 
+  ➜  39▕         $response->assertStatus(200)
+     40▕                  ->assertJson([
+     41▕                      'success' => true,
+     42▕                      'data' => [
+     43▕                          [
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\GetPostControllerTest > get post with missing param…   
+  Expected response status code [400] but received 404.
+Failed asserting that 404 is identical to 400.
+
+  at tests/Feature/Controllers/Post/GetPostControllerTest.php:53
+     49▕ 
+     50▕     public function testGetPostWithMissingParameters() {
+     51▕         $response = $this->getJson('/api/getPost');
+     52▕ 
+  ➜  53▕         $response->assertStatus(400)
+     54▕                  ->assertJson([
+     55▕                      'success' => false,
+     56▕                      'error' => '參數不足'
+     57▕                  ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\GetPostControllerTest > get post with invalid param…   
+  Expected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+
+  at tests/Feature/Controllers/Post/GetPostControllerTest.php:68
+     64▕         ]);
+     65▕ 
+     66▕         $response = $this->getJson('/api/getPost?userId=1&postId=1&tag=test');
+     67▕ 
+  ➜  68▕         $response->assertStatus(422)
+     69▕                  ->assertJson([
+     70▕                      'success' => false,
+     71▕                      'error' => '查詢貼文失敗'
+     72▕                  ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\GetPostControllerTest > get post fail get image        
+  Expected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+
+  at tests/Feature/Controllers/Post/GetPostControllerTest.php:92
+     88▕         ]);
+     89▕ 
+     90▕         $response = $this->getJson('/api/getPost?userId=1&postId=1&tag=test');
+     91▕       
+  ➜  92▕         $response->assertStatus(422)
+     93▕                  ->assertJson([
+     94▕                      'success' => false,
+     95▕                      'error' => '獲取url失敗'
+     96▕                  ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\GetPostLikeControllerTest > get post like with vali…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+  at tests/Feature/Controllers/Post/GetPostLikeControllerTest.php:41
+     37▕         ]);
+     38▕ 
+     39▕         $response = $this->getJson('/api/getPostLike?postId=1');
+     40▕ 
+  ➜  41▕         $response->assertStatus(200)
+     42▕                  ->assertJson([
+     43▕                      'success' => true,
+     44▕                      'data' => [
+     45▕                          [   "user_id" => 1,
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\GetPostLikeControllerTest > get post like with miss…   
+  Expected response status code [400] but received 404.
+Failed asserting that 404 is identical to 400.
+
+  at tests/Feature/Controllers/Post/GetPostLikeControllerTest.php:56
+     52▕ 
+     53▕     public function testGetPostLikeWithMissingParameters() {
+     54▕         $response = $this->getJson('/api/getPostLike');
+     55▕ 
+  ➜  56▕         $response->assertStatus(400)
+     57▕                  ->assertJson([
+     58▕                      'success' => false,
+     59▕                      'error' => '參數不足'
+     60▕                  ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\GetPostLikeControllerTest > get post like with inva…   
+  Expected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+
+  at tests/Feature/Controllers/Post/GetPostLikeControllerTest.php:71
+     67▕         ]);
+     68▕ 
+     69▕         $response = $this->getJson('/api/getPostLike?postId=1');
+     70▕ 
+  ➜  71▕         $response->assertStatus(422)
+     72▕                  ->assertJson([
+     73▕                      'success' => false,
+     74▕                      'error' => '查詢按讚貼文用戶失敗'
+     75▕                  ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\GetPostLikeControllerTest > get post like fail get…    
+  Expected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+
+  at tests/Feature/Controllers/Post/GetPostLikeControllerTest.php:97
+     93▕         ]);
+     94▕ 
+     95▕         $response = $this->getJson('/api/getPostLike?postId=1');
+     96▕       
+  ➜  97▕         $response->assertStatus(422)
+     98▕                  ->assertJson([
+     99▕                      'success' => false,
+    100▕                      'error' => '獲取url失敗'
+    101▕                  ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\LikePostControll…  MethodCannotBeConfiguredException   
+  Trying to configure method "increasePostLikeCount" which cannot be configured because it does not exist, has not been specified, is final, or is static
+
+  at tests/Feature/Controllers/Post/LikePostControllerTest.php:28
+     24▕ 
+     25▕     public function testLikePostSuccess() {
+     26▕         $this->likePostService->method('ifUserLikedPost')->willReturn(['success' => true]);
+     27▕         $this->likePostService->method('addPostLike')->willReturn(['success' => true]);
+  ➜  28▕         $this->likePostService->method('increasePostLikeCount')->willReturn(['success' => true]);
+     29▕ 
+     30▕         $response = $this->postJson('/api/likePost', [
+     31▕             'userId' => 1,
+     32▕             'postId' => 1
+
+  1   tests/Feature/Controllers/Post/LikePostControllerTest.php:28
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\LikePostControll…  MethodCannotBeConfiguredException   
+  Trying to configure method "decreasePostLikeCount" which cannot be configured because it does not exist, has not been specified, is final, or is static
+
+  at tests/Feature/Controllers/Post/LikePostControllerTest.php:41
+     37▕ 
+     38▕     public function testRemoveLikeSuccess() {
+     39▕         $this->likePostService->method('ifUserLikedPost')->willReturn(['success' => false, 'error' => '已經對這則貼文表達喜歡']);
+     40▕         $this->unlikePostService->method('removePostLike')->willReturn(['success' => true]);
+  ➜  41▕         $this->unlikePostService->method('decreasePostLikeCount')->willReturn(['success' => true]);
+     42▕         $response = $this->postJson('/api/likePost', [
+     43▕             'userId' => 1,
+     44▕             'postId' => 1
+     45▕         ]);
+
+  1   tests/Feature/Controllers/Post/LikePostControllerTest.php:41
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\LikePostControll…  MethodCannotBeConfiguredException   
+  Trying to configure method "increasePostLikeCount" which cannot be configured because it does not exist, has not been specified, is final, or is static
+
+  at tests/Feature/Controllers/Post/LikePostControllerTest.php:66
+     62▕ 
+     63▕     public function testLikePostFailureInIncreasePostLikeCount() {
+     64▕         $this->likePostService->method('ifUserLikedPost')->willReturn(['success' => true]);
+     65▕         $this->likePostService->method('addPostLike')->willReturn(['success' => true]);
+  ➜  66▕         $this->likePostService->method('increasePostLikeCount')->willReturn(['success' => false, 'error' => '更新貼文讚數失敗']);
+     67▕ 
+     68▕         $response = $this->postJson('/api/likePost', [
+     69▕             'userId' => 1,
+     70▕             'postId' => 1
+
+  1   tests/Feature/Controllers/Post/LikePostControllerTest.php:66
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\LikePostControll…  MethodCannotBeConfiguredException   
+  Trying to configure method "decreasePostLikeCount" which cannot be configured because it does not exist, has not been specified, is final, or is static
+
+  at tests/Feature/Controllers/Post/LikePostControllerTest.php:93
+     89▕ 
+     90▕     public function testLikePostFailureInDecreasePostLikeCount() {
+     91▕         $this->likePostService->method('ifUserLikedPost')->willReturn(['success' => false]);
+     92▕         $this->unlikePostService->method('removePostLike')->willReturn(['success' => true]);
+  ➜  93▕         $this->unlikePostService->method('decreasePostLikeCount')->willReturn(['success' => false, 'error' => '更新貼文讚數失敗']);
+     94▕ 
+     95▕         $response = $this->postJson('/api/likePost', [
+     96▕             'userId' => 1,
+     97▕             'postId' => 1
+
+  1   tests/Feature/Controllers/Post/LikePostControllerTest.php:93
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\User\GetFollowerControllerTest > get follower succe…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+  at tests/Feature/Controllers/User/GetFollowerControllerTest.php:44
+     40▕ 
+     41▕         $response = $this->getJson('/api/getFollower?userId=1');
+     42▕ 
+     43▕         // Assert: 驗證響應
+  ➜  44▕         $response->assertStatus(200)
+     45▕                  ->assertJson([
+     46▕                      'success' => true,
+     47▕                      'data' => [
+     48▕                          ['id' => 1, 'avatar_url' => 'https://example.com/avatar1.jpg'],
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\User\GetFollowerControllerTest > get follower missi…   
+  Expected response status code [400] but received 404.
+Failed asserting that 404 is identical to 400.
+
+  at tests/Feature/Controllers/User/GetFollowerControllerTest.php:60
+     56▕         // Act: 發送請求，缺少 userId
+     57▕         $response = $this->getJson('/api/getFollower');
+     58▕ 
+     59▕         // Assert: 驗證響應
+  ➜  60▕         $response->assertStatus(400)
+     61▕                  ->assertJson([
+     62▕                      'success' => false,
+     63▕                      'error' => '參數不足',
+     64▕                  ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\User\GetFollowerControllerTest > get follower failu…   
+  Expected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+
+  at tests/Feature/Controllers/User/GetFollowerControllerTest.php:79
+     75▕             ]);
+     76▕ 
+     77▕         $response = $this->getJson('/api/getFollower?userId=1');
+     78▕ 
+  ➜  79▕         $response->assertStatus(422)
+     80▕                  ->assertJson([
+     81▕                      'success' => false,
+     82▕                      'error' => '查詢粉絲失敗',
+     83▕                  ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\User\GetFollowerControllerTest > get follower failu…   
+  Expected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+
+  at tests/Feature/Controllers/User/GetFollowerControllerTest.php:109
+    105▕         // Act: 發送請求
+    106▕         $response = $this->getJson('/api/getFollower?userId=1');
+    107▕ 
+    108▕         // Assert: 驗證響應
+  ➜ 109▕         $response->assertStatus(422)
+    110▕                  ->assertJson([
+    111▕                      'success' => false,
+    112▕                      'error' => '生成臨時 URL 失敗',
+    113▕                  ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\User\GetSubscriberControllerTest > get subscriber s…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+  at tests/Feature/Controllers/User/GetSubscriberControllerTest.php:45
+     41▕         // Act: 發送請求
+     42▕         $response = $this->getJson('/api/getSubscriber?userId=1');
+     43▕ 
+     44▕         // Assert: 驗證響應
+  ➜  45▕         $response->assertStatus(200)
+     46▕                  ->assertJson([
+     47▕                      'success' => true,
+     48▕                      'data' => [
+     49▕                          ['id' => 1, 'avatar_url' => 'https://example.com/avatar1.jpg'],
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\User\GetSubscriberControllerTest > get subscriber m…   
+  Expected response status code [400] but received 404.
+Failed asserting that 404 is identical to 400.
+
+  at tests/Feature/Controllers/User/GetSubscriberControllerTest.php:61
+     57▕         // Act: 發送請求，缺少 userId
+     58▕         $response = $this->getJson('/api/getSubscriber');
+     59▕ 
+     60▕         // Assert: 驗證響應
+  ➜  61▕         $response->assertStatus(400)
+     62▕                  ->assertJson([
+     63▕                      'success' => false,
+     64▕                      'error' => '參數不足',
+     65▕                  ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\User\GetSubscriberControllerTest > get subscriber f…   
+  Expected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+
+  at tests/Feature/Controllers/User/GetSubscriberControllerTest.php:83
+     79▕         // Act: 發送請求
+     80▕         $response = $this->getJson('/api/getSubscriber?userId=1');
+     81▕ 
+     82▕         // Assert: 驗證響應
+  ➜  83▕         $response->assertStatus(422)
+     84▕                  ->assertJson([
+     85▕                      'success' => false,
+     86▕                      'error' => '查詢追蹤戶失敗',
+     87▕                  ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\User\GetSubscriberControllerTest > get subscriber f…   
+  Expected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+
+  at tests/Feature/Controllers/User/GetSubscriberControllerTest.php:115
+    111▕         // Act: 發送請求
+    112▕         $response = $this->getJson('/api/getSubscriber?userId=1');
+    113▕ 
+    114▕         // Assert: 驗證響應
+  ➜ 115▕         $response->assertStatus(422)
+    116▕                  ->assertJson([
+    117▕                      'success' => false,
+    118▕                      'error' => '生成臨時 URL 失敗',
+    119▕                  ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\GetUserProfileControllerTest > get user information…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+  at tests/Feature/Controllers/User/GetUserProfileControllerTest.php:48
+     44▕             ->andReturn($presignedUrl);
+     45▕ 
+     46▕         $response = $this->getJson('/api/getUserInfromation?userId=' . $userId);
+     47▕ 
+  ➜  48▕         $response->assertStatus(200)
+     49▕             ->assertJson([
+     50▕                 'success' => true,
+     51▕                 'data' => [
+     52▕                     'id' => $userId,
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\GetUserProfileControllerTest > get user information…   
+  Expected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+
+  at tests/Feature/Controllers/User/GetUserProfileControllerTest.php:76
+     72▕             ->andReturn($userInformation);
+     73▕ 
+     74▕         $response = $this->getJson('/api/getUserInfromation?userId=' . $userId);
+     75▕ 
+  ➜  76▕         $response->assertStatus(422)
+     77▕             ->assertJson($userInformation);
+     78▕     }
+     79▕ 
+     80▕     public function testSearchByNameSuccess()
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\GetUserProfileControllerTest > search by name succe…   
+  Expected response status code [200] but received 404.
+Failed asserting that 404 is identical to 200.
+
+  at tests/Feature/Controllers/User/GetUserProfileControllerTest.php:108
+    104▕             ->andReturn($presignedUrl);
+    105▕ 
+    106▕         $response = $this->getJson('/api/searchByName?name=' . $name);
+    107▕ 
+  ➜ 108▕         $response->assertStatus(200)
+    109▕             ->assertJson([
+    110▕                 'success' => true,
+    111▕                 'data' => [
+    112▕                     'id' => 1,
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\GetUserProfileControllerTest > search by name failu…   
+  Expected response status code [422] but received 404.
+Failed asserting that 404 is identical to 422.
+
+  at tests/Feature/Controllers/User/GetUserProfileControllerTest.php:134
+    130▕             ->andReturn($userByName);
+    131▕ 
+    132▕         $response = $this->getJson('/api/searchByName?name=' . $name);
+    133▕ 
+  ➜ 134▕         $response->assertStatus(422)
+    135▕             ->assertJson($userByName);
+    136▕     }
+    137▕ 
+    138▕     public function testGetUserInformationMissingParameter()
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\GetUserProfileControllerTest > get user information…   
+  Expected response status code [400] but received 404.
+Failed asserting that 404 is identical to 400.
+
+  at tests/Feature/Controllers/User/GetUserProfileControllerTest.php:142
+    138▕     public function testGetUserInformationMissingParameter()
+    139▕     {
+    140▕         $response = $this->getJson('/api/getUserInfromation');
+    141▕ 
+  ➜ 142▕         $response->assertStatus(400)
+    143▕             ->assertJson([
+    144▕                 'success' => false,
+    145▕                 'error' => '參數不足'
+    146▕             ]);
+
+  ────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\GetUserProfileControllerTest > search by name missi…   
+  Expected response status code [400] but received 404.
+Failed asserting that 404 is identical to 400.
+
+  at tests/Feature/Controllers/User/GetUserProfileControllerTest.php:153
+    149▕     public function testSearchByNameMissingParameter()
+    150▕     {
+    151▕         $response = $this->getJson('/api/searchByName');
+    152▕ 
+  ➜ 153▕         $response->assertStatus(400)
+    154▕             ->assertJson([
+    155▕                 'success' => false,
+    156▕                 'error' => '參數不足'
+    157▕             ]);
+
+
+  Tests:    115 failed, 189 passed (567 assertions)
+  Duration: 2.32s
+

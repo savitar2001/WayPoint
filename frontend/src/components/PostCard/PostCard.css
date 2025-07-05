@@ -19,6 +19,7 @@
   display: flex;
   align-items: center;
   margin-bottom: 16px;
+  justify-content: space-between; 
 }
 
 .card-avatar {
@@ -100,4 +101,17 @@
 .card-likes span, .card-comments span {
   font-size: 14px;
   color: #555;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px; 
+  padding: 0;
+  color: #555; 
+}
+
+.delete-button:hover {
+  color: #D8BFD8;
 }

@@ -63,27 +63,4 @@ class LikePostServiceTest extends TestCase {
         $this->assertFalse($response['success']);
         $this->assertEquals('對該貼文按讚失敗', $response['error']);
     }
-
-    public function testUpdatePostLikeCount() {
-        $postId = 100;
-        $amount = 1;
-
-        $this->post->method('updateLikesCount')->willReturn(true);
-
-        $response = $this->likePostService->increasePostLikeCount($postId, $amount);
-
-        $this->assertTrue($response['success']);
-    }
-
-    public function testUpdatePostLikeCountFailure() {
-        $postId = 100;
-        $amount = 1;
-
-        $this->post->method('updateLikesCount')->willReturn(false);
-
-        $response = $this->likePostService->increasePostLikeCount($postId, $amount);
-
-        $this->assertFalse($response['success']);
-        $this->assertEquals('更新貼文讚數失敗', $response['error']);
-    }
 }

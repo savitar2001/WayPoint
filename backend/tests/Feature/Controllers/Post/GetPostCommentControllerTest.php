@@ -21,10 +21,10 @@ class GetPostCommentControllerTest extends TestCase {
         $this->reviewCommentService->method('fetchPostComment')->willReturn([
             'success' => true,
             'data' => [
-                [
+                (object)[
                     "user_id" => 1,
                     "content" => "Test",
-                    'avatar_url' => 'original_image_url'
+                    'avatar_url' => 'http://example.com/avatar1.jpg'
                 ]
             ]
         ]);
@@ -36,7 +36,7 @@ class GetPostCommentControllerTest extends TestCase {
             ]
         ]);
 
-        $response = $this->getJson('/api/getPostComment?postId=1');
+        $response = $this->getJson('/api/getPostComment/1');
 
         $response->assertStatus(200)
                  ->assertJson([
@@ -53,11 +53,7 @@ class GetPostCommentControllerTest extends TestCase {
     public function testGetPostCommentWithMissingParameters() {
         $response = $this->getJson('/api/getPostComment');
 
-        $response->assertStatus(400)
-                 ->assertJson([
-                     'success' => false,
-                     'error' => '參數不足'
-                 ]);
+        $response->assertStatus(404);
     }
 
     public function testGetPostCommentWithInvalidParameters(){
@@ -66,7 +62,7 @@ class GetPostCommentControllerTest extends TestCase {
             'error' => '查詢貼文留言失敗'
         ]);
 
-        $response = $this->getJson('/api/getPostComment?postId=1');
+        $response = $this->getJson('/api/getPostComment/1');
 
         $response->assertStatus(422)
                  ->assertJson([
@@ -79,10 +75,10 @@ class GetPostCommentControllerTest extends TestCase {
         $this->reviewCommentService->method('fetchPostComment')->willReturn([
             'success' => true,
             'data' => [
-                [
+                (object)[
                     "user_id" => 1,
                     "content" => "Test",
-                    'avatar_url' => 'original_image_url'
+                    'avatar_url' => 'http://example.com/avatar1.jpg'
                 ]
             ]
         ]);
@@ -92,7 +88,7 @@ class GetPostCommentControllerTest extends TestCase {
             'error' => '獲取url失敗'
         ]);
 
-        $response = $this->getJson('/api/getPostComment?postId=1');
+        $response = $this->getJson('/api/getPostComment/1');
       
         $response->assertStatus(422)
                  ->assertJson([
@@ -105,10 +101,10 @@ class GetPostCommentControllerTest extends TestCase {
         $this->reviewCommentService->method('fetchCommentReply')->willReturn([
             'success' => true,
             'data' => [
-                [
+                (object)[
                     "user_id" => 1,
                     "content" => "Test",
-                    'avatar_url' => 'original_image_url'
+                    'avatar_url' => 'http://example.com/avatar1.jpg'
                 ]
             ]
         ]);
@@ -120,7 +116,7 @@ class GetPostCommentControllerTest extends TestCase {
             ]
         ]);
 
-        $response = $this->getJson('/api/getCommentReply?commentId=1');
+        $response = $this->getJson('/api/getCommentReply/1');
 
         $response->assertStatus(200)
                  ->assertJson([
@@ -137,11 +133,7 @@ class GetPostCommentControllerTest extends TestCase {
     public function testGetCommentRepltWithMissingParameters() {
         $response = $this->getJson('/api/getCommentReply');
 
-        $response->assertStatus(400)
-                 ->assertJson([
-                     'success' => false,
-                     'error' => '參數不足'
-                 ]);
+        $response->assertStatus(404);
     }
 
     public function testGetCommentReplyWithInvalidParameters(){
@@ -150,7 +142,7 @@ class GetPostCommentControllerTest extends TestCase {
             'error' => '查詢該留言的回覆失敗'
         ]);
 
-        $response = $this->getJson('/api/getCommentReply?commentId=1');
+        $response = $this->getJson('/api/getCommentReply/1');
 
         $response->assertStatus(422)
                  ->assertJson([
@@ -163,10 +155,10 @@ class GetPostCommentControllerTest extends TestCase {
         $this->reviewCommentService->method('fetchCommentReply')->willReturn([
             'success' => true,
             'data' => [
-                [
+                (object)[
                     "user_id" => 1,
                     "content" => "Test",
-                    'avatar_url' => 'original_image_url'
+                    'avatar_url' => 'http://example.com/avatar1.jpg'
                 ]
             ]
         ]);
@@ -176,7 +168,7 @@ class GetPostCommentControllerTest extends TestCase {
             'error' => '獲取url失敗'
         ]);
 
-        $response = $this->getJson('/api/getCommentReply?commentId=1');
+        $response = $this->getJson('/api/getCommentReply/1');
       
         $response->assertStatus(422)
                  ->assertJson([

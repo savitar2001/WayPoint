@@ -64,24 +64,6 @@ class DeleteCommentServiceTest extends TestCase {
         $this->assertEquals('刪除回覆其他用戶留言失敗', $response['error']);
     }
 
-    public function testUpdatePostCommentsCountSuccess() {
-        $this->post->method('updateCommentsCount')->willReturn(true);
-
-        $response = $this->deleteCommentService->updatePostCommentsCount(1, -1);
-
-        $this->assertTrue($response['success']);
-        $this->assertEmpty($response['error']);
-    }
-
-    public function testUpdatePostCommentsCountFailure() {
-        $this->post->method('updateCommentsCount')->willReturn(false);
-
-        $response = $this->deleteCommentService->updatePostCommentsCount(1, -1);
-
-        $this->assertFalse($response['success']);
-        $this->assertEquals('更新貼文評論數失敗', $response['error']);
-    }
-
     public function testUpdateCommentreplyCountSuccess() {
         $this->postComment->method('updateReplyCount')->willReturn(true);
 
