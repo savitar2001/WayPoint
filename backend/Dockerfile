@@ -1,4 +1,4 @@
-FROM php:8.2-apache
+FROM php:8.2-apache AS base
 WORKDIR /var/www/html
 
 # 1. 安裝必要的系統套件和 PHP 擴充功能
@@ -22,15 +22,11 @@ RUN composer install --no-interaction --no-plugins --no-scripts --prefer-dist
 COPY . .
 
 # 5. 設定 Apache 和權限
-# apache-vhost.conf 已經被上一步的 COPY . . 複製過來了
-# 我們現在直接從映像檔內的 /var/www/html 把它複製到正確位置
-COPY apache-vhost.conf /etc/apache2/sites-available/000-default.conf
+COPY --from=base /var/www/html/apache-vhost.conf /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 RUN chown -R www-data:www-data storage bootstrap/cache
 
 # 6. 設定啟動腳本
-# start-app.sh 也已經被 COPY . . 複製過來了
-# 我們現在直接從映像檔內的 /var/www/html 把它複製到 bin 目錄並給予權限
 RUN mv /var/www/html/start-app.sh /usr/local/bin/start-app.sh && \
     chmod +x /usr/local/bin/start-app.sh
 
