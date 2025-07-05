@@ -1,37 +1,38 @@
 FROM php:8.2-apache
 WORKDIR /var/www/html
+
+# 1. 安裝必要的系統套件和 PHP 擴充功能
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
     libzip-dev \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && apt-get clean && rm -rf /var/lib/apt/lists/* \
+    && docker-php-ext-install pdo pdo_mysql bcmath zip pcntl
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo pdo_mysql bcmath zip pcntl
-
+# 2. 複製 Composer 執行檔
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# 3. 複製 composer 相關檔案並安裝依賴 (利用快取)
+# 這樣只有在 composer.json/lock 變動時，才會重新執行 composer install
 COPY composer.json composer.lock ./
-COPY . .
-RUN apt-get update && apt-get install -y \
-    git \
-    unzip \
-    && rm -rf /var/lib/apt/lists/* \
-    && docker-php-ext-install pdo pdo_mysql bcmath
 RUN composer install --no-interaction --no-plugins --no-scripts --prefer-dist
-RUN chown -R www-data:www-data storage bootstrap/cache
-RUN mkdir -p /var/www/html/public && chmod 755 /var/www/html/public
-# 確保 .htaccess 檔案存在且 www-data 可以讀取 (如果 .htaccess 在 COPY . . 時已存在)
-# 注意：如果 .htaccess 是在 composer install 後生成的，這行可能需要調整位置或方式
-RUN touch /var/www/html/public/.htaccess && chmod 644 /var/www/html/public/.htaccess
-# 再次確保整個專案目錄的所有權，特別是 public 目錄
-RUN chown -R www-data:www-data /var/www/html
+
+# 4. 複製整個應用程式的程式碼
+# 這會包含 start-app.sh, apache-vhost.conf, 和所有 Laravel 程式碼
+COPY . .
+
+# 5. 設定 Apache 和權限
+# apache-vhost.conf 已經被上一步的 COPY . . 複製過來了
+# 我們現在直接從映像檔內的 /var/www/html 把它複製到正確位置
 COPY apache-vhost.conf /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
+RUN chown -R www-data:www-data storage bootstrap/cache
 
-
-COPY start-app.sh /usr/local/bin/start-app.sh
-RUN chmod +x /usr/local/bin/start-app.sh
+# 6. 設定啟動腳本
+# start-app.sh 也已經被 COPY . . 複製過來了
+# 我們現在直接從映像檔內的 /var/www/html 把它複製到 bin 目錄並給予權限
+RUN mv /var/www/html/start-app.sh /usr/local/bin/start-app.sh && \
+    chmod +x /usr/local/bin/start-app.sh
 
 EXPOSE 80
-
 CMD ["/usr/local/bin/start-app.sh"]
