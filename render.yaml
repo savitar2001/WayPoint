@@ -18,7 +18,6 @@ services:
     buildCommand: npm install && npm run build
     publishDir: ./build
     repo: https://github.com/savitar2001/WayPoint
-    dockerfilePath: ./frontend/Dockerfile
     envVarGroups:
       - name: WayPoint-env 
 
