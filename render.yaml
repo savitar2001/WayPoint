@@ -11,15 +11,16 @@ services:
       - name: WayPoint-env 
 
   # 前端服務 (React)
-  - type: static
+  - type: web
     name: WayPoint-frontend
     plan: free
-    rootDir: frontend 
-    buildCommand: npm install && npm run build
-    publishDir: ./build
     repo: https://github.com/savitar2001/WayPoint
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npx serve -s build -l 80
     envVarGroups:
-      - name: WayPoint-env 
+      - name: WayPoint-env
+    healthCheckPath: /
 
   # 佇列處理器
   - type: worker
