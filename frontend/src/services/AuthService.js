@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { initializeEcho as initEcho, disconnectEcho as discEcho, getEcho } from './echo'; 
 
-const API_BASE_URL = 'http://localhost/api';
-const WEB_BASE_URL = 'http://localhost';
+const API_BASE_URL = `${process.env.REACT_APP_BACKEND_URL}/api`;
+const WEB_BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 // Configure axios defaults
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';

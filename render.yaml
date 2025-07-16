@@ -1,0 +1,41 @@
+services:
+  # 後端 Web 服務 (Laravel)
+  - type: web
+    name: WayPoint-backend
+    env: docker
+    repo: https://github.com/savitar2001/WayPoint
+    dockerfilePath: ./backend/Dockerfile
+    healthCheckPath: /api/health # 建議在 Laravel 中創建一個健康檢查路由
+    plan: free
+    envVarGroups:
+      - name: WayPoint-env 
+
+  # 前端服務 (React)
+  - type: static
+    name: WayPoint-frontend
+    plan: free
+    rootDir: frontend 
+    buildCommand: npm install && npm run build
+    publishDir: ./build
+    repo: https://github.com/savitar2001/WayPoint
+    dockerfilePath: ./frontend/Dockerfile
+     envVarGroups:
+      - name: WayPoint-env 
+
+  # 佇列處理器
+  - type: worker
+    name: WayPoint-queue-worker
+    env: docker
+    repo: https://github.com/savitar2001/WayPoint
+    dockerfilePath: ./backend/Dockerfile
+    dockerCommand: "php artisan queue:work redis --sleep=3 --tries=3 --max-time=3600"
+    plan: free
+    envVarGroups:
+      - name: WayPoint-env 
+
+  # Redis 服務
+  - type: redis
+    name: my-redis-cache
+    plan: free 
+    maxmemoryPolicy: allkeys-lru 
+    ipAllowList: [] 

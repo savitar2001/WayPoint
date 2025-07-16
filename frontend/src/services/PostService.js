@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost/api';
+const API_BASE_URL = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 //創建貼文
 export const createPost = async (userId, name, content, tag, base64) => {

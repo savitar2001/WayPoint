@@ -21,6 +21,9 @@ use App\Http\Controllers\User\GetSubscriberController;
 use App\Http\Controllers\User\GetUserProfileController;
 use App\Http\Controllers\Notification\NotificationController;
 use App\Events\NewMessage;
+Route::get('/health', function () {
+    return response()->json(['status' => 'ok']);
+});
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

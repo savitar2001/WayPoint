@@ -1,0 +1,365 @@
+-- MySQL dump 10.13  Distrib 8.0.42, for Linux (aarch64)
+--
+-- Host: localhost    Database: user_system
+-- ------------------------------------------------------
+-- Server version	8.0.42
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Current Database: `user_system`
+--
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `user_system` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
+USE `user_system`;
+
+--
+-- Table structure for table `loginattempts`
+--
+
+DROP TABLE IF EXISTS `loginattempts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `loginattempts` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user` bigint unsigned NOT NULL,
+  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `timestamp` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_user_timestamp` (`user`,`timestamp`),
+  KEY `idx_ip_timestamp` (`ip_address`,`timestamp`),
+  CONSTRAINT `fk_user` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `loginattempts`
+--
+
+LOCK TABLES `loginattempts` WRITE;
+/*!40000 ALTER TABLE `loginattempts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `loginattempts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `post_comments`
+--
+
+DROP TABLE IF EXISTS `post_comments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `post_comments` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `post_id` bigint unsigned NOT NULL,
+  `user_id` bigint unsigned NOT NULL COMMENT '留言的用戶',
+  `content` text COLLATE utf8mb4_general_ci NOT NULL COMMENT '留言內容',
+  `parent_id` bigint unsigned DEFAULT NULL COMMENT '父留言ID，用於回覆功能',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '狀態(1:正常,0:刪除)',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `reply_count` int DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `post_comments_idx` (`post_id`,`created_at`),
+  KEY `user_comments_idx` (`user_id`,`created_at`),
+  KEY `parent_id` (`parent_id`),
+  CONSTRAINT `post_comments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`),
+  CONSTRAINT `post_comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `post_comments_ibfk_3` FOREIGN KEY (`parent_id`) REFERENCES `post_comments` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `post_comments`
+--
+
+LOCK TABLES `post_comments` WRITE;
+/*!40000 ALTER TABLE `post_comments` DISABLE KEYS */;
+INSERT INTO `post_comments` VALUES (1,1,3,'😍',NULL,1,'2025-04-22 11:53:21','2025-04-26 07:23:08',2),(3,1,3,'好看！！！',1,1,'2025-04-24 03:04:59','2025-04-24 03:04:59',0),(4,2,4,'聖誕氛圍，我會在天使燈亮起時回到這裡',NULL,1,'2025-04-24 03:40:40','2025-04-24 03:40:40',0),(5,1,4,'是嗎',1,1,'2025-04-26 07:23:08','2025-04-26 07:23:08',0),(6,1,4,'🙄',NULL,1,'2025-04-26 08:07:36','2025-04-26 08:07:36',0);
+/*!40000 ALTER TABLE `post_comments` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `after_comment_insert` AFTER INSERT ON `post_comments` FOR EACH ROW BEGIN
+    IF NEW.parent_id IS NULL THEN
+        UPDATE posts 
+        SET comments_count = comments_count + 1 
+        WHERE id = NEW.post_id;
+    END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `after_comment_status_update` AFTER UPDATE ON `post_comments` FOR EACH ROW BEGIN
+    IF NEW.status = 0 AND OLD.status = 1 AND NEW.parent_id IS NULL THEN
+        UPDATE posts 
+        SET comments_count = comments_count - 1 
+        WHERE id = NEW.post_id;
+    END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `post_likes`
+--
+
+DROP TABLE IF EXISTS `post_likes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `post_likes` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `post_id` bigint unsigned NOT NULL,
+  `user_id` bigint unsigned NOT NULL COMMENT '按讚的用戶',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `post_user_like` (`post_id`,`user_id`) COMMENT '防止重複按讚',
+  KEY `user_likes_idx` (`user_id`,`created_at`),
+  CONSTRAINT `post_likes_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`),
+  CONSTRAINT `post_likes_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `post_likes`
+--
+
+LOCK TABLES `post_likes` WRITE;
+/*!40000 ALTER TABLE `post_likes` DISABLE KEYS */;
+INSERT INTO `post_likes` VALUES (5,2,3,'2025-04-21 13:38:48'),(11,1,3,'2025-04-23 11:54:45'),(63,1,4,'2025-04-26 07:48:09');
+/*!40000 ALTER TABLE `post_likes` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `after_like_insert` AFTER INSERT ON `post_likes` FOR EACH ROW BEGIN
+    UPDATE posts 
+    SET likes_count = likes_count + 1 
+    WHERE id = NEW.post_id;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `after_like_delete` AFTER DELETE ON `post_likes` FOR EACH ROW BEGIN
+    UPDATE posts 
+    SET likes_count = likes_count - 1 
+    WHERE id = OLD.post_id;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `posts`
+--
+
+DROP TABLE IF EXISTS `posts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `posts` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned NOT NULL COMMENT '作者ID',
+  `user_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT '作者名稱',
+  `content` text COLLATE utf8mb4_general_ci NOT NULL COMMENT '貼文內容',
+  `tag` text COLLATE utf8mb4_general_ci NOT NULL COMMENT '貼文標記',
+  `image_url` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '圖片URL',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '狀態(1:正常,0:刪除)',
+  `likes_count` int unsigned NOT NULL DEFAULT '0' COMMENT '按讚數',
+  `comments_count` int unsigned NOT NULL DEFAULT '0' COMMENT '留言數',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_posts_idx` (`user_id`,`created_at`),
+  CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `posts`
+--
+
+LOCK TABLES `posts` WRITE;
+/*!40000 ALTER TABLE `posts` DISABLE KEYS */;
+INSERT INTO `posts` VALUES (1,3,'leon','留學','日本','https://leonsproject0.s3.amazonaws.com/posts/6803144590e7b_1745032261.jpeg',1,2,2,'2025-04-19 03:11:33','2025-04-26 08:07:36'),(2,4,'Ben','聖誕夜','倫敦/rich','https://leonsproject0.s3.amazonaws.com/posts/680366603b59a_1745053280.jpeg',1,1,1,'2025-04-19 09:01:30','2025-04-24 03:48:06');
+/*!40000 ALTER TABLE `posts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `requests`
+--
+
+DROP TABLE IF EXISTS `requests`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `requests` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user` bigint unsigned DEFAULT NULL,
+  `hash` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `timestamp` int unsigned DEFAULT NULL,
+  `type` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `requests`
+--
+
+LOCK TABLES `requests` WRITE;
+/*!40000 ALTER TABLE `requests` DISABLE KEYS */;
+/*!40000 ALTER TABLE `requests` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_followers`
+--
+
+DROP TABLE IF EXISTS `user_followers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_followers` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned NOT NULL,
+  `follower_id` bigint unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_follower_unique` (`user_id`,`follower_id`),
+  KEY `follower_id` (`follower_id`),
+  CONSTRAINT `user_followers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `user_followers_ibfk_2` FOREIGN KEY (`follower_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_followers`
+--
+
+LOCK TABLES `user_followers` WRITE;
+/*!40000 ALTER TABLE `user_followers` DISABLE KEYS */;
+INSERT INTO `user_followers` VALUES (1,3,4),(4,4,3);
+/*!40000 ALTER TABLE `user_followers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_subscribers`
+--
+
+DROP TABLE IF EXISTS `user_subscribers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_subscribers` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned NOT NULL,
+  `subscriber_id` bigint unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_subscriber_unique` (`user_id`,`subscriber_id`),
+  KEY `subscriber_id` (`subscriber_id`),
+  CONSTRAINT `user_subscribers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `user_subscribers_ibfk_2` FOREIGN KEY (`subscriber_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_subscribers`
+--
+
+LOCK TABLES `user_subscribers` WRITE;
+/*!40000 ALTER TABLE `user_subscribers` DISABLE KEYS */;
+INSERT INTO `user_subscribers` VALUES (11,3,4),(7,4,3);
+/*!40000 ALTER TABLE `user_subscribers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `verified` tinyint(1) NOT NULL DEFAULT '0',
+  `avatar_url` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '頭像URL',
+  `post_amount` int unsigned NOT NULL DEFAULT '0',
+  `subscriber_count` int unsigned NOT NULL DEFAULT '0',
+  `follower_count` int unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (3,'leon','zhaoyangr@gmail.com','$2y$10$imaWX39TvSw20yRZ1VpOCuTL1Sl5GqzNBgFok5XkehWruJMXTKUc.',1,'null',1,1,1),(4,'Ben','abcdefg@gmail.com','$2y$10$imaWX39TvSw20yRZ1VpOCuTL1Sl5GqzNBgFok5XkehWruJMXTKUc.',1,'null',1,1,1),(5,'kitty','awifhfoiwj@gmail.com','$2y$10$imaWX39TvSw20yRZ1VpOCuTL1Sl5GqzNBgFok5XkehWruJMXTKUc.',1,'null',0,0,0);
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'user_system'
+--
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-07-13 13:58:11
