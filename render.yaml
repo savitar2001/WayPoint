@@ -19,7 +19,7 @@ services:
     publishDir: ./build
     repo: https://github.com/savitar2001/WayPoint
     dockerfilePath: ./frontend/Dockerfile
-     envVarGroups:
+    envVarGroups:
       - name: WayPoint-env 
 
   # 佇列處理器
