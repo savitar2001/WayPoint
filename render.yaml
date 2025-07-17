@@ -6,7 +6,7 @@ services:
     dockerfilePath: ./backend/Dockerfile
     healthCheckPath: /api/health
     plan: free
-    envVarGroups:
+    envVars:
       - fromGroup: WayPoint-env
 
   - type: web
@@ -17,7 +17,7 @@ services:
     buildCommand: npm install && npm run build
     startCommand: npx serve -s build -l 80
     healthCheckPath: /
-    envVarGroups:
+    envVars:
       - fromGroup: WayPoint-env
 
   - type: worker
@@ -27,7 +27,7 @@ services:
     dockerfilePath: ./backend/Dockerfile
     dockerCommand: "php artisan queue:work redis --sleep=3 --tries=3 --max-time=3600"
     plan: free
-    envVarGroups:
+    envVars:
       - fromGroup: WayPoint-env
 
   - type: redis
