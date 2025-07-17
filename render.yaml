@@ -11,6 +11,7 @@ services:
 
   - type: web
     name: WayPoint-frontend
+    runtime: node
     plan: free
     repo: https://github.com/savitar2001/WayPoint
     rootDir: frontend
