@@ -7,7 +7,7 @@ services:
     healthCheckPath: /api/health
     plan: free
     envVarGroups:
-      - name: WayPoint-env
+      - fromGroup: WayPoint-env
 
   - type: web
     name: WayPoint-frontend
@@ -18,7 +18,7 @@ services:
     startCommand: npx serve -s build -l 80
     healthCheckPath: /
     envVarGroups:
-      - name: WayPoint-env
+      - fromGroup: WayPoint-env
 
   - type: worker
     name: WayPoint-queue-worker
@@ -28,7 +28,7 @@ services:
     dockerCommand: "php artisan queue:work redis --sleep=3 --tries=3 --max-time=3600"
     plan: free
     envVarGroups:
-      - name: WayPoint-env
+      - fromGroup: WayPoint-env
 
   - type: redis
     name: my-redis-cache
