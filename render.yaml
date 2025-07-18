@@ -21,16 +21,6 @@ services:
     envVars:
       - fromGroup: WayPoint-env
 
-  - type: worker
-    name: WayPoint-queue-worker
-    env: docker
-    repo: https://github.com/savitar2001/WayPoint
-    dockerfilePath: ./backend/Dockerfile
-    dockerCommand: "php artisan queue:work redis --sleep=3 --tries=3 --max-time=3600"
-    plan: free
-    envVars:
-      - fromGroup: WayPoint-env
-
   - type: redis
     name: my-redis-cache
     plan: free
