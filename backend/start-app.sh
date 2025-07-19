@@ -1,14 +1,18 @@
-#!/bin/sh
-# filepath: /Applications/XAMPP/xamppfiles/htdocs/side-project/new-project/backend/start-app.sh
-
-# Exit immediately if a command exits with a non-zero status.
 set -e
 
 echo "Starting Laravel application..."
 
+# Wait for Redis to be ready
+echo "Waiting for Redis connection..."
+until php artisan tinker --execute="Redis::ping();" 2>/dev/null; do
+    echo "Redis is unavailable - sleeping"
+    sleep 2
+done
+echo "Redis is ready!"
+
 # Start Laravel Reverb in the background
 echo "Starting Reverb server..."
-php artisan reverb:start --host="${REVERB_HOST:-0.0.0.0}" --port="${REVERB_PORT:-8080}" --debug &
+php artisan reverb:start --host=0.0.0.0 --port=8080 --debug &
 
 # Start queue worker in the background
 echo "Starting queue worker..."
