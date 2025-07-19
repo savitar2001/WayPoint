@@ -7,7 +7,9 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libzip-dev \
     && apt-get clean && rm -rf /var/lib/apt/lists/* \
-    && docker-php-ext-install pdo pdo_mysql bcmath zip pcntl
+    && docker-php-ext-install pdo pdo_mysql bcmath zip pcntl\
+    && pecl install redis \
+    && docker-php-ext-enable redis
 
 # 2. 複製 Composer 執行檔
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

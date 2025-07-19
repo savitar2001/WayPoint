@@ -1,10 +1,18 @@
+#!/bin/sh
+
 set -e
 
 echo "Starting Laravel application..."
 
-# Wait for Redis to be ready
+# Run Laravel setup commands
+echo "Running Laravel setup..."
+php artisan key:generate --no-interaction || true
+php artisan config:cache
+php artisan route:cache
+
+# Wait for Redis to be ready using Laravel's Redis facade
 echo "Waiting for Redis connection..."
-until php artisan tinker --execute="Redis::ping();" 2>/dev/null; do
+until php artisan tinker --execute="use Illuminate\Support\Facades\Redis; Redis::ping();" 2>/dev/null; do
     echo "Redis is unavailable - sleeping"
     sleep 2
 done
