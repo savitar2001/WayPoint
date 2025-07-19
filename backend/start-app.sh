@@ -5,16 +5,30 @@ set -e
 
 echo "Starting Laravel application..."
 
-# Run Laravel setup commands
-echo "Running Laravel setup..."
+# 確保快取目錄存在且有正確權限
+echo "Setting up cache directories..."
+mkdir -p storage/framework/cache/data
+mkdir -p storage/framework/sessions
+mkdir -p storage/framework/views
+mkdir -p bootstrap/cache
 
-# 直接跳過 key:generate，因為在生產環境中應該使用環境變數 APP_KEY
-echo "Skipping key:generate (using APP_KEY environment variable)"
+# 設定權限
+chown -R www-data:www-data storage bootstrap/cache
+chmod -R 775 storage bootstrap/cache
 
+# 清除所有快取（避免路徑問題）
+echo "Clearing caches..."
+php artisan config:clear || true
+php artisan route:clear || true
+php artisan view:clear || true
+php artisan cache:clear || true
+
+# 重新快取配置（但先確保目錄存在）
+echo "Rebuilding caches..."
 php artisan config:cache
 php artisan route:cache
 
-# Wait for Redis to be ready using Laravel's Redis facade
+# Wait for Redis to be ready
 echo "Waiting for Redis connection..."
 until php artisan tinker --execute="use Illuminate\Support\Facades\Redis; Redis::ping();" 2>/dev/null; do
     echo "Redis is unavailable - sleeping"
@@ -22,14 +36,12 @@ until php artisan tinker --execute="use Illuminate\Support\Facades\Redis; Redis:
 done
 echo "Redis is ready!"
 
-# Start Laravel Reverb in the background
+# Start services
 echo "Starting Reverb server..."
 php artisan reverb:start --host=0.0.0.0 --port=8080 --debug &
 
-# Start queue worker in the background
 echo "Starting queue worker..."
 php artisan queue:work redis --sleep=3 --tries=3 --max-time=3600 &
 
-# Start Apache in the foreground
 echo "Starting Apache server..."
 exec apache2-foreground
