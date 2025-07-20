@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libzip-dev \
     && apt-get clean && rm -rf /var/lib/apt/lists/* \
-    && docker-php-ext-install pdo pdo_mysql bcmath zip pcntl\
+    && docker-php-ext-install pdo pdo_mysql bcmath zip pcntl \
     && pecl install redis \
     && docker-php-ext-enable redis
 
@@ -15,7 +15,6 @@ RUN apt-get update && apt-get install -y \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # 3. 提前處理所有需要特殊路徑的設定檔
-# 先從建置上下文 (backend/ 目錄) 複製設定檔到它們在映像檔中的最終位置
 COPY backend/apache-vhost.conf /etc/apache2/sites-available/000-default.conf
 COPY backend/start-app.sh /usr/local/bin/start-app.sh
 
@@ -31,8 +30,11 @@ RUN composer install --no-interaction --no-plugins --no-scripts --prefer-dist
 # 5. 最後，複製應用程式剩餘的所有程式碼
 COPY backend/. .
 
-# 6. 設定儲存目錄的權限
-RUN chown -R www-data:www-data storage bootstrap/cache
+# 6. 確保快取目錄存在並設定權限
+RUN mkdir -p storage/framework/{cache/data,sessions,views} \
+    && mkdir -p bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
 EXPOSE 80
 CMD ["/usr/local/bin/start-app.sh"]

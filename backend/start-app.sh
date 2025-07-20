@@ -1,40 +1,30 @@
 #!/bin/sh
-# filepath: /Applications/XAMPP/xamppfiles/htdocs/side-project/new-project/backend/start-app.sh
-
 set -e
 
 echo "Starting Laravel application..."
 
-# 確保快取目錄存在且有正確權限
-echo "Setting up cache directories..."
-mkdir -p storage/framework/cache/data
-mkdir -p storage/framework/sessions
-mkdir -p storage/framework/views
-mkdir -p bootstrap/cache
-
-# 設定權限
+# 確保目錄權限正確
+echo "Setting permissions..."
 chown -R www-data:www-data storage bootstrap/cache
 chmod -R 775 storage bootstrap/cache
 
-# 清除所有快取（避免路徑問題）
-echo "Clearing caches..."
+# 不要立即快取，先讓應用正常啟動
+echo "Clearing any existing caches..."
 php artisan config:clear || true
 php artisan route:clear || true
 php artisan view:clear || true
 php artisan cache:clear || true
 
-# 重新快取配置（但先確保目錄存在）
-echo "Rebuilding caches..."
-php artisan config:cache
-php artisan route:cache
-
-# Wait for Redis to be ready
+# Wait for Redis
 echo "Waiting for Redis connection..."
 until php artisan tinker --execute="use Illuminate\Support\Facades\Redis; Redis::ping();" 2>/dev/null; do
     echo "Redis is unavailable - sleeping"
     sleep 2
 done
 echo "Redis is ready!"
+
+echo "Caching configuration..."
+php artisan config:cache || echo "Config cache failed, continuing..."
 
 # Start services
 echo "Starting Reverb server..."
