@@ -5,8 +5,9 @@ echo "Starting Laravel application..."
 
 # 確保目錄權限正確
 echo "Setting permissions..."
-chown -R www-data:www-data storage bootstrap/cache
-chmod -R 775 storage bootstrap/cache
+mkdir -p /var/www/html/storage/framework/views
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # 不要立即快取，先讓應用正常啟動
 echo "Clearing any existing caches..."
@@ -21,7 +22,7 @@ until php artisan tinker --execute="use Illuminate\Support\Facades\Redis; Redis:
     echo "Redis is unavailable - sleeping"
     sleep 2
 done
-echo "Redis is ready!"
+echo "Redis is ready!" 
 
 echo "Caching configuration..."
 php artisan config:cache || echo "Config cache failed, continuing..."
