@@ -3,9 +3,16 @@ set -e
 
 echo "Starting Laravel application..."
 
-# 確保目錄權限正確
-echo "Setting permissions..."
+# 確保所有必要目錄存在
+echo "Creating required directories..."
 mkdir -p /var/www/html/storage/framework/views
+mkdir -p /var/www/html/storage/framework/cache
+mkdir -p /var/www/html/storage/framework/sessions
+mkdir -p /var/www/html/storage/app
+mkdir -p /var/www/html/storage/logs
+mkdir -p /var/www/html/bootstrap/cache
+
+echo "Setting permissions..."
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
