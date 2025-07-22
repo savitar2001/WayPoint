@@ -8,8 +8,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | Most templating systems load templates from disk. Here you may specify
-    | an array of paths that should be checked for your views. Of course
-    | the usual Laravel view path has already been registered for you.
+    | an array of paths that should be checked for your views.
     |
     */
 
@@ -23,14 +22,13 @@ return [
     |--------------------------------------------------------------------------
     |
     | This option determines where all the compiled Blade templates will be
-    | stored for your application. Typically, this is within the storage
-    | directory. However, as usual, you are free to change this value.
+    | stored for your application. We now use storage_path() 而非硬编码。
     |
     */
 
     'compiled' => env(
         'VIEW_COMPILED_PATH',
-        '/var/www/html/storage/framework/views'
+        storage_path('framework/views')
     ),
 
 ];
