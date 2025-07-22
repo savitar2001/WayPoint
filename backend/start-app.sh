@@ -3,18 +3,18 @@ set -e
 
 echo "Starting Laravel application..."
 
-# 确保所有必要目录存在
+# 確保所有必要目錄存在
 echo "Creating required directories..."
-mkdir -p storage/framework/views \
-         storage/framework/cache \
-         storage/framework/sessions \
-         storage/app \
-         storage/logs \
-         bootstrap/cache
+mkdir -p /var/www/html/storage/framework/views
+mkdir -p /var/www/html/storage/framework/cache
+mkdir -p /var/www/html/storage/framework/sessions
+mkdir -p /var/www/html/storage/app
+mkdir -p /var/www/html/storage/logs
+mkdir -p /var/www/html/bootstrap/cache
 
 echo "Setting permissions..."
-chown -R www-data:www-data storage bootstrap/cache
-chmod -R 775 storage bootstrap/cache
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 echo "Clearing caches..."
 php artisan optimize:clear || true
