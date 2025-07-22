@@ -1,8 +1,6 @@
 #!/bin/sh
 set -e
 
-cd "$(dirname "$0")"
-
 echo "Starting Laravel application..."
 
 # 确保所有必要目录存在
