@@ -21,31 +21,7 @@ use App\Http\Controllers\User\GetSubscriberController;
 use App\Http\Controllers\User\GetUserProfileController;
 use App\Http\Controllers\Notification\NotificationController;
 use App\Events\NewMessage;
-Route::get('/health', function () {
-    try {
-        $status = [
-            'status' => 'ok',
-            'timestamp' => now()->toDateTimeString(),
-            'php_version' => PHP_VERSION,
-            'laravel_version' => app()->version(),
-        ];
 
-        try {
-            \Illuminate\Support\Facades\Redis::ping();
-            $status['redis'] = 'connected';
-        } catch (\Exception $e) {
-            $status['redis'] = 'failed: ' . $e->getMessage();
-        }
-
-        return response()->json($status);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => $e->getMessage(),
-            'trace' => $e->getTraceAsString()
-        ], 500);
-    }
-});
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
