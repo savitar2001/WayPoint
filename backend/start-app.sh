@@ -9,85 +9,64 @@ chown -R www-data:www-data /var/www/html/bootstrap/cache
 chmod -R 775 /var/www/html/storage
 chmod -R 775 /var/www/html/bootstrap/cache
 
-echo "Debugging configuration..."
-echo "Current working directory: $(pwd)"
-echo "PHP version: $(php --version)"
-echo "Laravel version: $(php artisan --version 2>/dev/null || echo 'Laravel command failed')"
-
-# 檢查配置文件
-echo "Checking config files..."
-ls -la config/ || echo "Config directory not found"
-ls -la config/view.php || echo "View config not found"
-
-# 檢查當前的 view 配置
-echo "Current view configuration:"
-php artisan tinker --execute="echo config('view.compiled');" 2>/dev/null || echo "Config check failed"
+echo "=== ENVIRONMENT DIAGNOSTICS ==="
+echo "APP_KEY: ${APP_KEY}"
+echo "APP_ENV: ${APP_ENV}"
+echo "DB_HOST: ${DB_HOST}"
+echo "REDIS_URL: ${REDIS_URL}"
 
 echo "Clearing caches..."
-php artisan optimize:clear || true
+php artisan config:clear || true
+php artisan cache:clear || true
+php artisan view:clear || true
 
-echo "Waiting for Redis..."
-until php artisan tinker --execute="use Illuminate\Support\Facades\Redis; Redis::ping();" 2>/dev/null; do
-    echo "Redis is unavailable - sleeping"
-    sleep 2
-done
-echo "Redis is ready!"
+# 測試數據庫連接
+echo "Testing database connection..."
+php artisan tinker --execute="
+try {
+    \DB::connection()->getPdo();
+    echo 'Database connection: OK' . PHP_EOL;
+} catch (\Exception \$e) {
+    echo 'Database connection failed: ' . \$e->getMessage() . PHP_EOL;
+}
+" || echo "Database test failed"
 
-echo "Testing basic Laravel functionality..."
-php artisan route:list --path=api 2>/dev/null || echo "Route list failed"
+# 測試 Redis 連接
+echo "Testing Redis connection..."
+php artisan tinker --execute="
+try {
+    \Illuminate\Support\Facades\Redis::ping();
+    echo 'Redis connection: OK' . PHP_EOL;
+} catch (\Exception \$e) {
+    echo 'Redis connection failed: ' . \$e->getMessage() . PHP_EOL;
+}
+" || echo "Redis test failed"
 
-# 新增的詳細診斷
-echo "=== APACHE & PHP DIAGNOSTICS ==="
-echo "Checking Apache configuration..."
-apache2ctl -t || echo "❌ Apache config test failed"
+# 測試基本配置
+echo "Testing Laravel configuration..."
+php artisan tinker --execute="
+echo 'APP_KEY exists: ' . (config('app.key') ? 'YES' : 'NO') . PHP_EOL;
+echo 'Database configured: ' . config('database.default') . PHP_EOL;
+echo 'Cache driver: ' . config('cache.default') . PHP_EOL;
+" || echo "Config test failed"
 
-echo "Checking PHP modules..."
-php -m | grep -E "(apache|mod_php)" || echo "No Apache PHP modules found"
+# 如果 Redis 連接失敗，暫時改用 file cache
+if ! php artisan tinker --execute="use Illuminate\Support\Facades\Redis; Redis::ping();" 2>/dev/null; then
+    echo "Redis failed, switching to file cache temporarily..."
+    export CACHE_STORE=file
+    export SESSION_DRIVER=file
+    export QUEUE_CONNECTION=sync
+fi
 
-echo "Checking if PHP CLI works..."
-php -r "echo 'PHP CLI works\n';" || echo "❌ PHP CLI failed"
-
-echo "Checking Apache modules..."
-apache2ctl -M | grep php || echo "❌ No PHP module loaded in Apache"
-
-echo "Checking public directory..."
-ls -la /var/www/html/public/ || echo "❌ Public directory not found"
-
-echo "Checking if index.php exists..."
-ls -la /var/www/html/public/index.php || echo "❌ index.php not found"
+echo "Caching configuration..."
+php artisan config:cache || echo "Config cache failed"
 
 echo "Starting background services..."
-php artisan reverb:start --host=0.0.0.0 --port=8080 --debug &
-php artisan queue:work redis --sleep=3 --tries=3 --max-time=3600 &
+# 只有在 Redis 可用時才啟動這些服務
+if [ "$QUEUE_CONNECTION" != "sync" ]; then
+    php artisan reverb:start --host=0.0.0.0 --port=8080 --debug &
+    php artisan queue:work redis --sleep=3 --tries=3 --max-time=3600 &
+fi
 
-# 啟動 Apache 在背景
 echo "Starting Apache server..."
-apache2-foreground &
-
-# 等待 Apache 啟動
-echo "Waiting for Apache to start..."
-sleep 5
-
-# 進行 web 測試
-echo "=== WEB TESTING ==="
-echo "Testing web functionality..."
-
-# 測試內部 HTTP 請求
-curl -f -s http://localhost/ > /dev/null && echo "✅ Root web test passed" || echo "❌ Root web test failed"
-
-# 檢查 Apache 錯誤日誌
-echo "Checking Apache error logs..."
-tail -10 /var/log/apache2/error.log 2>/dev/null || echo "No Apache error log found"
-
-# 測試簡單的 PHP 文件
-echo "Testing basic PHP..."
-echo "<?php echo 'PHP is working'; ?>" > /var/www/html/public/test.php
-curl -f -s http://localhost/test.php && echo "✅ PHP test passed" || echo "❌ PHP test failed"
-
-# 測試 Laravel 是否可以通過 web 訪問
-echo "Testing Laravel web access..."
-curl -f -s http://localhost/api/user > /dev/null && echo "✅ Laravel API test passed" || echo "❌ Laravel API test failed"
-
-# 讓 Apache 回到前台運行
-echo "Web tests completed. Apache running in foreground..."
-wait
+exec apache2-foreground
