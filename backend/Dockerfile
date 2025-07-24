@@ -11,7 +11,14 @@ RUN apt-get update && apt-get install -y \
     && pecl install redis \
     && docker-php-ext-enable redis
 
-# 2. 複製 Composer 執行檔
+RUN a2enmod rewrite \
+    && echo "LoadModule php_module /usr/local/lib/php/extensions/no-debug-non-zts-20220829/php.so" >> /etc/apache2/apache2.conf \
+    && echo "AddType application/x-httpd-php .php" >> /etc/apache2/apache2.conf
+
+# 或者更簡單的方法，確保 PHP 被正確處理
+RUN echo "<?php phpinfo(); ?>" > /var/www/html/info.php
+
+
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # 3. 提前處理所有需要特殊路徑的設定檔
