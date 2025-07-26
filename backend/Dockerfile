@@ -1,7 +1,6 @@
 FROM php:8.2-apache
 WORKDIR /var/www/html
 
-# 1. 安裝必要的系統套件和 PHP 擴充功能
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -10,7 +9,8 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean && rm -rf /var/lib/apt/lists/* \
     && docker-php-ext-install pdo pdo_mysql bcmath zip pcntl \
     && pecl install redis \
-    && docker-php-ext-enable redis
+    && docker-php-ext-enable redis \
+    && update-ca-certificates
 
 RUN a2enmod rewrite \
     && echo "LoadModule php_module /usr/local/lib/php/extensions/no-debug-non-zts-20220829/php.so" >> /etc/apache2/apache2.conf \
