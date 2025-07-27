@@ -49,4 +49,6 @@ php artisan reverb:start --host=0.0.0.0 --port=8080 --debug &
 php artisan queue:work redis --sleep=3 --tries=3 --max-time=3600 &
 
 echo "Starting Apache server..."
+# 持续输出 Laravel 日志到控制台
+tail -n 100 -f /var/www/html/storage/logs/laravel.log &
 exec apache2-foreground
