@@ -23,8 +23,7 @@ use App\Http\Controllers\Notification\NotificationController;
 use App\Events\NewMessage;
 
 Route::get('/health', function () {
-    \Log::error('Health check triggered');
-    return response()->json(['status' => 'ok']);
+    return 'ok';
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

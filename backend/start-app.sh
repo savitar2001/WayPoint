@@ -2,7 +2,11 @@
 set -e
 
 echo "Starting Laravel application..."
-
+# 输出关键环境变量，方便调试
+echo "APP_ENV=$APP_ENV"
+echo "APP_DEBUG=$APP_DEBUG"
+echo "APP_KEY=$APP_KEY"
+echo "APP_URL=$APP_URL"
 echo "Setting permissions..."
 chown -R www-data:www-data /var/www/html/storage
 chown -R www-data:www-data /var/www/html/bootstrap/cache
