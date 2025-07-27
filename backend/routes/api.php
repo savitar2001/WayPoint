@@ -23,6 +23,7 @@ use App\Http\Controllers\Notification\NotificationController;
 use App\Events\NewMessage;
 
 Route::get('/health', function () {
+    \Log::error('Health check triggered');
     return response()->json(['status' => 'ok']);
 });
 
