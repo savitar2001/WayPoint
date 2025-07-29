@@ -64,8 +64,8 @@ try {
 "
 
 echo "Starting background services..."
-php artisan reverb:start --host=0.0.0.0 --port=8080 --debug &
-php artisan queue:work redis --sleep=3 --tries=3 --max-time=3600 &
+echo "Starting Reverb server..."
+php artisan reverb:start --host="${REVERB_HOST:-0.0.0.0}" --port="${REVERB_PORT:-8080}" --debug &
 
 echo "Starting Apache server..."
 exec apache2-foreground
