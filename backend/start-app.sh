@@ -47,6 +47,20 @@ try {
     echo '❌ Connection failed: ' . \$e->getMessage() . PHP_EOL;
 }
 "
+echo "=== REDIS CONNECTION TEST ==="
+php artisan tinker --execute="
+try {
+    \Illuminate\Support\Facades\Redis::set('copilot_test', 'ok');
+    \$value = \Illuminate\Support\Facades\Redis::get('copilot_test');
+    if (\$value === 'ok') {
+        echo '✅ Redis connection successful!' . PHP_EOL;
+    } else {
+        echo '❌ Redis connection failed: Value mismatch.' . PHP_EOL;
+    }
+} catch (\Exception \$e) {
+    echo '❌ Redis connection failed: ' . \$e->getMessage() . PHP_EOL;
+}
+"
 
 echo "Starting background services..."
 php artisan reverb:start --host=0.0.0.0 --port=8080 --debug &
