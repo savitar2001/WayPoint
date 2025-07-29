@@ -68,4 +68,5 @@ echo "Starting Reverb server..."
 php artisan reverb:start --host="${REVERB_HOST:-0.0.0.0}" --port="${REVERB_PORT:-8080}" --debug &
 
 echo "Starting Apache server..."
+tail -n 50 storage/logs/laravel-$(date +%F).log
 exec apache2-foreground
