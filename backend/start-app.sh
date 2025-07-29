@@ -25,6 +25,18 @@ rm -f /var/www/html/bootstrap/cache/config.php
 rm -f /var/www/html/bootstrap/cache/services.php
 rm -f /var/www/html/bootstrap/cache/packages.php
 
+
+echo "檢查 MySQL 資料庫連線..."
+if ! mysqladmin ping -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USERNAME" -p"$DB_PASSWORD" --silent; then
+  echo "[ERROR] 無法連線到 MySQL 資料庫，請檢查 DB_HOST/DB_PORT/DB_USERNAME/DB_PASSWORD 設定"
+  exit 1
+fi
+
+echo "檢查 Redis 連線..."
+if ! redis-cli -h "$REDIS_HOST" -p "$REDIS_PORT" ping | grep -q PONG; then
+  echo "[ERROR] 無法連線到 Redis，請檢查 REDIS_HOST/REDIS_PORT 設定"
+  exit 1
+fi
 echo "Starting background services..."
 php artisan reverb:start --host=0.0.0.0 --port=8080 --debug &
 php artisan queue:work redis --sleep=3 --tries=3 --max-time=3600 &
