@@ -23,7 +23,7 @@ use App\Http\Controllers\Notification\NotificationController;
 use App\Events\NewMessage;
 
 Route::get('/health', function () {
-    return 'ok';
+    return response()->json(['status' => 'ok']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
