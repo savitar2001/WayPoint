@@ -7,6 +7,7 @@ echo "APP_ENV=$APP_ENV"
 echo "APP_DEBUG=$APP_DEBUG"
 echo "APP_KEY=$APP_KEY"
 echo "APP_URL=$APP_URL"
+
 echo "Setting permissions..."
 chown -R www-data:www-data /var/www/html/storage
 chown -R www-data:www-data /var/www/html/bootstrap/cache
@@ -48,6 +49,7 @@ try {
     echo '❌ Connection failed: ' . \$e->getMessage() . PHP_EOL;
 }
 "
+
 echo "=== REDIS CONNECTION TEST ==="
 php artisan tinker --execute="
 try {
@@ -63,10 +65,35 @@ try {
 }
 "
 
+echo "=== CHECKING FOR EXISTING LOGS ==="
+# 檢查日誌目錄是否存在且有內容
+if [ -d "/var/www/html/storage/logs" ]; then
+    echo "Log directory exists"
+    ls -la /var/www/html/storage/logs/
+    
+    # 顯示最新的日誌文件內容
+    LATEST_LOG=$(find /var/www/html/storage/logs -name "*.log" -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -d' ' -f2)
+    if [ ! -z "$LATEST_LOG" ]; then
+        echo "=== LATEST LOG CONTENT ==="
+        echo "Showing last 50 lines from: $LATEST_LOG"
+        tail -n 50 "$LATEST_LOG"
+    else
+        echo "No log files found"
+    fi
+else
+    echo "Log directory does not exist"
+fi
+
+echo "=== APACHE ERROR LOG ==="
+# 也檢查 Apache 錯誤日誌
+if [ -f "/var/log/apache2/error.log" ]; then
+    echo "Showing last 20 lines from Apache error log:"
+    tail -n 20 /var/log/apache2/error.log
+fi
+
 echo "Starting background services..."
 echo "Starting Reverb server..."
 php artisan reverb:start --host="${REVERB_HOST:-0.0.0.0}" --port="${REVERB_PORT:-8080}" --debug &
 
 echo "Starting Apache server..."
-tail -n 50 storage/logs/laravel-$(date +%F).log
 exec apache2-foreground
