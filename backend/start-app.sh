@@ -7,6 +7,8 @@ echo "APP_ENV=$APP_ENV"
 echo "APP_DEBUG=$APP_DEBUG"
 echo "APP_KEY=$APP_KEY"
 echo "APP_URL=$APP_URL"
+echo "LOG_CHANNEL=$LOG_CHANNEL"
+echo "LOG_LEVEL=$LOG_LEVEL"
 
 echo "Setting permissions..."
 chown -R www-data:www-data /var/www/html/storage
@@ -26,6 +28,18 @@ php artisan view:clear || true
 rm -f /var/www/html/bootstrap/cache/config.php
 rm -f /var/www/html/bootstrap/cache/services.php
 rm -f /var/www/html/bootstrap/cache/packages.php
+
+echo "=== LOG CONFIGURATION TEST ==="
+php artisan tinker --execute="
+echo 'Log channel: ' . config('logging.default') . PHP_EOL;
+echo 'Log level: ' . config('logging.channels.' . config('logging.default') . '.level', 'not set') . PHP_EOL;
+try {
+    \Log::info('Test log entry from startup script');
+    echo '✅ Logging system working!' . PHP_EOL;
+} catch (\Exception \$e) {
+    echo '❌ Logging failed: ' . \$e->getMessage() . PHP_EOL;
+}
+"
 
 echo "=== VERIFYING ENVIRONMENT VARIABLES ==="
 echo "DB_HOST: ${DB_HOST}"
@@ -47,6 +61,7 @@ try {
     echo 'Server version: ' . \$pdo->getAttribute(PDO::ATTR_SERVER_VERSION) . PHP_EOL;
 } catch (\Exception \$e) {
     echo '❌ Connection failed: ' . \$e->getMessage() . PHP_EOL;
+    \Log::error('Database connection failed: ' . \$e->getMessage());
 }
 "
 
@@ -59,9 +74,11 @@ try {
         echo '✅ Redis connection successful!' . PHP_EOL;
     } else {
         echo '❌ Redis connection failed: Value mismatch.' . PHP_EOL;
+        \Log::error('Redis connection failed: Value mismatch');
     }
 } catch (\Exception \$e) {
     echo '❌ Redis connection failed: ' . \$e->getMessage() . PHP_EOL;
+    \Log::error('Redis connection failed: ' . \$e->getMessage());
 }
 "
 
@@ -71,12 +88,29 @@ if [ -d "/var/www/html/storage/logs" ]; then
     echo "Log directory exists"
     ls -la /var/www/html/storage/logs/
     
-    # 顯示最新的日誌文件內容
-    LATEST_LOG=$(find /var/www/html/storage/logs -name "*.log" -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -d' ' -f2)
-    if [ ! -z "$LATEST_LOG" ]; then
-        echo "=== LATEST LOG CONTENT ==="
-        echo "Showing last 50 lines from: $LATEST_LOG"
-        tail -n 50 "$LATEST_LOG"
+    # 因為使用 daily channel，日誌文件名會包含日期
+    TODAY=$(date +%Y-%m-%d)
+    YESTERDAY=$(date -d "yesterday" +%Y-%m-%d)
+    
+    # 檢查今天和昨天的日誌
+    for LOG_DATE in $TODAY $YESTERDAY; do
+        LOG_FILE="/var/www/html/storage/logs/laravel-$LOG_DATE.log"
+        if [ -f "$LOG_FILE" ]; then
+            echo "=== LOG CONTENT ($LOG_DATE) ==="
+            echo "Showing last 50 lines from: $LOG_FILE"
+            tail -n 50 "$LOG_FILE"
+            break
+        fi
+    done
+    
+    # 如果找不到預期的日誌文件，顯示所有日誌文件
+    if ls /var/www/html/storage/logs/*.log 1> /dev/null 2>&1; then
+        LATEST_LOG=$(ls -t /var/www/html/storage/logs/*.log | head -n1)
+        if [ ! -f "/var/www/html/storage/logs/laravel-$TODAY.log" ] && [ ! -f "/var/www/html/storage/logs/laravel-$YESTERDAY.log" ]; then
+            echo "=== LATEST AVAILABLE LOG ==="
+            echo "Showing last 50 lines from: $LATEST_LOG"
+            tail -n 50 "$LATEST_LOG"
+        fi
     else
         echo "No log files found"
     fi
@@ -84,11 +118,17 @@ else
     echo "Log directory does not exist"
 fi
 
-echo "=== APACHE ERROR LOG ==="
-# 也檢查 Apache 錯誤日誌
+echo "=== APACHE LOG DIAGNOSTICS ==="
 if [ -f "/var/log/apache2/error.log" ]; then
-    echo "Showing last 20 lines from Apache error log:"
-    tail -n 20 /var/log/apache2/error.log
+    echo "=== APACHE ERROR LOG ==="
+    if [ -s "/var/log/apache2/error.log" ]; then
+        echo "Showing last 20 lines from Apache error log:"
+        tail -n 20 /var/log/apache2/error.log
+    else
+        echo "Apache error log is empty"
+    fi
+else
+    echo "Apache error log does not exist"
 fi
 
 echo "Starting background services..."
