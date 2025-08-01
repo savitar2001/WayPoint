@@ -29,21 +29,43 @@ Route::get('/health', function () {
             'timestamp' => now()->toDateTimeString(),
             'php_version' => PHP_VERSION,
             'laravel_version' => app()->version(),
+            'environment' => app()->environment(),
         ];
 
+        // 測試資料庫連接（如果需要的話）
+        try {
+            \Illuminate\Support\Facades\DB::connection()->getPdo();
+            $status['database'] = 'connected';
+        } catch (\Exception $e) {
+            $status['database'] = 'failed: ' . $e->getMessage();
+            // 不要因為資料庫失敗就讓健康檢查失敗
+        }
+
+        // 測試 Redis 連接
         try {
             \Illuminate\Support\Facades\Redis::ping();
             $status['redis'] = 'connected';
         } catch (\Exception $e) {
             $status['redis'] = 'failed: ' . $e->getMessage();
+            // 不要因為 Redis 失敗就讓健康檢查失敗
         }
 
-        return response()->json($status);
+        // 檢查關鍵目錄權限
+        $status['storage_writable'] = is_writable(storage_path()) ? 'yes' : 'no';
+        $status['cache_writable'] = is_writable(storage_path('framework/cache')) ? 'yes' : 'no';
+
+        return response()->json($status, 200);
+        
     } catch (\Exception $e) {
+        \Log::error('Health check failed', [
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        
         return response()->json([
             'status' => 'error',
             'message' => $e->getMessage(),
-            'trace' => $e->getTraceAsString()
+            'timestamp' => now()->toDateTimeString(),
         ], 500);
     }
 });
