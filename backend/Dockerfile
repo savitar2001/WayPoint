@@ -49,5 +49,5 @@ RUN mkdir -p storage/framework/cache/data \
     && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-EXPOSE 80
+EXPOSE ${PORT:-10000}
 CMD ["/usr/local/bin/start-app.sh"]
