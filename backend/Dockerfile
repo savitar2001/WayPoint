@@ -12,11 +12,11 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-enable redis \
     && update-ca-certificates
 
-RUN a2enmod rewrite \
+# 啟用 Apache rewrite 模組
+RUN a2enmod rewrite
 
-# 或者更簡單的方法，確保 PHP 被正確處理
+# 建立 PHP 資訊頁面
 RUN echo "<?php phpinfo(); ?>" > /var/www/html/info.php
-
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
