@@ -21,6 +21,8 @@ use App\Http\Controllers\User\GetSubscriberController;
 use App\Http\Controllers\User\GetUserProfileController;
 use App\Http\Controllers\Notification\NotificationController;
 use App\Events\NewMessage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 Route::get('/health', function () {
     try {
