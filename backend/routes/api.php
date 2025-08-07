@@ -24,7 +24,7 @@ use App\Events\NewMessage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
-Route::get('/health', function () {
+Route::get('/health-check', function () {
     try {
         $status = [
             'status' => 'ok',

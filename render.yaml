@@ -1,10 +1,10 @@
 services:
   - type: web
     name: WayPoint-backend
-    env: docker
+    runtime: docker
     repo: https://github.com/savitar2001/WayPoint
     dockerfilePath: ./backend/Dockerfile
-    healthCheckPath: /api/health
+    healthCheckPath: /api/health-check
     plan: free
     envVars:
       - fromGroup: WayPoint-env
