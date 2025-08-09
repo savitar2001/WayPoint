@@ -25,6 +25,9 @@ COPY backend/apache-vhost.conf /etc/apache2/sites-available/000-default.conf
 COPY backend/start-app.sh /usr/local/bin/start-app.sh
 RUN chmod +x /usr/local/bin/start-app.sh
 
+# 允許 root 下的 composer 不禁用 plugins
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 # 複製 composer 檔並安裝依賴（允許 scripts / plugins）
 COPY backend/composer.json backend/composer.lock ./
 # 使用 --no-dev 以生產模式；如需 dev 套件移除此參數
