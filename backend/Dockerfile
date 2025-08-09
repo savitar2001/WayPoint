@@ -15,29 +15,26 @@ RUN apt-get update && apt-get install -y \
 # 啟用 Apache rewrite 模組
 RUN a2enmod rewrite
 
-# 建立 PHP 資訊頁面
+# 建立 PHP 資訊頁面 (可在生產環境移除)
 RUN echo "<?php phpinfo(); ?>" > /var/www/html/info.php
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# 3. 提前處理所有需要特殊路徑的設定檔
+# 處理 Apache 與啟動腳本
 COPY backend/apache-vhost.conf /etc/apache2/sites-available/000-default.conf
 COPY backend/start-app.sh /usr/local/bin/start-app.sh
-
-# 賦予腳本執行權限
 RUN chmod +x /usr/local/bin/start-app.sh
-# 啟用 Apache rewrite 模組
-RUN a2enmod rewrite
 
-# 4. 複製 composer.json/lock 並安裝依賴
+# 複製 composer 檔並安裝依賴（允許 scripts / plugins）
 COPY backend/composer.json backend/composer.lock ./
-RUN composer install --no-interaction --no-plugins --no-scripts --prefer-dist
+# 使用 --no-dev 以生產模式；如需 dev 套件移除此參數
+RUN composer install --no-dev --prefer-dist --optimize-autoloader --classmap-authoritative --no-interaction \
+    && composer clear-cache
 
-# 5. 最後，複製應用程式剩餘的所有程式碼
+# 複製應用程式剩餘程式碼
 COPY backend/. .
 
-# 6. 確保快取目錄存在並設定權限
-# 6. 確保快取目錄存在並設定權限（修正路徑結構）
+# 建立必要目錄與權限
 RUN mkdir -p storage/framework/cache/data \
     && mkdir -p storage/framework/sessions \
     && mkdir -p storage/framework/views \
@@ -45,7 +42,7 @@ RUN mkdir -p storage/framework/cache/data \
     && mkdir -p storage/logs \
     && mkdir -p bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache \
-    && chmod -R 775 storage bootstrap/cache
+    && chmod -R ug+rwX storage bootstrap/cache
 
 EXPOSE 10000
 CMD ["/usr/local/bin/start-app.sh"]
