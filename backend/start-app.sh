@@ -56,6 +56,9 @@ php artisan config:clear || true
 php artisan route:clear || true
 php artisan view:clear || true
 
+# 手動執行 package:discover
+php artisan package:discover --ansi || echo "package:discover failed (ignored)"
+
 # 重新建立快取（忽略錯誤，避免中斷啟動）
 php artisan config:cache || echo "config:cache failed (ignored)"
 php artisan route:cache || echo "route:cache failed (ignored)"

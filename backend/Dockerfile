@@ -28,10 +28,10 @@ RUN chmod +x /usr/local/bin/start-app.sh
 # 允許 root 下的 composer 不禁用 plugins
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-# 複製 composer 檔並安裝依賴（允許 scripts / plugins）
+# 複製 composer 檔並安裝依賴（跳過 scripts）
 COPY backend/composer.json backend/composer.lock ./
 # 使用 --no-dev 以生產模式；如需 dev 套件移除此參數
-RUN composer install --no-dev --prefer-dist --optimize-autoloader --classmap-authoritative --no-interaction \
+RUN composer install --no-dev --prefer-dist --optimize-autoloader --classmap-authoritative --no-interaction --no-scripts \
     && composer clear-cache
 
 # 複製應用程式剩餘程式碼
