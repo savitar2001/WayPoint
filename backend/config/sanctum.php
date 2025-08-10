@@ -16,11 +16,9 @@ return [
 
     'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', sprintf(
         '%s%s',
-        'localhost,localhost:3000,127.0.0.1,127.0.0.1:8000,::1',
+        'localhost,localhost:3000,127.0.0.1,127.0.0.1:8000,::1,waypoint-frontend-zdei.onrender.com',
         Sanctum::currentApplicationUrlWithPort()
     ))),
-    'waypoint-frontend-zdei.onrender.com', // 前端網域
-    'localhost', // 本地開發時的網域
 
     /*
     |--------------------------------------------------------------------------
