@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         config([
-            'session.domain' => 'localhost',
+            'session.domain' => env('SESSION_DOMAIN', null), // Use environment variable for session domain
         ]);
     }
 }
