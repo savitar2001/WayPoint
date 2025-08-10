@@ -7,81 +7,87 @@ const WEB_BASE_URL = process.env.REACT_APP_BACKEND_URL;
 // Configure axios defaults
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.withCredentials = true;
-axios.defaults.withXSRFToken = true;
+axios.defaults.xsrfCookieName = 'XSRF-TOKEN';
+axios.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
 
 
-// 初始化 CSRF Cookie
+// 簡易取得 cookie
+const getCookie = (name) => {
+    return document.cookie
+        .split('; ')
+        .find(row => row.startsWith(name + '='))
+        ?.split('=')[1] || null;
+};
+
+// 初始化 CSRF Cookie 並設定 header
 export const initializeCsrfToken = async () => {
-    await axios.get(`${WEB_BASE_URL}/sanctum/csrf-cookie`);
+    await axios.get(`${WEB_BASE_URL}/sanctum/csrf-cookie`, { withCredentials: true });
     console.log('CSRF Cookie 已初始化');
-    const tokenValue = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('XSRF-TOKEN='))
-    ?.split('=')[1];
-    return tokenValue ? decodeURIComponent(tokenValue) : null;
+    const raw = getCookie('XSRF-TOKEN');
+    if (raw) {
+        const decoded = decodeURIComponent(raw);
+        axios.defaults.headers.common['X-XSRF-TOKEN'] = decoded; // 明確設定
+        console.log('讀取到的 XSRF-TOKEN:', decoded);
+        return decoded;
+    }
+    console.warn('未取得 XSRF-TOKEN cookie');
+    return null;
 };
 
 // 登入
-export const login = async (email, password,dispatch) => {
-    let csrfToken = null;
-    csrfToken = await initializeCsrfToken();
-    const response = await axios.post(`${WEB_BASE_URL}/login`, { email, password }, 
-    );
+export const login = async (email, password, dispatch) => {
+    const csrfToken = await initializeCsrfToken();
+    const response = await axios.post(`${WEB_BASE_URL}/login`, { email, password }, { withCredentials: true });
     if (response.data.data && response.data.data.userId) { 
-        console.log('Echo initialized after login from AuthService');
         initEcho(response.data.data.userId, dispatch, csrfToken);
-        console.log('Echo initialized after login from AuthService');
     }
     return response.data;
 };
 
-
 // 註冊用戶
 export const register = async (name, email, password, confirm_password) => {
+    const csrfToken = await initializeCsrfToken();
     const response = await axios.post(`${API_BASE_URL}/register`, {
-      name,
-      email,
-      password,
-      confirm_password // Laravel 需要確認密碼字段
-    });
-    return response; // 返回後端的響應數據
-  };
-
-//帳號驗證
-export const verifyAccount = async (requestId, hash, userId) => {
-    const response = await axios.post(`${API_BASE_URL}/verify`, {requestId, hash, userId});
-    return response; // 返回後端的響應數據
+        name,
+        email,
+        password,
+        confirm_password
+    }, { withCredentials: true });
+    return response;
 };
 
-//登出
+// 帳號驗證
+export const verifyAccount = async (requestId, hash, userId) => {
+    const csrfToken = await initializeCsrfToken();
+    const response = await axios.post(`${API_BASE_URL}/verify`, { requestId, hash, userId }, { withCredentials: true });
+    return response;
+};
+
+// 登出
 export const logout = async () => {
     await initializeCsrfToken();
-    const response = await axios.post(`${WEB_BASE_URL}/logout`);
+    const response = await axios.post(`${WEB_BASE_URL}/logout`, {}, { withCredentials: true });
     if (getEcho()) {
         discEcho(); 
-        console.log('Echo disconnected after logout from AuthService');
     }
-    return response; // 返回後端的響應數據
-}
+    return response;
+};
 
-//刪除帳戶
+// 刪除帳戶
 export const deleteAccount = async () => {
     await initializeCsrfToken();
-    const response = await axios.delete(`${WEB_BASE_URL}/deleteAccount`);
-    return response; // 返回後端的響應數據
-}
+    return axios.delete(`${WEB_BASE_URL}/deleteAccount`, { withCredentials: true });
+};
 
-//密碼重置請求
+// 密碼重置請求
 export const passwordReset = async (email) => {
     await initializeCsrfToken();
-    const response = await axios.post(`${WEB_BASE_URL}/passwordReset`, { email });
-    return response; // 返回後端的響應數據
-}
+    return axios.post(`${WEB_BASE_URL}/passwordReset`, { email }, { withCredentials: true });
+};
 
-//密碼重置
-export const passwordResetVerify = async (requestId, hash, userId,password, confirm_password) => {
+// 密碼重置
+export const passwordResetVerify = async (requestId, hash, userId, password, confirm_password) => {
     await initializeCsrfToken();
-    const response = await axios.post(`${WEB_BASE_URL}/passwordResetVerify`, {requestId, hash, userId, password, confirm_password});
-    return response; // 返回後端的響應數據
-}
+    return axios.post(`${WEB_BASE_URL}/passwordResetVerify`, { requestId, hash, userId, password, confirm_password }, { withCredentials: true });
+};
 
