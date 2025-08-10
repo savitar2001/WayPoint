@@ -12,6 +12,14 @@ echo "APP_DEBUG=$APP_DEBUG"
 echo "APP_KEY=${APP_KEY:+(set)}"
 echo "APP_URL=$APP_URL"
 
+# 輸出 Session 和 Sanctum 相關配置
+php artisan tinker --execute="
+    echo '=== SESSION CONFIGURATION ===' . PHP_EOL;
+    print_r(config('session'));
+    echo '=== SANCTUM CONFIGURATION ===' . PHP_EOL;
+    print_r(config('sanctum'));
+" || echo "Failed to output session and sanctum configurations"
+
 # 更新 Apache 設定以使用正確的端口
 # 動態注入 ports.conf
 echo "Listen $PORT" > /etc/apache2/ports.conf
