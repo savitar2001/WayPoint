@@ -14,9 +14,9 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'], // 包含需要 CORS 的路徑
+    'paths' => ['api/*', 'sanctum/csrf-cookie','*'], // 包含需要 CORS 的路徑
 
-    'allowed_methods' => ['*'], // 允許所有 HTTP 方法
+    'allowed_methods' => ['POST', 'GET', 'OPTIONS', 'DELETE', 'PUT', 'PATCH'],
 
     'allowed_origins' => [
         'http://new-project.local:3000', // 保留原有的 (如果還需要)
@@ -26,12 +26,12 @@ return [
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*'], // 允許所有標頭
+    'allowed_headers' => ['Content-Type', 'X-CSRF-TOKEN', 'X-Requested-With', 'Authorization', 'Accept','X-XSRF-TOKEN'],
 
     'exposed_headers' => [],
 
     'max_age' => 0,
 
-    'supports_credentials' => true, // 啟用 Cookie 傳遞
+    'supports_credentials' => true,
 
 ];
