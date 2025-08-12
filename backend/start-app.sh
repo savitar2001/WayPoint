@@ -64,6 +64,16 @@ php artisan config:clear || true
 php artisan route:clear || true
 php artisan view:clear || true
 
+echo "=== OUTPUTTING TODAY'S LOGS ==="
+LOG_FILE="/var/www/html/storage/logs/laravel.log"
+TODAY=$(date +"%Y-%m-%d")
+if [ -f "$LOG_FILE" ]; then
+  echo "Logs for $TODAY:"
+  grep "$TODAY" "$LOG_FILE" || echo "No logs found for today."
+else
+  echo "Log file not found: $LOG_FILE"
+fi
+
 # 手動執行 package:discover
 php artisan package:discover --ansi || echo "package:discover failed (ignored)"
 
