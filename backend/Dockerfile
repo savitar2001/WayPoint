@@ -45,7 +45,8 @@ RUN mkdir -p storage/framework/cache/data \
     && mkdir -p storage/logs \
     && mkdir -p bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache \
-    && chmod -R ug+rwX storage bootstrap/cache
+    && chmod -R ug+rwX storage bootstrap/cache \
+    && chmod -R 775 storage/framework/sessions
 
 EXPOSE 10000
 CMD ["/usr/local/bin/start-app.sh"]
