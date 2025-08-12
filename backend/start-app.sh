@@ -65,8 +65,9 @@ php artisan route:clear || true
 php artisan view:clear || true
 
 echo "=== OUTPUTTING TODAY'S LOGS ==="
-LOG_FILE="/var/www/html/storage/logs/laravel.log"
 TODAY=$(date +"%Y-%m-%d")
+LOG_FILE="/var/www/html/storage/logs/laravel-$TODAY.log"
+
 if [ -f "$LOG_FILE" ]; then
   echo "Logs for $TODAY:"
   grep "$TODAY" "$LOG_FILE" || echo "No logs found for today."
