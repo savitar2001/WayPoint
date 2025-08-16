@@ -10,6 +10,8 @@ use App\Repositories\Notification\NotificationRepositoryInterface;
 use App\Repositories\Notification\NotificationRawSqlRepository;
 use App\DataMappers\Notification\NotificationMapperInterface; 
 use App\DataMappers\Notification\NotificationRawSqlMapper; 
+use Illuminate\Support\Facades\URL;
+use Illuminate\Http\Request;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -34,8 +36,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (app()->environment('production')) {
+            URL::forceScheme('https');
+        }
+
         config([
             'session.domain' => env('SESSION_DOMAIN', null), // Use environment variable for session domain
         ]);
+
+        // Configure trusted proxies
+        config(['trustedproxy.proxies' => '*']);
+        config(['trustedproxy.headers' => Request::HEADER_X_FORWARDED_ALL]);
     }
 }
