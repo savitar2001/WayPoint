@@ -7,8 +7,9 @@ const WEB_BASE_URL = process.env.REACT_APP_BACKEND_URL;
 // Configure axios defaults
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.withCredentials = true;
-axios.defaults.xsrfCookieName = 'XSRF-TOKEN';
-axios.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
+// 移除重複的 CSRF token 配置，讓後端統一處理
+// axios.defaults.xsrfCookieName = 'XSRF-TOKEN';
+// axios.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
 
 
 // 簡易取得 cookie
@@ -23,14 +24,18 @@ const getCookie = (name) => {
 export const initializeCsrfToken = async () => {
     await axios.get(`${WEB_BASE_URL}/sanctum/csrf-cookie`, { withCredentials: true });
     console.log('CSRF Cookie 已初始化');
-    const raw = getCookie('XSRF-TOKEN');
-    if (raw) {
-        const decoded = decodeURIComponent(raw);
-        axios.defaults.headers.common['X-XSRF-TOKEN'] = decoded; // 明確設定
-        console.log('讀取到的 XSRF-TOKEN:', decoded);
+    
+    // 使用 Laravel 標準的 CSRF token
+    const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
+                  getCookie('XSRF-TOKEN');
+    
+    if (token) {
+        const decoded = token.startsWith('%') ? decodeURIComponent(token) : token;
+        axios.defaults.headers.common['X-CSRF-TOKEN'] = decoded;
+        console.log('CSRF Token 已設置:', decoded);
         return decoded;
     }
-    console.warn('未取得 XSRF-TOKEN cookie');
+    console.warn('未取得 CSRF Token');
     return null;
 };
 

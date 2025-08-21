@@ -27,6 +27,15 @@ return Application::configure(dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             // 如果需要，可以在這裡排除某些路由
         ]);
+        
+        // 添加自定義中間件來設置缺失的標頭
+        $middleware->append(function ($request, $next) {
+            // 如果缺少 X-Forwarded-Host，從 Host 標頭設置
+            if (!$request->hasHeader('X-Forwarded-Host') && $request->hasHeader('Host')) {
+                $request->headers->set('X-Forwarded-Host', $request->getHost());
+            }
+            return $next($request);
+        });
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
