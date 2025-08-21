@@ -31,7 +31,7 @@ const initializeEcho = (userId, dispatch,csrfToken) => {
         wssPort: reverbPort, //
         forceTLS: reverbScheme === 'wss',
         enabledTransports: [reverbScheme === 'wss' ? 'wss' : 'ws'], 
-        authEndpoint: `http://localhost/broadcasting/auth`,
+        authEndpoint: `${process.env.REACT_APP_BACKEND_URL}/broadcasting/auth`,
         authorizer: (channel, options) => {
             return {
                 authorize: (socketId, callback) => {
