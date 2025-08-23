@@ -25,16 +25,12 @@ export const initializeCsrfToken = async () => {
     await axios.get(`${WEB_BASE_URL}/sanctum/csrf-cookie`, { withCredentials: true });
     console.log('CSRF Cookie 已初始化');
     
-    // 使用 Laravel 標準的 CSRF token
-    const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
-                  getCookie('XSRF-TOKEN');
-    
+    const token = getCookie('XSRF-TOKEN');
     if (token) {
-        const decoded = token.startsWith('%') ? decodeURIComponent(token) : token;
+        const decoded = decodeURIComponent(token);
         axios.defaults.headers.common['X-CSRF-TOKEN'] = decoded;
-        console.log('CSRF Token 已設置:', decoded);
-        return decoded;
     }
+    
     console.warn('未取得 CSRF Token');
     return null;
 };
