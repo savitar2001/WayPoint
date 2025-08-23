@@ -4,8 +4,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\TrustProxies;
+use Illuminate\Http\Middleware\TrustHosts;
 use Illuminate\Http\Request;
-use App\Http\Middleware\SetMissingProxyHeaders;
 
 return Application::configure(dirname(__DIR__))
     ->withRouting(
@@ -23,14 +23,13 @@ return Application::configure(dirname(__DIR__))
                     Request::HEADER_X_FORWARDED_PROTO |
                     Request::HEADER_X_FORWARDED_AWS_ELB
         );
-        
-        // 確保 CSRF 驗證正確處理
-        $middleware->validateCsrfTokens(except: [
-            // 如果需要，可以在這裡排除某些路由
+    })
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->trustHosts(at: [
+            'waypoint-backend-122x.onrender.com',
         ]);
         
-        // 添加自定義中間件來設置缺失的代理標頭
-        $middleware->append(SetMissingProxyHeaders::class);
+        
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
