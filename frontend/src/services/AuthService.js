@@ -7,33 +7,19 @@ const WEB_BASE_URL = process.env.REACT_APP_BACKEND_URL;
 // Configure axios defaults
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.withCredentials = true;
-// 移除重複的 CSRF token 配置，讓後端統一處理
-// axios.defaults.xsrfCookieName = 'XSRF-TOKEN';
-// axios.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
+axios.defaults.withXSRFToken = true;
 
-
-// 簡易取得 cookie
-const getCookie = (name) => {
-    return document.cookie
-        .split('; ')
-        .find(row => row.startsWith(name + '='))
-        ?.split('=')[1] || null;
-};
-
-// 初始化 CSRF Cookie 並設定 header
+// 初始化 CSRF Cookie
 export const initializeCsrfToken = async () => {
-    await axios.get(`${WEB_BASE_URL}/sanctum/csrf-cookie`, { withCredentials: true });
+    await axios.get(`${WEB_BASE_URL}/sanctum/csrf-cookie`);
     console.log('CSRF Cookie 已初始化');
-    
-    const token = getCookie('XSRF-TOKEN');
-    if (token) {
-        const decoded = decodeURIComponent(token);
-        axios.defaults.headers.common['X-CSRF-TOKEN'] = decoded;
-    }
-    
-    console.warn('未取得 CSRF Token');
-    return null;
+    const tokenValue = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('XSRF-TOKEN='))
+    ?.split('=')[1];
+    return tokenValue ? decodeURIComponent(tokenValue) : null;
 };
+
 
 // 登入
 export const login = async (email, password, dispatch) => {
