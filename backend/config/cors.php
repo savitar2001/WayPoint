@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie', 'broadcasting/auth', 'login', 'logout', 'passwordReset', 'passwordResetVerify', 'deleteAccount'], // 明確指定需要 CORS 的路徑
+    'paths' => ['api/*', 'sanctum/csrf-cookie', 'broadcasting/auth', 'login', 'logout', 'passwordReset', 'passwordResetVerify', 'deleteAccount','csrf-token'], // 明確指定需要 CORS 的路徑
 
     'allowed_methods' => ['POST', 'GET', 'OPTIONS', 'DELETE', 'PUT', 'PATCH'],
 
