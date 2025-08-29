@@ -9,32 +9,39 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
 
-// 初始化 CSRF Cookie
+// 初始化 CSRF Cookie 和 Token
 export const initializeCsrfToken = async () => {
+    // 步驟 1: 呼叫 sanctum/csrf-cookie 來建立後端 session。這一步仍然是必要的。
     await axios.get(`${WEB_BASE_URL}/sanctum/csrf-cookie`);
-    console.log('CSRF Cookie 已初始化');
-    console.log('Current document.cookie:', document.cookie);
-    const tokenValue = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('XSRF-TOKEN='))
-    ?.split('=')[1];
-    return tokenValue ? decodeURIComponent(tokenValue) : null;
+    console.log('CSRF session cookie 已初始化');
+
+    // 步驟 2: 呼叫我們的新端點來取得 token 的值。
+    const response = await axios.get(`${API_BASE_URL}/csrf-token`);
+    const token = response.data.csrf_token;
+
+    if (token) {
+        console.log('成功取得 CSRF Token');
+        axios.defaults.headers.common['X-XSRF-TOKEN'] = token;
+    } else {
+        console.error('無法取得 CSRF Token');
+    }
+
 };
 
 
 // 登入
 export const login = async (email, password, dispatch) => {
-    const csrfToken = await initializeCsrfToken();
+    await initializeCsrfToken();
     const response = await axios.post(`${WEB_BASE_URL}/login`, { email, password }, { withCredentials: true });
     if (response.data.data && response.data.data.userId) { 
-        initEcho(response.data.data.userId, dispatch, csrfToken);
+        initEcho(response.data.data.userId, dispatch, axios.defaults.headers.common['X-XSRF-TOKEN']);
     }
     return response.data;
 };
 
 // 註冊用戶
 export const register = async (name, email, password, confirm_password) => {
-    const csrfToken = await initializeCsrfToken();
+    await initializeCsrfToken();
     const response = await axios.post(`${API_BASE_URL}/register`, {
         name,
         email,
@@ -46,7 +53,7 @@ export const register = async (name, email, password, confirm_password) => {
 
 // 帳號驗證
 export const verifyAccount = async (requestId, hash, userId) => {
-    const csrfToken = await initializeCsrfToken();
+    await initializeCsrfToken();
     const response = await axios.post(`${API_BASE_URL}/verify`, { requestId, hash, userId }, { withCredentials: true });
     return response;
 };
