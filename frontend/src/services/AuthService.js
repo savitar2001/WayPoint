@@ -13,6 +13,7 @@ axios.defaults.withXSRFToken = true;
 export const initializeCsrfToken = async () => {
     await axios.get(`${WEB_BASE_URL}/sanctum/csrf-cookie`);
     console.log('CSRF Cookie 已初始化');
+    console.log('Current document.cookie:', document.cookie);
     const tokenValue = document.cookie
     .split('; ')
     .find(row => row.startsWith('XSRF-TOKEN='))
