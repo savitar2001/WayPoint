@@ -11,12 +11,12 @@ axios.defaults.withXSRFToken = true;
 
 // 初始化 CSRF Cookie 和 Token
 export const initializeCsrfToken = async () => {
-    // 步驟 1: 呼叫 sanctum/csrf-cookie 來建立後端 session。這一步仍然是必要的。
     await axios.get(`${WEB_BASE_URL}/sanctum/csrf-cookie`);
     console.log('CSRF session cookie 已初始化');
 
     // 步驟 2: 呼叫我們的新端點來取得 token 的值。
-    const response = await axios.get(`${API_BASE_URL}/csrf-token`);
+    // 注意 URL 的變化：不再有 /api 前綴
+    const response = await axios.get(`${WEB_BASE_URL}/csrf-token`);
     const token = response.data.csrf_token;
 
     if (token) {
