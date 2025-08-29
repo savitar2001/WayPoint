@@ -43,9 +43,5 @@ class AppServiceProvider extends ServiceProvider
         config([
             'session.domain' => env('SESSION_DOMAIN', null), // Use environment variable for session domain
         ]);
-
-        // Configure trusted proxies
-        config(['trustedproxy.proxies' => '*']);
-        config(['trustedproxy.headers' => Request::HEADER_X_FORWARDED_ALL]);
     }
 }
