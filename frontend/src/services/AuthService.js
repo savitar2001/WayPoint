@@ -21,7 +21,7 @@ export const initializeCsrfToken = async () => {
 
     if (token) {
         console.log('成功取得 CSRF Token');
-        axios.defaults.headers.common['X-XSRF-TOKEN'] = token;
+        axios.defaults.headers.common['X-CSRF-TOKEN'] = token;
     } else {
         console.error('無法取得 CSRF Token');
     }
