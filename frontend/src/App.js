@@ -1,4 +1,4 @@
-import React from 'react'; 
+import React, { useEffect } from 'react'; 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import store from './redux/store.js'; // 引入 Redux Store
 import WelcomePage from './pages/WelcomePage.js';
@@ -14,9 +14,14 @@ import CreatePostPage from './pages/UserProfile/CreatePostPage.js';
 import OtherUserProfilePage from './pages/UserProfile/OtherUserProfilePage.js';
 import UserProfilePage from './pages/UserProfile/UserProfilePage.js';
 import Marquee from './components/Marquee/Marquee.js'; 
+import { initializeCsrfToken } from './services/AuthService.js';
 
 
 const AppContent = () => {
+  useEffect(() => {
+    initializeCsrfToken();
+  }, []);
+
   return (
     <Router>
       <Marquee /> 
