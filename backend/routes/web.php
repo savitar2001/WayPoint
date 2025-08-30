@@ -21,5 +21,6 @@ Route::get('/test-event', [TestEventController::class, 'fireTestEvent']);
 Route::get('/csrf-token', function () {
     return response()->json([
         'csrf_token' => csrf_token(),
+        'session_id' => session()->getId(),
     ]);
 });
