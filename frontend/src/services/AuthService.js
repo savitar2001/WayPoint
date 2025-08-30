@@ -11,6 +11,10 @@ axios.defaults.withXSRFToken = true;
 
 // 初始化 CSRF Cookie 和 Token
 export const initializeCsrfToken = async () => {
+    // 為了確保請求是乾淨的，在請求新 token 前先刪除可能存在的舊 token
+    delete axios.defaults.headers.common['X-XSRF-TOKEN'];
+    delete axios.defaults.headers.common['X-CSRF-TOKEN'];
+
     await axios.get(`${WEB_BASE_URL}/sanctum/csrf-cookie`);
     console.log('CSRF session cookie 已初始化');
 
@@ -21,6 +25,7 @@ export const initializeCsrfToken = async () => {
 
     if (token) {
         console.log('成功取得 CSRF Token');
+        axios.defaults.headers.common['X-XSRF-TOKEN'] = token;
         axios.defaults.headers.common['X-CSRF-TOKEN'] = token;
     } else {
         console.error('無法取得 CSRF Token');
