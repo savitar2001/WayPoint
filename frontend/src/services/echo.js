@@ -7,7 +7,7 @@ window.Pusher = Pusher;
 let echoInstance = null;
 
 
-const initializeEcho = (userId, dispatch,csrfToken) => {
+const initializeEcho = (userId, dispatch) => {
     if (echoInstance) {
         disconnectEcho();
     }
@@ -41,16 +41,15 @@ const initializeEcho = (userId, dispatch,csrfToken) => {
                     }, {
                         withCredentials: true, // 關鍵：允許跨域請求攜帶 cookie
                         headers: {
-                            'X-CSRF-TOKEN': csrfToken, // 確保 csrfToken 在此處可訪問
-                            'X-Requested-With': 'XMLHttpRequest',
-                            // 不需要手動設定 'Cookie' 標頭，瀏覽器會處理
+                            'X-Requested-With': 'XMLHttpRequest'
+                            // 不需要手動設定 CSRF 標頭；Axios 會依據 XSRF-TOKEN cookie 自動加上 X-XSRF-TOKEN
                         }
                     })
                     .then(response => {
                         callback(null, response.data);
                     })
                     .catch(error => {
-                        console.error('Authorization error:', error.response);
+                        console.error('Authorization error:', error?.response || error);
                         callback(error);
                     });
                 }
@@ -83,10 +82,7 @@ const initializeEcho = (userId, dispatch,csrfToken) => {
         echoInstance.channel(publicChannelName) // 使用 .channel() 监听公共频道
             .listen(publicEventName, (eventData) => {
                 console.log(`[Public Channel: ${publicChannelName}] Event '${publicEventName}':`, eventData);
-                // eventData 应该是 { message: '測試公共頻道' }
-                // 你可以在这里处理公共频道的消息，例如也显示到 Marquee 或其他地方
                 if (eventData && eventData.message) {
-                    // 示例：也将其发送到 Marquee，你可以根据需要调整
                     dispatch(showMarqueeMessage(`公共消息: ${eventData.message}`));
                 }
             });

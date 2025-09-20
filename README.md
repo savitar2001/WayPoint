@@ -40,7 +40,47 @@ WayPoint 是一個基於網頁的社群平台基礎架構，旨在提供一套�
     * 語法:原生MySQL語法
     * **服務層**所需的所有資料都透過此層向資料庫進行存取，同時內建防止SQL注入的機制，確保安全性。
 
+### **技術選型考量**
+* **三層式架構**
+    * 將前端、後端、資料庫分離，更好進行維護和擴展
+* **PHP/Laravel** 
+    * 為開發網頁而生的程式語言，框架提供完整的ORM、路由及認證系統配置，能快速進行功能上的開發
+* **MySQL**
+    * 社群平台上的內容類型多樣，MySQL提供了一個基礎的資料庫，且與PHP協作良好
+* **React**
+    * 採用元件化的開發模式，構建可重複使用的UI介面
+## **安裝與執行**
+本專案的前端與後端需分開安裝與執行。請確保您的環境已安裝以下工具：
+1. 環境需求
+Node.js（建議版本：18 以上）
+npm 或 yarn
+PHP（建議版本：8.1 以上）
+Composer
+MySQL 或 SQLite
+Docker（選用，若需使用 docker-compose 部署）
 
+2. 安裝後端（Laravel）
+cd backend
+composer install         # 安裝 PHP 依賴套件
+cp .env.example .env    # 複製環境設定檔
+php artisan key:generate # 產生應用程式金鑰
+# 設定 .env 檔案中的資料庫連線資訊
+php artisan migrate     # 執行資料庫遷移
+
+3. 啟動後端服務
+php artisan serve
+預設後端服務會在 http://localhost:8000 運行。
+
+4. 安裝前端（React）
+cd frontend
+npm install 
+
+5. 啟動前端服務
+npm start
+預設前端服務會在 http://localhost:3000 運行。
+
+若需使用 Amazon S3/SES 等第三方服務，請於後端 .env 檔案中設定相關金鑰。
+若需使用 Docker 部署，請參考 docker-compose.yml 檔案。
 
 
 
