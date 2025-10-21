@@ -20,22 +20,23 @@ RUN echo "<?php phpinfo(); ?>" > /var/www/html/info.php
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# 處理 Apache 與啟動腳本
-COPY apache-vhost.conf /etc/apache2/sites-available/000-default.conf
-COPY start-app.sh /usr/local/bin/start-app.sh
-RUN chmod +x /usr/local/bin/start-app.sh
-
 # 允許 root 下的 composer 不禁用 plugins
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
 # 複製 composer 檔並安裝依賴（跳過 scripts）
-COPY composer.json composer.lock ./
+# 注意：假設 Docker build context 是專案根目錄
+COPY ./backend/composer.json ./backend/composer.lock ./
 # 使用 --no-dev 以生產模式；如需 dev 套件移除此參數
 RUN composer install --no-dev --prefer-dist --optimize-autoloader --classmap-authoritative --no-interaction --no-scripts \
     && composer clear-cache
 
+# 複製 Apache 與啟動腳本
+COPY ./backend/apache-vhost.conf /etc/apache2/sites-available/000-default.conf
+COPY ./backend/start-app.sh /usr/local/bin/start-app.sh
+RUN chmod +x /usr/local/bin/start-app.sh
+
 # 複製應用程式剩餘程式碼
-COPY . .
+COPY ./backend/ .
 
 # 建立必要目錄與權限
 RUN mkdir -p storage/framework/cache/data \
