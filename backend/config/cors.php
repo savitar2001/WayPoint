@@ -14,24 +14,41 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie', 'broadcasting/auth', 'login', 'logout', 'passwordReset', 'passwordResetVerify', 'deleteAccount','csrf-token'], // 明確指定需要 CORS 的路徑
+    'paths' => [
+        'api/*',
+        'broadcasting/auth',
+        'login',
+        'logout',
+        'register',
+        'verify'
+    ],
 
     'allowed_methods' => ['POST', 'GET', 'OPTIONS', 'DELETE', 'PUT', 'PATCH'],
 
     'allowed_origins' => [
-        'http://new-project.local:3000', // 保留原有的 (如果還需要)
-        'http://localhost:3000',          // 新增前端的 URL
-        'https://waypoint-frontend-zdei.onrender.com' // 允許的前端網域
+        'http://new-project.local:3000',
+        'http://localhost:3000',
+        'https://waypoint-frontend-zdei.onrender.com'
     ],
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['Content-Type', 'X-CSRF-TOKEN', 'X-Requested-With', 'Authorization', 'Accept','X-XSRF-TOKEN'],
+    'allowed_headers' => [
+        'Content-Type',
+        'Authorization',  // JWT Token 最重要！
+        'X-Requested-With',
+        'Accept',
+        'Origin',
+        'Access-Control-Request-Method',
+        'Access-Control-Request-Headers'
+    ],
 
-    'exposed_headers' => [],
+    'exposed_headers' => [
+        'Authorization'  // 允許前端讀取 Authorization header
+    ],
 
-    'max_age' => 0,
+    'max_age' => 3600,
 
-    'supports_credentials' => true,
+    'supports_credentials' => false,  // JWT 不需要 credentials
 
 ];

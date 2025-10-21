@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  isLoggedIn: !!localStorage.getItem('authToken'), // 檢查 localStorage 是否有 Token
-  userId: localStorage.getItem('userId') || null,
-  userName: localStorage.getItem('userName') || '',
+  isLoggedIn: !!sessionStorage.getItem('access_token'), // 檢查 sessionStorage 是否有 JWT Token
+  userId: sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')).id : null,
+  userName: sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')).name : '',
 };
 
 const authSlice = createSlice({
@@ -14,20 +14,17 @@ const authSlice = createSlice({
       state.isLoggedIn = true; // 設置為已登入
       state.userId = action.payload.userId; // 設置用戶 ID
       state.userName = action.payload.userName; // 設置用戶名稱
-      // 保存到 localStorage
-      localStorage.setItem('authToken', action.payload.token);
-      localStorage.setItem('userId', action.payload.userId);
-      localStorage.setItem('userName', action.payload.userName);
+      
+      // JWT Token 由 AuthService 管理，這裡只更新 Redux 狀態
+      // Token 已在 AuthService.login() 中存儲到 sessionStorage
     },
     logout: (state) => {
       state.isLoggedIn = false; // 設置為未登入
       state.userId = null; // 清空用戶 ID
       state.userName = ''; // 清空用戶名稱
 
-      // 清除 localStorage
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('userId');
-      localStorage.removeItem('userName');
+      // Token 清除由 AuthService.logout() 處理
+      // 這裡只清除 Redux 狀態
     },
   },
 });

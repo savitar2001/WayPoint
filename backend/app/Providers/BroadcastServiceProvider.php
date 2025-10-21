@@ -20,8 +20,9 @@ class BroadcastServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Broadcast::routes(['middleware' => ['web']]); 
-        \Illuminate\Support\Facades\Log::info('BroadcastServiceProvider boot method called.'); // 添加日誌
+        // JWT 認證：不使用 Broadcast::routes()，改在 routes/api.php 中手動註冊
+        // 這樣可以使用 'auth:api' middleware 而不是 'web' middleware
+        \Illuminate\Support\Facades\Log::info('BroadcastServiceProvider boot method called (JWT mode).');
 
         require base_path('routes/channels.php');
     }

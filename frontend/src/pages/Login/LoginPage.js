@@ -17,17 +17,33 @@ const LoginPage = () => {
 
   const handleButtonClick  = async () => {
     try {
-      const response = await login(email, password,dispatch);
+      const response = await login(email, password, dispatch);
       if (response['success'] === true) {
-        const {userId, userName} = response['data'];
-        dispatch(loginAction({ userId, userName }));
+        // 後端返回: response.data = { access_token, token_type, expires_in, user }
+        // token 已由 AuthService.login() 存儲到 sessionStorage
+        const user = response['data']['user'];
+        
+        dispatch(loginAction({ 
+          userId: user.id, 
+          userName: user.name 
+        }));
+        
         navigate('/home');
       } else {
-        setError(response['error']);
+        // 顯示錯誤和剩餘嘗試次數
+        const errorMsg = response['error'] || 'Login failed';
+        const remainingAttempts = response['remaining_attempts'];
+        
+        if (remainingAttempts !== undefined) {
+          setError(`${errorMsg}。剩餘嘗試次數：${remainingAttempts}`);
+        } else {
+          setError(errorMsg);
+        }
       }
       
     } catch (err) {
-      setError('Invalid email or password. Please try again.');
+      console.error('Login error:', err);
+      setError('登入時發生錯誤，請稍後再試');
     }
   };
 

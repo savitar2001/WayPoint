@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 
-# 設定 Render 平台的端口
-export PORT=${PORT:-10000}
+# 設定端口（本地預設 80，Render 使用 10000）
+export PORT=${PORT:-80}
 echo "Using PORT: $PORT"
 
 echo "Starting Laravel application..."

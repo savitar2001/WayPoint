@@ -14,12 +14,12 @@ import CreatePostPage from './pages/UserProfile/CreatePostPage.js';
 import OtherUserProfilePage from './pages/UserProfile/OtherUserProfilePage.js';
 import UserProfilePage from './pages/UserProfile/UserProfilePage.js';
 import Marquee from './components/Marquee/Marquee.js'; 
-import { initializeCsrfToken } from './services/AuthService.js';
 
 
 const AppContent = () => {
   useEffect(() => {
-    initializeCsrfToken();
+    // JWT 模式：無需初始化 CSRF Token
+    console.log('App initialized with JWT authentication');
   }, []);
 
   return (

@@ -7,8 +7,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasApiTokens, HasFactory, Notifiable;
@@ -54,14 +55,30 @@ class User extends Authenticatable
     //返回基本資料與嘗試登入次數
     public function findUserByEmail($email) {
         $hourAgo = time() - 3600;
-        $query = "SELECT users.id, name, password, verified, COUNT(loginattempts.id) as attempts
+        
+        // 先使用原始查詢獲取登入嘗試次數
+        $query = "SELECT users.id, COUNT(loginattempts.id) as attempts
                  FROM users
                  LEFT JOIN loginattempts ON users.id = user AND loginattempts.timestamp > ?
                  WHERE email = ?
-                 GROUP BY users.id, name, password, verified";
+                 GROUP BY users.id";
         $params = [$hourAgo, $email];
-
-        return DB::select($query, $params)[0] ?? null;
+        
+        $result = DB::select($query, $params)[0] ?? null;
+        
+        if (!$result) {
+            return null;
+        }
+        
+        // 獲取 User Model 實例
+        $user = self::where('email', $email)->first();
+        
+        if ($user) {
+            // 動態添加 attempts 屬性
+            $user->attempts = $result->attempts;
+        }
+        
+        return $user;
     }
 
     //寄信函數可用於註冊與重設密碼
@@ -191,6 +208,26 @@ class User extends Authenticatable
         $result = DB::update($query, $params);
 
         return $result > 0;
+    }
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }
   

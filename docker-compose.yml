@@ -6,6 +6,7 @@ services:
       context: ./frontend # 前端 Dockerfile 所在的目錄
       dockerfile: Dockerfile # Dockerfile 的名稱 (如果不是 Dockerfile 就需要指定)
       args: 
+        - REACT_APP_BACKEND_URL=${REACT_APP_BACKEND_URL:-http://localhost}
         - REACT_APP_REVERB_APP_KEY=${REACT_APP_REVERB_APP_KEY}
         - REACT_APP_REVERB_HOST=${REACT_APP_REVERB_HOST}
         - REACT_APP_REVERB_PORT=${REACT_APP_REVERB_PORT}
@@ -22,13 +23,14 @@ services:
       dockerfile: Dockerfile # Dockerfile 的名稱
     container_name: my-backend-app # 自訂容器名稱 (可選)
     ports:
-      - 80:80 # 將主機的 8000 port 映射到容器的 80 port (假設後端也用 80)
+      - "${BACKEND_HOST_PORT:-80}:${PORT:-80}" # 主機端口:容器端口（本地 80:80，Render 10000:10000）
       - "${REACT_APP_REVERB_PORT:-8080}:${REACT_APP_REVERB_PORT:-8080}" # 新增 Reverb 連接埠映射
     volumes:
       - ./backend:/var/www/html:cached
       - storage_data:/var/www/html/storage
       - bootstrap_cache_data:/var/www/html/bootstrap/cache 
     environment: # Pass variables from root .env to backend container
+      PORT: ${PORT:-80} # 傳遞 PORT 環境變數到容器內
       APP_NAME: ${APP_NAME}
       APP_ENV: ${APP_ENV}
       APP_KEY: ${APP_KEY}
@@ -41,6 +43,11 @@ services:
       DB_DATABASE: ${DB_DATABASE}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_TTL: ${JWT_TTL:-60}
+      JWT_REFRESH_TTL: ${JWT_REFRESH_TTL:-20160}
+      JWT_BLACKLIST_ENABLED: ${JWT_BLACKLIST_ENABLED:-true}
+      QUEUE_CONNECTION: ${QUEUE_CONNECTION:-redis}
       # AWS S3 variables
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
@@ -108,6 +115,12 @@ services:
       DB_DATABASE: ${DB_DATABASE}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
+
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_TTL: ${JWT_TTL:-60}
+      JWT_REFRESH_TTL: ${JWT_REFRESH_TTL:-20160}
+      JWT_BLACKLIST_ENABLED: ${JWT_BLACKLIST_ENABLED:-true}
+      QUEUE_CONNECTION: ${QUEUE_CONNECTION:-redis}
 
       REDIS_CLIENT: ${REDIS_CLIENT:-predis}
       REDIS_HOST: redis

@@ -4,12 +4,14 @@
   top: 20px; /* Adjust vertical position as needed */
   left: 0;
   width: 100%;
-  background-color: rgba(255, 165, 0, 0.75); /* Orange, 75% transparent */
+  background-color: rgba(255, 165, 0, 0.95); /* 增加不透明度到 95% */
   overflow: hidden; /* Crucial for the marquee effect */
   white-space: nowrap; /* Ensures text stays on a single line */
-  z-index: 1000; /* Keeps it on top of other content */
+  z-index: 99999; /* 提高到最高層級 */
   padding: 10px 0; /* Vertical padding for the bar itself */
   box-sizing: border-box;
+  border-bottom: 2px solid #ff8c00; /* 添加底部邊框讓它更明顯 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* 添加陰影 */
 }
 
 .marquee-text {

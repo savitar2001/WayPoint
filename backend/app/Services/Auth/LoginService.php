@@ -5,7 +5,8 @@ namespace App\Services\Auth;
 use App\Models\User;
 use App\Models\LoginAttempt;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class LoginService {
     private $user;
@@ -93,7 +94,34 @@ class LoginService {
         return $name;
     }
 
-    //啟動會話
+    //生成 JWT Token
+    public function generateToken($email) {
+        try {
+            $user = $this->user->findUserByEmail($email);
+            
+            // 使用 JWTAuth 生成 token
+            $token = JWTAuth::fromUser($user);
+            
+            $this->response['success'] = true;
+            $this->response['data'] = [
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => auth()->factory()->getTTL() * 60, // 秒為單位
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'avatar_url' => $user->avatar_url,
+                ]
+            ];
+        } catch (\Exception $e) {
+            $this->response['error'] = '生成 Token 時發生錯誤: ' . $e->getMessage();
+            return $this->response;
+        }
+        return $this->response;
+    }
+
+    // 保留舊的 startSession 方法以向後兼容（如果需要）
     public function startSession($email) {
         try {
             Session::put('loggedin', true);

@@ -42,8 +42,12 @@ class LoginController extends Controller {
             return response()->json($verifyPassword, 401);
         }
 
-        // 啟動 session
-        $startSession = $this->loginService->startSession($email);
-        return response()->json($startSession,200);
+        // 生成 JWT Token
+        $tokenData = $this->loginService->generateToken($email);
+        if (!$tokenData['success']) {
+            return response()->json($tokenData, 500);
+        }
+
+        return response()->json($tokenData, 200);
     }
 }
