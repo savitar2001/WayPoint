@@ -16,7 +16,7 @@ services:
     repo: https://github.com/savitar2001/WayPoint
     rootDir: frontend
     buildCommand: npm install && npm run build
-    startCommand: npx serve -s build -l 80
+    startCommand: npx serve -s build -p $PORT
     healthCheckPath: /
     envVars:
       - fromGroup: WayPoint-env
