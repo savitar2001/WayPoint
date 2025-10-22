@@ -4,6 +4,7 @@ services:
     runtime: docker
     repo: https://github.com/savitar2001/WayPoint
     dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
     healthCheckPath: /api/health-check
     plan: free
     envVars:
@@ -15,7 +16,7 @@ services:
     plan: free
     repo: https://github.com/savitar2001/WayPoint
     rootDir: frontend
-    buildCommand: npm install && npm run build
+    buildCommand: npm install && REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL npm run build
     startCommand: npx serve -s build -p $PORT
     healthCheckPath: /
     envVars:
