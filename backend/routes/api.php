@@ -80,6 +80,17 @@ Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/verify', [RegisterController::class, 'verify']);
 Route::post('/login', [LoginController::class, 'login']);
 
+// CORS 測試端點
+Route::post('/test-cors', function (Request $request) {
+    return response()->json([
+        'success' => true,
+        'message' => 'CORS is working!',
+        'received_data' => $request->all(),
+        'origin' => $request->header('Origin'),
+        'method' => $request->method(),
+    ]);
+});
+
 // 獲取貼文和用戶信息（公開）
 Route::get('/getPost/{userId}/{postId}/{tag}', [GetPostController::class, 'getPost']);
 Route::get('/getPostLike/{postId}', [GetPostLikeController::class, 'getPostLike']);
