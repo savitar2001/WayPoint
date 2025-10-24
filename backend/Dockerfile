@@ -37,6 +37,9 @@ RUN composer install --no-dev --prefer-dist --optimize-autoloader --classmap-aut
 # 複製應用程式剩餘程式碼
 COPY . .
 
+# 重新生成 autoload 以包含所有類別
+RUN composer dump-autoload --optimize --classmap-authoritative
+
 # 建立必要目錄與權限
 RUN mkdir -p storage/framework/cache/data \
     && mkdir -p storage/framework/sessions \

@@ -21,9 +21,11 @@ return [
 
     'allowed_methods' => ['*'],  // 允許所有 HTTP 方法
 
-    'allowed_origins' => explode(',', env('CORS_ALLOWED_ORIGINS', 
-        'http://new-project.local:3000,http://localhost:3000,https://waypoint-frontend-zdei.onrender.com'
-    )),
+    'allowed_origins' => [
+        'http://new-project.local:3000',
+        'http://localhost:3000',
+        'https://waypoint-frontend-zdei.onrender.com'
+    ],
 
     'allowed_origins_patterns' => [],
 
@@ -35,6 +37,6 @@ return [
 
     'max_age' => 3600,
 
-    'supports_credentials' => env('CORS_SUPPORTS_CREDENTIALS', false),  // JWT 不需要 credentials
+    'supports_credentials' => false,  // JWT 不需要 credentials
 
 ];

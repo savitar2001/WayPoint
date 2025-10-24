@@ -15,7 +15,6 @@ return Application::configure(dirname(__DIR__))
         api:__DIR__.'/../routes/api.php',
     )   
     ->withMiddleware(function (Middleware $middleware) {
-        // Trust all proxies for Render deployment
         $middleware->trustProxies(
             at: '*',
             headers: Request::HEADER_X_FORWARDED_FOR |
@@ -24,12 +23,13 @@ return Application::configure(dirname(__DIR__))
                     Request::HEADER_X_FORWARDED_PROTO |
                     Request::HEADER_X_FORWARDED_AWS_ELB
         );
-        
-        // Trust specific hosts
+    })
+    ->withMiddleware(function (Middleware $middleware) {
         $middleware->trustHosts(at: [
             'waypoint-backend-122x.onrender.com',
-            'localhost',
         ]);
+        
+        
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
