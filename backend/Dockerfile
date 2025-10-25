@@ -14,6 +14,8 @@ RUN apt-get update && apt-get install -y \
 
 # 啟用 Apache rewrite 模組
 RUN a2enmod rewrite
+# 啟用 proxy 與 websocket 代理模組 (用於反向代理 wss 到後端 websocket 服務)
+RUN a2enmod proxy proxy_http proxy_wstunnel headers
 
 # 建立 PHP 資訊頁面 (可在生產環境移除)
 RUN echo "<?php phpinfo(); ?>" > /var/www/html/info.php
