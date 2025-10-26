@@ -29,13 +29,15 @@ class SendEmailService {
     //檢查該用戶信件發送次數是否超過上限
     public function checkVerificationRequest($email, $type) {
         $findUserWithSendEmailRequestResult = $this->user->findUserWithSendEmailRequest($email, $type);
+        
+        // 修正：使用對象屬性訪問而非陣列訪問
         if ($type === 0) {
-            if ($findUserWithSendEmailRequestResult['verified'] !== 0) {
+            if ($findUserWithSendEmailRequestResult->verified !== 0) {
                 $this->response['error'] = '此帳號已驗證過';
                 return $this->response;
             }
     
-            if ($findUserWithSendEmailRequestResult['COUNT(requests.id)'] >= config('mail.max_verification_requests')) {
+            if ($findUserWithSendEmailRequestResult->request_count >= config('mail.max_verification_requests')) {
                 $this->response['error'] = '驗證次數超過當日上限';
                 return $this->response;
             }
@@ -43,7 +45,7 @@ class SendEmailService {
             $this->response['success'] = true;
             return $this->response;
         } else {
-            if ($findUserWithSendEmailRequestResult['COUNT(requests.id)'] >= config('mail.max_passwordreset_requests')) {
+            if ($findUserWithSendEmailRequestResult->request_count >= config('mail.max_passwordreset_requests')) {
                 $this->response['error'] = '重設密碼次數超過當日上限';
                 return $this->response;
             }
@@ -57,8 +59,10 @@ class SendEmailService {
     //插入寄信紀錄
     public function insertSendRecord($email,$type) {
         $findUserWithSendEmailRequestResult = $this->user->findUserWithSendEmailRequest($email,$type);
-        $userId = $findUserWithSendEmailRequestResult['id'];
-        $userName = $findUserWithSendEmailRequestResult['name'];
+        
+        // 修正：使用對象屬性訪問而非陣列訪問
+        $userId = $findUserWithSendEmailRequestResult->id;
+        $userName = $findUserWithSendEmailRequestResult->name;
         $hash = password_hash(base64_encode(random_bytes(32)), PASSWORD_DEFAULT);
         $requestId = $this->request->recordSendEmailInformation($userId, $hash, $type);
         if ($requestId === -1){
