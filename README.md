@@ -3,8 +3,8 @@
 WayPoint 是一個基於網頁的社群平台基礎架構，旨在提供一套完整的社群服務核心功能，讓開發者能快速建立類似社群媒體的應用程式。
 [WayPoint前端服務](https://waypoint-frontend-zdei.onrender.com)
 體驗帳號:
-* 帳號：zhaoyangr@gmail.com
-* 密碼：xxxxx
+* 帳號：abcdefg@gmail.com
+* 密碼：test123
 
 ## 功能與服務
 * **用戶帳號管理服務**
