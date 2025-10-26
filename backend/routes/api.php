@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Broadcast;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Post\CreatePostController;
 use App\Http\Controllers\Post\DeletePostController;
 use App\Http\Controllers\Post\CommentOnPostController;
@@ -79,6 +80,8 @@ Route::get('/health-check', function () {
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/verify', [RegisterController::class, 'verify']);
 Route::post('/login', [LoginController::class, 'login']);
+Route::post('/passwordReset', [PasswordResetController::class, 'passwordReset']);
+Route::post('/passwordResetVerify', [PasswordResetController::class, 'passwordResetVerify']);
 
 // CORS 測試端點
 Route::post('/test-cors', function (Request $request) {

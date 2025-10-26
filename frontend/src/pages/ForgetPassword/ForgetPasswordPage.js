@@ -12,16 +12,19 @@ const ForgetPassword = () => {
   const handleButtonClick = async (e) => {
     e.preventDefault();
     try {
-      const response = await passwordReset(email); // 呼叫 AuthService 的 passwordReset
-      if (response.data.success) {
+      const response = await passwordReset(email);
+      // 修正：response 是 axios response 對象，數據在 response.data 中
+      if (response.data && response.data.success) {
         alert('請檢查您的電子郵件以完成密碼重設流程');
-        navigate('/'); // 成功後導向首頁或其他頁面
+        navigate('/');
       } else {
-        alert(response.data.error || '發生未知錯誤');
+        // 處理後端返回的錯誤（HTTP 200 但 success: false）
+        alert(response.data?.error || '發生未知錯誤');
       }
     } catch (error) {
       console.error('Error during password reset:', error);
-      alert('無法發送密碼重設請求，請稍後再試');
+      // 處理 HTTP 錯誤狀態（400, 500 等）
+      alert(error.response?.data?.error || error.response?.data?.message || '無法發送密碼重設請求，請稍後再試');
     }
   };
 
@@ -35,10 +38,11 @@ const ForgetPassword = () => {
           {
             label: 'Email',
             placeholder: 'Enter your email',
-            onChange: (e) => setEmail(e.target.value), // 更新 email 狀態
+            value: email,
+            onChange: (e) => setEmail(e.target.value),
           },
         ]}
-        onButtonClick={handleButtonClick} // 傳遞按鈕點擊事件
+        onButtonClick={handleButtonClick}
       />
     </div>
   );

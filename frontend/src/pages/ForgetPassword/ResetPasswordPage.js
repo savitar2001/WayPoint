@@ -29,14 +29,20 @@ const ResetPassword = () => {
     try {
       // 調用 API 傳遞參數
       const response = await passwordResetVerify(requestId, hash, userId, password, confirmPassword);
-      if (response.data.success) {
+      // 修正：response 是 axios response 對象，數據在 response.data 中
+      if (response.data && response.data.success) {
         setSuccess('Password reset successful!');
         setError('');
       } else {
-        setError(response.data.error || 'Password reset failed.');
+        // 處理後端返回的錯誤（HTTP 200 但 success: false）
+        setError(response.data?.error || 'Password reset failed.');
+        setSuccess('');
       }
     } catch (err) {
-      setError('An error occurred while resetting the password.');
+      console.error('Error during password reset verification:', err);
+      // 處理 HTTP 錯誤狀態（400, 500 等）
+      setError(err.response?.data?.error || err.response?.data?.message || 'An error occurred while resetting the password.');
+      setSuccess('');
     }
   };
 
@@ -49,15 +55,17 @@ const ResetPassword = () => {
           {
             label: 'Password 密碼必須至少包含 8 個字元，且包含大小寫字母、數字及特殊符號（如 ~?!@#$%^&*）',
             placeholder: 'Enter your password',
+            value: password,
             onChange: (e) => setPassword(e.target.value),
           },
           {
             label: 'Password Confirmation',
             placeholder: 'Enter your password again',
+            value: confirmPassword,
             onChange: (e) => setConfirmPassword(e.target.value),
           },
         ]}
-        onButtonClick={handleButtonClick} // 傳遞按鈕點擊事件
+        onButtonClick={handleButtonClick}
       />
       {error && <p className="error-message">{error}</p>}
       {success && <p className="success-message">{success}</p>}

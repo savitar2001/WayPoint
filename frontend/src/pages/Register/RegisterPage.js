@@ -33,17 +33,19 @@ const RegisterPage = () => {
         formData.confirm_password
       );
 
-      // 假設後端返回的響應數據包含 status 和 message
-      if (response['success'] === true) { 
+      // 修正：response 是 axios response 對象，實際數據在 response.data 中
+      if (response.data && response.data.success === true) { 
         setSuccessMessage('請至信箱完成帳號驗證');
         setTimeout(() => {
           navigate('/welcome');
         }, 3000); 
       } else {
-        setError(response['error']);
+        // 處理後端返回的錯誤（HTTP 200 但 success: false）
+        setError(response.data?.error || '註冊失敗，請稍後再試');
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'An unexpected error occurred.');
+      // 處理 HTTP 錯誤狀態（400, 500 等）
+      setError(err.response?.data?.error || err.response?.data?.message || '發生未預期的錯誤，請稍後再試');
     }
   };
 
