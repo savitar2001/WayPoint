@@ -86,12 +86,38 @@ php artisan view:cache || echo "view:cache failed (ignored)"
 # （可選）資料庫遷移（如需要自動 migrate，否則註解）
 # php artisan migrate --force || echo "migrate failed (ignored)"
 
-# 背景啟動 Reverb（如設置）
-if [ "$REVERB_HOST" ] && [ "$REVERB_PORT" ]; then
-    echo "Starting Reverb server on ${REVERB_HOST}:${REVERB_PORT}..."
-    php artisan reverb:start --host="${REVERB_HOST}" --port="${REVERB_PORT}" --debug &
+# 背景啟動 Reverb
+# 如果環境變數沒設定,使用預設值
+REVERB_HOST_FINAL="${REVERB_HOST:-0.0.0.0}"
+REVERB_PORT_FINAL="${REVERB_PORT:-8080}"
+
+echo "=== STARTING REVERB WEBSOCKET SERVER ==="
+echo "Reverb Host: ${REVERB_HOST_FINAL}"
+echo "Reverb Port: ${REVERB_PORT_FINAL}"
+echo "Reverb App ID: ${REVERB_APP_ID}"
+echo "Reverb App Key: ${REVERB_APP_KEY}"
+
+# 啟動 Reverb (後台運行)
+php artisan reverb:start \
+    --host="${REVERB_HOST_FINAL}" \
+    --port="${REVERB_PORT_FINAL}" \
+    --debug &
+
+# 記錄 Reverb 的 PID
+REVERB_PID=$!
+echo "Reverb started with PID: ${REVERB_PID}"
+
+# 等待 Reverb 啟動 (給它 2 秒時間)
+sleep 2
+
+# 檢查 Reverb 是否成功啟動
+if ps -p $REVERB_PID > /dev/null; then
+    echo "✅ Reverb is running"
+else
+    echo "❌ WARNING: Reverb failed to start"
 fi
 
 # 最終啟動 Apache
+echo "=== STARTING APACHE SERVER ==="
 echo "Starting Apache server on port $PORT..."
 exec apache2-foreground
